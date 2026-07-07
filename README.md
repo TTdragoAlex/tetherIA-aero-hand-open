@@ -247,7 +247,9 @@ Not solved:
 - Thumb posture is sensitive: too much curl clamps into the palm; too little
   abduction misses the cube.
 - Finger strength/contact differs from sim depending on mapping and scale.
-- The new `RealCalibrated` rollout videos still need visual evaluation.
+- The first `RealCalibrated` run was too jittery for hardware replay.
+- The smoother follow-up still wedged the cube between thumb and index in some
+  rollouts, so the current training target is an anti-trap variant.
 
 ## Current Best Baseline Artifacts
 
@@ -299,32 +301,82 @@ Run summary:
 Inspect these videos before exporting a live actor or replaying an exact trace
 on hardware.
 
+Video review outcome: this first real-calibrated run is not a hardware replay
+candidate. It rotates the cube partly through jittery finger/thumb impacts and
+cube bouncing. The thumb moves too frequently for a plausible real-hand transfer.
+
+The follow-up environment `AeroCubeRotateZAxisHardware01RealCalibratedSmooth`
+adds hard `u` slew limiting, lower effective action cadence, stronger
+action/thumb smoothness penalties, and a cube linear-velocity penalty. The
+smooth run completed and videos were copied to:
+
+```text
+sim/hardware01_real_calibrated_smooth_20260707/rollout0.mp4
+sim/hardware01_real_calibrated_smooth_20260707/rollout1.mp4
+sim/hardware01_real_calibrated_smooth_20260707/rollout2.mp4
+```
+
+Review outcome: smoother and more rhythmic than `RealCalibrated`, but rollout 1
+and rollout 2 often rotate the cube while it is stuck in a thumb-index pocket.
+Do not replay it on hardware as-is.
+
+The current remote run is
+`AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`, which keeps the smooth
+action cadence and adds penalties for thumb/index trapping and pinch commands:
+
+- Run id: `aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203`
+- Log:
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log`
+- Latest-run pointer:
+  `/home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_antitrap_run.txt`
+- Final checkpoint: `000157286400`
+- Final logged reward: `15.875`
+- Best logged reward observed: `16.023` at `124518400`
+
+The automatic render after training failed because OpenGL was not initialized in
+that process, so the videos were regenerated from the final checkpoint with
+`MUJOCO_GL=egl` and copied to:
+
+```text
+sim/hardware01_real_calibrated_antitrap_20260707/rollout0.mp4
+sim/hardware01_real_calibrated_antitrap_20260707/rollout1.mp4
+sim/hardware01_real_calibrated_antitrap_20260707/rollout2.mp4
+```
+
+Review outcome: anti-trap is less visibly wedged than the smooth run, especially
+rollout 1, but it still uses a shallow cradle/pocket rolling strategy. Hardware
+replay should wait until this contact style is deliberately accepted.
+
+Previous smooth run details:
+
+- Run id: `aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
+- Log:
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_smooth_fresh_20260707_104654.log`
+- Run dir:
+  `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedSmooth-20260707-104656-aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
+
 ## Remote Training Run
 
 Latest documented remote run:
 
-- Environment: `AeroCubeRotateZAxisHardware01RealCalibrated`
-- PID: `82740`
-- Run id: `aero_hardware01_real_calibrated_fresh_20260707_093702`
+- Environment: `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`
+- Run id: `aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203`
 - Log:
-  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_fresh_20260707_093702.log`
-- Run directory:
-  `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibrated-20260707-093704-aero_hardware01_real_calibrated_fresh_20260707_093702`
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log`
 
 Check it from the training PC:
 
 ```bash
 cd /home/hw/aero-hand-sim
-ps -p 82740 -o pid,etime,pcpu,pmem,cmd
-tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_fresh_20260707_093702.log
-find logs/AeroCubeRotateZAxisHardware01RealCalibrated-20260707-093704-aero_hardware01_real_calibrated_fresh_20260707_093702 -maxdepth 2 -type f | sort | tail -50
+tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log
+find logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-154512-aero_hardware01_real_calibrated_antitrap_render_20260707_154510 -maxdepth 1 -type f -name 'rollout*.mp4' -print
 ```
 
 ## Next Safest Tasks
 
-1. Monitor the `RealCalibrated` training run.
-2. Copy new rollout videos to `sim/hardware01_real_calibrated_YYYYMMDD/`.
-3. Inspect sim motion before touching hardware.
+1. Review the `RealCalibratedAntiTrap` videos in `sim/hardware01_real_calibrated_antitrap_20260707/`.
+2. Decide whether the remaining cradle/pocket strategy is acceptable for an exact trace dry-run.
+3. Export exact `u_real_order` trace only if the video review passes.
 4. Export the best actor and exact `u_real_order` trace.
 5. Replay the trace on the real mounted hand with no cube.
 6. Replay with cube only after no-cube replay is safe and plausible.

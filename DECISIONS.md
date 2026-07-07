@@ -44,3 +44,18 @@
 - Decision: Use action-to-joint randomization and real-calibrated command ranges instead of trying to hand-fit every real joint posture.
 - Why: Sim and real endpoints looked usable, but `u=0.5` differed mechanically; training should learn policies robust to that nonlinear coupling mismatch.
 - Rejected: Manually tuning one static midpoint, because cube rotation needs dynamic contact over the full range, not just one matched pose.
+
+## Decision: Do not replay jittery `RealCalibrated` rollouts on hardware
+- Decision: Treat the completed `AeroCubeRotateZAxisHardware01RealCalibrated` run as a learning signal, not a hardware candidate.
+- Why: The rollout videos showed cube rotation through jittery finger/thumb impacts, cube bouncing, and frequent thumb motion that is unlikely to transfer through real tendon compliance, latency, backlash, and current limits.
+- Rejected: Exporting/replaying the trace immediately, because the observed sim behavior is likely to become clamping, noise, or current spikes on the real hand.
+
+## Decision: Train a smooth real-calibrated variant
+- Decision: Add `AeroCubeRotateZAxisHardware01RealCalibratedSmooth` with hard `u` slew limiting, lower effective action cadence, stronger action/thumb smoothness penalties, and a cube linear-velocity penalty.
+- Why: We want slow, sustained rolling torque rather than bouncing or shaking the cube until it rotates.
+- Rejected: Only increasing soft action-rate penalties in the old env, because the previous policy still found high-frequency contact strategies.
+
+## Decision: Train an anti-trap smooth variant
+- Decision: Add `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap` with thumb/index trap and pinch penalties while keeping the smooth run's action-repeat and slew cap.
+- Why: Smooth rollout 1 and rollout 2 rotated the cube, but often by wedging it between thumb and index. That failure mode is likely worse on the real hand because compliance, backlash, and current limits turn a simulated pinch pocket into a stuck cube.
+- Rejected: Replaying the smooth trace immediately, because the videos show the right speed but the wrong contact strategy.

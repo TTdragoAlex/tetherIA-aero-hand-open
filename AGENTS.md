@@ -11,7 +11,7 @@
 ## Setup
 - Mac project root: `/Users/alextang/Documents/Robot Hand`.
 - Python venv: `./.venv/bin/python`.
-- Ubuntu PC SSH: `ssh hw@192.168.9.63`, password `1` when prompted.
+- Ubuntu PC SSH: `ssh hw@192.168.9.63`; enter the operator-provided password when prompted.
 - Physical hand command order is `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`.
 - Original sim order is `[index, middle, ring, pinky, thumb_abd, thumb_flex, thumb_tendon]`; never assume these orders match.
 

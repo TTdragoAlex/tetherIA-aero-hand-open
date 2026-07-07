@@ -29,7 +29,7 @@ cd "/Users/alextang/Documents/Robot Hand/firmware-platformio"
 ## Ubuntu Training PC Setup
 ```bash
 ssh hw@192.168.9.63
-# password: 1
+# enter the operator-provided password when prompted
 cd /home/hw/aero-hand-sim
 source .venv/bin/activate
 ```
@@ -40,6 +40,22 @@ cd /home/hw/aero-hand-sim
 cat runs/nohup_logs/latest_hardware01_real_calibrated_run.txt
 ps -p 82740 -o pid,etime,pcpu,pmem,cmd
 tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_fresh_20260707_093702.log
+```
+
+Check current smooth calibrated run:
+```bash
+cd /home/hw/aero-hand-sim
+cat runs/nohup_logs/latest_hardware01_real_calibrated_smooth_run.txt
+ps -p 87482 -o pid,etime,pcpu,pmem,cmd
+tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_smooth_fresh_20260707_104654.log
+```
+
+Check current anti-trap calibrated run:
+```bash
+cd /home/hw/aero-hand-sim
+cat runs/nohup_logs/latest_hardware01_real_calibrated_antitrap_run.txt
+ps -p 92318 -o pid,etime,pcpu,pmem,cmd
+tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log
 ```
 
 ## Start A New Training Run
@@ -57,6 +73,41 @@ nohup env MUJOCO_GL=egl /home/hw/aero-hand-sim/.venv/bin/python mujoco_playgroun
   --num_videos=3 \
   --suffix=${RUN_ID} \
   --use_tb > "$LOG" 2>&1 &
+echo $!
+```
+
+For the smoother variant, use:
+
+```bash
+cd /home/hw/aero-hand-sim
+RUN_ID=aero_hardware01_real_calibrated_smooth_fresh_$(date +%Y%m%d_%H%M%S)
+LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
+echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_smooth_run.txt
+nohup env MUJOCO_GL=egl /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
+  --env_name=AeroCubeRotateZAxisHardware01RealCalibratedSmooth \
+  --domain_randomization \
+  --num_timesteps=150000000 \
+  --num_evals=25 \
+  --num_videos=3 \
+  --suffix=${RUN_ID} \
+  --use_tb > "$LOG" 2>&1 &
+echo $!
+```
+
+For the anti-trap variant, use:
+
+```bash
+cd /home/hw/aero-hand-sim
+RUN_ID=aero_hardware01_real_calibrated_antitrap_fresh_$(date +%Y%m%d_%H%M%S)
+LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
+echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_antitrap_run.txt
+nohup env MUJOCO_GL=egl /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
+  --env_name=AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap \
+  --num_timesteps=150000000 \
+  --num_evals=25 \
+  --reward_scaling=1.0 \
+  --num_videos=3 \
+  --suffix=${RUN_ID} > "$LOG" 2>&1 &
 echo $!
 ```
 
@@ -113,7 +164,7 @@ cd "/Users/alextang/Documents/Robot Hand"
 Point `--policy` or equivalent script option to the latest exported actor if the script does not default to it.
 
 ## Debugging Common Issues
-- `Permission denied` over one-shot SSH: use interactive `ssh hw@192.168.9.63` and type password `1`.
+- `Permission denied` over one-shot SSH: use interactive `ssh hw@192.168.9.63` and enter the operator-provided password.
 - Training log empty at start: often normal during JAX/XLA compile; check `ps` and run dir creation.
 - Current abort at startup: inspect CSV for channel; commonly thumb_flex/ring/pinky spikes, sometimes from posture/cube preload.
 - Invalid serial response frame: retry; safe scripts send raw rest during recovery.
@@ -138,3 +189,8 @@ sim/hardware01_real_calibrated_20260707/rollout0.mp4
 sim/hardware01_real_calibrated_20260707/rollout1.mp4
 sim/hardware01_real_calibrated_20260707/rollout2.mp4
 ```
+
+The first `RealCalibrated` videos were judged too jittery for hardware replay.
+The `RealCalibratedSmooth` videos were smoother, but rollout 1 and rollout 2
+showed thumb-index trapping. Wait for anti-trap rollout videos before
+exporting/replaying a trace.
