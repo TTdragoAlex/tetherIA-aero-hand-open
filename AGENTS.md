@@ -13,6 +13,7 @@
 - Python venv: `./.venv/bin/python`.
 - Ubuntu PC SSH: `ssh hw@192.168.9.63`, password `1` when prompted.
 - Physical hand command order is `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`.
+- Original sim order is `[index, middle, ring, pinky, thumb_abd, thumb_flex, thumb_tendon]`; never assume these orders match.
 
 ## Common Commands
 - List serial ports: `./.venv/bin/python scripts/list_ports.py`.
@@ -27,6 +28,7 @@
 - Keep safety aborts unless explicitly testing safety itself: current default `4000 mA`, temp default `60 C`.
 - Do not overwrite old sim environments or checkpoints; add variants and copy artifacts.
 - The training PC repo is not git-controlled; create timestamped backups before editing remote source.
+- Do not double-apply old replay calibration to new `RealCalibrated` traces; scale/bias should be trained into that env.
 
 ## Done Means
 - Code or env changes compile/smoke-test.

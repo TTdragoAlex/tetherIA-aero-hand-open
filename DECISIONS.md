@@ -34,3 +34,13 @@
 - Decision: Add/strengthen stalled-force, non-thumb-force, static-clamp, and thumb-overcurl penalties gated by low cube angular velocity.
 - Why: Real tests showed fingers can cage/clamp the cube without producing useful rotation.
 - Rejected: Rewarding grip/holding alone, because stable holding can become the failure mode.
+
+## Decision: Do not treat cube size as the main fix
+- Decision: Keep the current cube as the working physical candidate and focus on training/contact/mapping.
+- Why: Smaller and larger cubes were already tried; the current cube gave the best practical contact among tested options.
+- Rejected: Spending the next iteration on cube-size changes, because the same caging/pushing behavior persisted across sizes.
+
+## Decision: Handle midrange joint mismatch through training robustness
+- Decision: Use action-to-joint randomization and real-calibrated command ranges instead of trying to hand-fit every real joint posture.
+- Why: Sim and real endpoints looked usable, but `u=0.5` differed mechanically; training should learn policies robust to that nonlinear coupling mismatch.
+- Rejected: Manually tuning one static midpoint, because cube rotation needs dynamic contact over the full range, not just one matched pose.

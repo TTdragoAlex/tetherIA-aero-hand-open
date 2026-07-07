@@ -91,6 +91,9 @@ cd "/Users/alextang/Documents/Robot Hand"
 
 For new `RealCalibrated` traces, try no extra channel scale/bias first because calibration is trained into the env/export.
 
+If a diagnostic override is needed, record clearly that it is an override and do
+not feed that result back as if it were the base policy behavior.
+
 ## Live Policy Control
 Use only after exact trace replay looks safe/plausible.
 ```bash
@@ -116,6 +119,8 @@ Point `--policy` or equivalent script option to the latest exported actor if the
 - Invalid serial response frame: retry; safe scripts send raw rest during recovery.
 - Real motion weaker than sim: compare exact trace video and real replay before changing policy code.
 - Cube not rotating but hand touches cube: likely contact/training mismatch; do not solve only with manual channel bias unless doing diagnostics.
+- New `RealCalibrated` policy still weak: first compare exact sim trace vs real no-cube replay; if commands match but cube does not rotate, inspect contact/friction/reward before changing serial mapping.
+- Sim midpoint looks unlike real midpoint: this is known; prefer broader action-to-joint randomization or calibrated training over one-off midpoint hacks.
 
 ## Copying Artifacts Back To Mac
 From Mac, use `scp` with quoted remote paths when wildcards are involved:
@@ -125,3 +130,11 @@ scp 'hw@192.168.9.63:/home/hw/aero-hand-sim/logs/<RUN_DIR>/rollout*.mp4' \
   "/Users/alextang/Documents/Robot Hand/sim/hardware01_real_calibrated_YYYYMMDD/"
 ```
 If zsh says `no matches found`, quote the remote path as shown.
+
+Latest copied `RealCalibrated` videos:
+
+```text
+sim/hardware01_real_calibrated_20260707/rollout0.mp4
+sim/hardware01_real_calibrated_20260707/rollout1.mp4
+sim/hardware01_real_calibrated_20260707/rollout2.mp4
+```

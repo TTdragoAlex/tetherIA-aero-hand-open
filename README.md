@@ -67,6 +67,23 @@ hw@192.168.9.63:/home/hw/aero-hand-sim
 That remote source is not git-controlled, so create timestamped backups before
 editing it.
 
+
+## Confirmed Sim Action Facts
+
+These facts were extracted from the installed MuJoCo environment on the Ubuntu
+PC, not guessed from public docs:
+
+- Original sim formula: `sim_ctrl = home_ctrl + sim_action * action_scale`.
+- `home_ctrl = [0.09, 0.09, 0.09, 0.09, 0.75, 0.035, 0.1]`.
+- `action_scale = [0.02, 0.02, 0.02, 0.02, 0.7, 0.003, 0.012]`.
+- Original sim action order: `[index, middle, ring, pinky, thumb_abd, thumb_flex, thumb_tendon]`.
+- Real hardware command order: `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`.
+- For sim tendon channels, positive original sim action lengthens/opens and negative original sim action shortens/curls.
+- For real hardware-style `u`, higher values are treated as more curl/contact.
+
+This is why current transfer work uses hardware01 real-order `u in [0, 1]` rather
+than the original sim delta action language.
+
 ## Local Setup
 
 Python virtual environment:
@@ -166,6 +183,18 @@ The best recent old-policy replay required compressed thumb ranges and expanded
 finger ranges, which motivated training a real-calibrated variant instead of
 continuing endless manual replay bias tweaks.
 
+
+Important real-tested replay calibration values:
+
+```text
+scale = [0.21, 0.21, 0.315, 1.35, 1.35, 1.25, 1.20]
+bias  = [-0.12, -0.22, -0.18, 0.0, 0.0, 0.0, 0.0]
+order = [thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]
+```
+
+For the new `RealCalibrated` env, these are built into training. Do not add the
+same replay-time scale/bias again unless explicitly doing a diagnostic override.
+
 ### Real-Calibrated Training Variant
 
 The new remote environment `AeroCubeRotateZAxisHardware01RealCalibrated` maps the
@@ -179,6 +208,21 @@ adds/strengthens penalties against clamping without rotation:
 
 The intent is to teach the policy inside a command/contact window that better
 matches the real hand.
+
+## Physical-Hand Lessons So Far
+
+- Original communication failure was hardware/soldering, not GUI logic. After
+  fixing hardware, all servos moved and homing worked.
+- Servo high-pitched noise tracked idle current; lower current generally meant
+  less noise.
+- Strong springs caused high current and jamming. Softer springs improved index
+  and middle finger sweeps, but did not solve cube rotation by itself.
+- Cube size is not considered the main issue now; smaller and larger cubes were
+  tried, and the current cube is treated as the best physical candidate.
+- Sim `u=0` and `u=1` endpoint diagnostics looked broadly acceptable, but
+  `u=0.5` posture differs: the real hand bends multiple finger joints while sim
+  tends to bend mainly at the knuckles. Action-to-joint randomization and the
+  real-calibrated env are meant to make the policy robust to this mismatch.
 
 ## Current State
 
@@ -203,7 +247,7 @@ Not solved:
 - Thumb posture is sensitive: too much curl clamps into the palm; too little
   abduction misses the cube.
 - Finger strength/contact differs from sim depending on mapping and scale.
-- The new `RealCalibrated` training run still needs evaluation.
+- The new `RealCalibrated` rollout videos still need visual evaluation.
 
 ## Current Best Baseline Artifacts
 
@@ -230,6 +274,30 @@ Best recent old-policy replay command:
 
 For new `RealCalibrated` traces, try no extra channel scale/bias first because
 the calibration is trained into the environment/export.
+
+## Latest Real-Calibrated Videos
+
+The `AeroCubeRotateZAxisHardware01RealCalibrated` run from 2026-07-07 completed
+cleanly and generated three rollout videos copied to the Mac:
+
+```text
+sim/hardware01_real_calibrated_20260707/rollout0.mp4
+sim/hardware01_real_calibrated_20260707/rollout1.mp4
+sim/hardware01_real_calibrated_20260707/rollout2.mp4
+```
+
+The same folder includes `config.json` with the run configuration and the
+training log copied from the remote run.
+
+Run summary:
+
+- Run id: `aero_hardware01_real_calibrated_fresh_20260707_093702`
+- Final checkpoint: `000157286400`
+- Final logged reward: `35.862`
+- Best logged reward observed: `37.066` at `137625600`
+
+Inspect these videos before exporting a live actor or replaying an exact trace
+on hardware.
 
 ## Remote Training Run
 
@@ -275,4 +343,3 @@ ignored via:
 ```text
 firmware-platformio/.pio/
 ```
-
