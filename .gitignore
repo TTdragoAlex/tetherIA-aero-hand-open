@@ -1,0 +1,8 @@
+.venv/
+sim/.venv/
+sim/mujoco_playground/
+sim/mujoco_menagerie/
+__pycache__/
+*.pyc
+.DS_Store
+firmware-platformio/.pio/

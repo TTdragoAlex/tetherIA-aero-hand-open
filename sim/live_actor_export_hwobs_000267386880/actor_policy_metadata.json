@@ -1,0 +1,80 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardwareObs",
+  "checkpoint_root": "/home/hw/aero-hand-sim/runs/aero_hardware_obs_20260630_104146/AeroCubeRotateZAxisHardwareObs-20260630-104148/checkpoints/000267386880",
+  "actor_observation_size": 21,
+  "actor_observation_type": "hardware_obs",
+  "activation": "silu/swish: x / (1 + exp(-x))",
+  "deterministic_action": "tanh(first 7 policy logits)",
+  "observation_order": [
+    "hardware_position_index",
+    "hardware_position_middle",
+    "hardware_position_ring",
+    "hardware_position_pinky",
+    "hardware_position_thumb_abd",
+    "hardware_position_thumb_flex",
+    "hardware_position_thumb_tendon",
+    "force_proxy_index",
+    "force_proxy_middle",
+    "force_proxy_ring",
+    "force_proxy_pinky",
+    "force_proxy_thumb_abd",
+    "force_proxy_thumb_flex",
+    "force_proxy_thumb_tendon",
+    "last_action_index",
+    "last_action_middle",
+    "last_action_ring",
+    "last_action_pinky",
+    "last_action_thumb_abd",
+    "last_action_thumb_flex",
+    "last_action_thumb_tendon"
+  ],
+  "sim_action_order": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "right_thumb_A_cmc_abd",
+    "right_th1_A_tendon",
+    "right_th2_A_tendon"
+  ],
+  "physical_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "sim_to_physical_index": [
+    4,
+    5,
+    6,
+    0,
+    1,
+    2,
+    3
+  ],
+  "action_sign_by_physical_v2": {
+    "thumb_abd": 1.0,
+    "thumb_flex": -1.0,
+    "thumb_tendon": 1.0,
+    "index": -1.0,
+    "middle": 1.0,
+    "ring": -1.0,
+    "pinky": -1.0
+  },
+  "force_obs_scale_sim": 100.0,
+  "recommended_live_args": {
+    "obs_mode": "hardware",
+    "hardware_position_scale": 1.0,
+    "playback_scale_start": 0.35,
+    "current_scale_ma": 4000.0,
+    "use_signed_current": true
+  },
+  "eval_reward": 108.003,
+  "safety_defaults": {
+    "abort_current_ma": 4000.0,
+    "abort_temp_c": 60.0
+  }
+}

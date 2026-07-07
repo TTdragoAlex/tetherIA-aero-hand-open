@@ -1,0 +1,57 @@
+{
+    "action_gamma_max": 1.2,
+    "action_gamma_min": 0.85,
+    "action_mode": "hardware_01_real_order_efficient",
+    "action_repeat": 1,
+    "action_scale": [
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.7,
+        0.003,
+        0.012
+    ],
+    "action_shape_randomization": true,
+    "action_smoothing_max_delta": 0.0,
+    "ctrl_dt": 0.05,
+    "early_termination": true,
+    "episode_length": 500,
+    "force_obs_scale": 100.0,
+    "force_reward_scale": 100.0,
+    "hardware_position_obs": true,
+    "history_len": 1,
+    "include_actuator_force_obs": true,
+    "noise_config": {
+        "level": 1.0,
+        "scales": {
+            "joint_pos": 0.05,
+            "tendon_length": 0.005
+        }
+    },
+    "reward_config": {
+        "scales": {
+            "action_accel": -2.0,
+            "action_magnitude": -0.02,
+            "action_rate": -1.5,
+            "angvel": 1.0,
+            "coordinated_finger_participation": 0.18,
+            "energy": -0.0001,
+            "index_ring_participation": 0.16,
+            "linvel": 0.0,
+            "middle_pinky_dominance": -0.04,
+            "non_thumb_force": -0.02,
+            "pose": 0.0,
+            "stalled_force": -0.05,
+            "termination": -100.0,
+            "torques": 0.0
+        }
+    },
+    "sim_dt": 0.01,
+    "stalled_angvel_scale": 1.0,
+    "tendon_endpoint_randomization_frac": 0.15,
+    "thumb_abd_endpoint_randomization": 0.04,
+    "thumb_abd_flip": false,
+    "thumb_abd_u0_ctrl": 0.05,
+    "thumb_abd_u1_ctrl": 1.45
+}

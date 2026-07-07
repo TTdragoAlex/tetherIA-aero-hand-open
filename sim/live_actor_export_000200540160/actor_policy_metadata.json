@@ -1,0 +1,73 @@
+{
+  "env_name": "AeroCubeRotateZAxisRealObsParticipation",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348/checkpoints/000200540160",
+  "actor_observation_size": 21,
+  "activation": "silu/swish: x / (1 + exp(-x))",
+  "deterministic_action": "tanh(first 7 policy logits)",
+  "observation_order": [
+    "tendon_len_if",
+    "tendon_len_mf",
+    "tendon_len_rf",
+    "tendon_len_pf",
+    "tendon_len_th1",
+    "tendon_len_th2",
+    "thumb_abd_joint_sensor",
+    "force_proxy_index",
+    "force_proxy_middle",
+    "force_proxy_ring",
+    "force_proxy_pinky",
+    "force_proxy_thumb_abd",
+    "force_proxy_th1",
+    "force_proxy_th2",
+    "last_action_index",
+    "last_action_middle",
+    "last_action_ring",
+    "last_action_pinky",
+    "last_action_thumb_abd",
+    "last_action_th1",
+    "last_action_th2"
+  ],
+  "sim_action_order": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "right_thumb_A_cmc_abd",
+    "right_th1_A_tendon",
+    "right_th2_A_tendon"
+  ],
+  "physical_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "sim_to_physical_index": [
+    4,
+    5,
+    6,
+    0,
+    1,
+    2,
+    3
+  ],
+  "action_sign_by_physical_v2": {
+    "thumb_abd": 1.0,
+    "thumb_flex": -1.0,
+    "thumb_tendon": 1.0,
+    "index": -1.0,
+    "middle": 1.0,
+    "ring": -1.0,
+    "pinky": -1.0
+  },
+  "force_obs_scale_sim": 100.0,
+  "recommended_real_current_scale_ma": 2000.0,
+  "raw_rest_note": "Use local aero_hand_calibration.json raw_actuator_rest on the Mac.",
+  "safety_defaults": {
+    "abort_current_ma": 4000.0,
+    "abort_temp_c": 60.0
+  }
+}

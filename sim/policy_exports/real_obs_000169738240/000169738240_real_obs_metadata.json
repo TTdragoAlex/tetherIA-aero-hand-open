@@ -1,0 +1,128 @@
+{
+  "env_name": "AeroCubeRotateZAxisRealObs",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObs-20260629-103814-real_obs_dr_v1_continue_20260629_103812/checkpoints/000169738240",
+  "actor_observation_type": "real_obs",
+  "actor_state_contract": [
+    "noisy_tendon_lengths",
+    "noisy_thumb_joint_sensor",
+    "normalized_actuator_force_proxy",
+    "last_action"
+  ],
+  "actor_state_excludes": [
+    "cube_position",
+    "cube_orientation",
+    "cube_linear_velocity",
+    "cube_angular_velocity",
+    "fingertip_world_positions",
+    "camera_or_rendered_vision"
+  ],
+  "critic_observation_type": "privileged_state",
+  "force_obs_normalization": {
+    "formula": "tanh(data.actuator_force / force_obs_scale)",
+    "force_obs_scale": 100.0,
+    "force_reward_scale": 100.0
+  },
+  "action_mapping": {
+    "sim_action_order": [
+      "index",
+      "middle",
+      "ring",
+      "pinky",
+      "right_thumb_A_cmc_abd",
+      "right_th1_A_tendon",
+      "right_th2_A_tendon"
+    ],
+    "physical_order": [
+      "thumb_abd",
+      "thumb_flex",
+      "thumb_tendon",
+      "index",
+      "middle",
+      "ring",
+      "pinky"
+    ],
+    "sim_to_physical_index": [
+      4,
+      5,
+      6,
+      0,
+      1,
+      2,
+      3
+    ],
+    "action_sign_by_physical": {
+      "thumb_abd": -1.0,
+      "thumb_flex": -1.0,
+      "thumb_tendon": 1.0,
+      "index": 1.0,
+      "middle": 1.0,
+      "ring": 1.0,
+      "pinky": -1.0
+    },
+    "formula": "clip(raw_rest + playback_scale * sign * sim_action[sim_to_physical_index], 0, 1)",
+    "raw_rest": {
+      "thumb_abd": 0.014,
+      "thumb_flex": 0.0,
+      "thumb_tendon": 0.0,
+      "index": 0.0,
+      "middle": 0.0,
+      "ring": 0.0,
+      "pinky": 0.0
+    }
+  },
+  "playback_scale": 1.0,
+  "steps_requested": 1000,
+  "steps_exported": 1000,
+  "target_summary": {
+    "thumb_abd": {
+      "min": 0.0,
+      "max": 0.5106012225151062,
+      "span": 0.5106012225151062
+    },
+    "thumb_flex": {
+      "min": 0.0,
+      "max": 0.906449556350708,
+      "span": 0.906449556350708
+    },
+    "thumb_tendon": {
+      "min": 0.0,
+      "max": 0.4803042411804199,
+      "span": 0.4803042411804199
+    },
+    "index": {
+      "min": 0.0,
+      "max": 0.4765654504299164,
+      "span": 0.4765654504299164
+    },
+    "middle": {
+      "min": 0.0,
+      "max": 0.6654919385910034,
+      "span": 0.6654919385910034
+    },
+    "ring": {
+      "min": 0.0,
+      "max": 0.3258373439311981,
+      "span": 0.3258373439311981
+    },
+    "pinky": {
+      "min": 0.0,
+      "max": 0.5618627667427063,
+      "span": 0.5618627667427063
+    }
+  },
+  "reward_scales": {
+    "action_rate": -2.0,
+    "angvel": 1.0,
+    "energy": -0.0001,
+    "linvel": 0.0,
+    "non_thumb_force": -0.02,
+    "pose": 0.0,
+    "stalled_force": -0.05,
+    "termination": -100.0,
+    "torques": 0.0
+  },
+  "safety_replay_defaults": {
+    "current_abort_ma": 4000.0,
+    "temperature_abort_c": 60.0
+  }
+}

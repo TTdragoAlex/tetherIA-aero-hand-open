@@ -1,0 +1,116 @@
+{
+  "env_name": "AeroCubeRotateZAxisRealObs",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348/checkpoints/000200540160",
+  "video_rollout_index": 2,
+  "seed": 1,
+  "num_rollouts": 3,
+  "actor_observation_type": "real_obs",
+  "action_mapping": {
+    "sim_action_order": [
+      "index",
+      "middle",
+      "ring",
+      "pinky",
+      "right_thumb_A_cmc_abd",
+      "right_th1_A_tendon",
+      "right_th2_A_tendon"
+    ],
+    "physical_order": [
+      "thumb_abd",
+      "thumb_flex",
+      "thumb_tendon",
+      "index",
+      "middle",
+      "ring",
+      "pinky"
+    ],
+    "sim_to_physical_index": [
+      4,
+      5,
+      6,
+      0,
+      1,
+      2,
+      3
+    ],
+    "action_sign_by_physical": {
+      "thumb_abd": -1.0,
+      "thumb_flex": -1.0,
+      "thumb_tendon": 1.0,
+      "index": -1.0,
+      "middle": 1.0,
+      "ring": -1.0,
+      "pinky": -1.0
+    },
+    "formula": "clip(raw_rest + corrected_sign * sim_action[sim_to_physical_index], 0, 1)",
+    "raw_rest": {
+      "thumb_abd": 0.014,
+      "thumb_flex": 0.0,
+      "thumb_tendon": 0.0,
+      "index": 0.0,
+      "middle": 0.0,
+      "ring": 0.0,
+      "pinky": 0.0
+    }
+  },
+  "playback_scale": 1.0,
+  "steps_requested": 1000,
+  "steps_exported": 1000,
+  "target_summary": {
+    "thumb_abd": {
+      "min": 0.0,
+      "max": 0.43033835434913636,
+      "mean": 0.022982300338857748,
+      "span": 0.43033835434913636,
+      "nonzero_gt_005": 96
+    },
+    "thumb_flex": {
+      "min": 0.0,
+      "max": 0.958648681640625,
+      "mean": 0.31448646151815773,
+      "span": 0.958648681640625,
+      "nonzero_gt_005": 801
+    },
+    "thumb_tendon": {
+      "min": 0.0,
+      "max": 0.5308258533477783,
+      "mean": 0.14811742575513198,
+      "span": 0.5308258533477783,
+      "nonzero_gt_005": 472
+    },
+    "index": {
+      "min": 0.0,
+      "max": 0.40631842613220215,
+      "mean": 0.14715288068540394,
+      "span": 0.40631842613220215,
+      "nonzero_gt_005": 591
+    },
+    "middle": {
+      "min": 0.0,
+      "max": 0.6512921452522278,
+      "mean": 0.2232587489365833,
+      "span": 0.6512921452522278,
+      "nonzero_gt_005": 509
+    },
+    "ring": {
+      "min": 0.0,
+      "max": 0.9501827359199524,
+      "mean": 0.5493679583780468,
+      "span": 0.9501827359199524,
+      "nonzero_gt_005": 998
+    },
+    "pinky": {
+      "min": 0.0,
+      "max": 0.6914549469947815,
+      "mean": 0.393360113248229,
+      "span": 0.6914549469947815,
+      "nonzero_gt_005": 999
+    }
+  },
+  "selection_score": 0.38142216205596924,
+  "safety_replay_defaults": {
+    "current_abort_ma": 4000.0,
+    "temperature_abort_c": 60.0
+  },
+  "sign_correction_note": "index and ring changed from +1 to -1 after comparing sim video contraction against raw sim actions; original physical_target preserved as physical_target_original in trace rows."
+}

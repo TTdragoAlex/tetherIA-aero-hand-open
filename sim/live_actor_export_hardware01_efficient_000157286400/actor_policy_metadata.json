@@ -1,0 +1,82 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01Efficient",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01Efficient-20260706-115001-aero_hardware01_efficient_continue_20260706_114959/checkpoints/000157286400",
+  "actor_observation_size": 21,
+  "actor_observation_type": "hardware_01_real_order",
+  "action_mode": "hardware_01_real_order_efficient",
+  "activation": "silu/swish: x / (1 + exp(-x))",
+  "deterministic_action": "tanh(first 7 policy logits), then u_real_order = 0.5 * (action + 1.0)",
+  "policy_output_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "physical_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "hardware_command_semantics": "u=0 open/release, u=0.5 home/contact-ready, u=1 curl/contact",
+  "observation_order": [
+    "hardware_position_thumb_abd",
+    "hardware_position_thumb_flex",
+    "hardware_position_thumb_tendon",
+    "hardware_position_index",
+    "hardware_position_middle",
+    "hardware_position_ring",
+    "hardware_position_pinky",
+    "force_proxy_thumb_abd",
+    "force_proxy_thumb_flex",
+    "force_proxy_thumb_tendon",
+    "force_proxy_index",
+    "force_proxy_middle",
+    "force_proxy_ring",
+    "force_proxy_pinky",
+    "last_u_thumb_abd",
+    "last_u_thumb_flex",
+    "last_u_thumb_tendon",
+    "last_u_index",
+    "last_u_middle",
+    "last_u_ring",
+    "last_u_pinky"
+  ],
+  "sim_order_reference": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon"
+  ],
+  "recommended_live_args": {
+    "action_mode": "hardware01",
+    "obs_mode": "hardware01",
+    "obs_input_space": "raw",
+    "playback_scale_start": 0.35,
+    "current_scale_ma": 4000.0,
+    "use_signed_current": true,
+    "abort_current_ma": 4000.0,
+    "abort_temp_c": 60.0
+  },
+  "export_npz_keys": [
+    "hidden_0_bias",
+    "hidden_0_kernel",
+    "hidden_1_bias",
+    "hidden_1_kernel",
+    "hidden_2_bias",
+    "hidden_2_kernel",
+    "hidden_3_bias",
+    "hidden_3_kernel",
+    "obs_mean",
+    "obs_std"
+  ]
+}

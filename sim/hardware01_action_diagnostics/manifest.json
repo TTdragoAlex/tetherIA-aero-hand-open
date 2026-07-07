@@ -1,0 +1,320 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01RealOrder",
+  "real_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "sim_order": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon"
+  ],
+  "description": "u=0 open/release, u=0.5 home, u=1 curl/contact in real hardware order.",
+  "videos": [
+    {
+      "file": "all_channels_open_home_closed.mp4",
+      "kind": "all_channels",
+      "sequence_u_real_order": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "file": "real0_thumb_abd_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 0,
+      "real_name": "thumb_abd",
+      "sequence_u_real_order": [
+        [
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          1.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real1_thumb_flex_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 1,
+      "real_name": "thumb_flex",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real2_thumb_tendon_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 2,
+      "real_name": "thumb_tendon",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real3_index_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 3,
+      "real_name": "index",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real4_middle_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 4,
+      "real_name": "middle",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real5_ring_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 5,
+      "real_name": "ring",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "file": "real6_pinky_u0_to_u1.mp4",
+      "kind": "single_channel",
+      "real_index": 6,
+      "real_name": "pinky",
+      "sequence_u_real_order": [
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0
+        ],
+        [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ]
+      ]
+    }
+  ]
+}

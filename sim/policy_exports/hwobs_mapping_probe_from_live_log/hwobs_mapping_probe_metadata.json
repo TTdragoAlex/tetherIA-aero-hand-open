@@ -1,0 +1,45 @@
+{
+  "selected_policy": "hwobs_mapping_probe_from_live_log",
+  "env_name": "AeroCubeRotateZAxisHardwareObs",
+  "checkpoint_root": "/home/hw/aero-hand-sim/runs/aero_hardware_obs_20260630_104146/AeroCubeRotateZAxisHardwareObs-20260630-104148/checkpoints/000267386880",
+  "source_live_log": "logs/live_policy_control_20260630_150102.csv",
+  "physical_mapping_mode": "sim action replay from live log; mapping variants applied by replay script",
+  "sim_actuator_order": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon"
+  ],
+  "sim_action_order": [
+    "index",
+    "middle",
+    "ring",
+    "pinky",
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon"
+  ],
+  "physical_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "sim_to_physical_index": [
+    4,
+    5,
+    6,
+    0,
+    1,
+    2,
+    3
+  ],
+  "default_playback_scale": 1.0,
+  "notes": "Use --mapping-mode signed or centered with --action-sign variants. Trace rows are from the latest live_policy_control CSV."
+}

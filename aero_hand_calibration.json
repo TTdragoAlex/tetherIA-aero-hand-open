@@ -1,0 +1,13 @@
+{
+  "raw_actuator_rest": [
+    0.014053559166857405,
+    0.0,
+    0.00032043945983062307,
+    0.0,
+    0.000289921416037232,
+    0.0,
+    0.0
+  ],
+  "updated_at": "2026-06-09 11:32:17",
+  "note": "Raw normalized actuator rest pose saved from Aero Hand GUI."
+}

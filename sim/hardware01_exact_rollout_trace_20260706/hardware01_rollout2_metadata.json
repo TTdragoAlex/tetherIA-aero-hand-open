@@ -1,0 +1,66 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01Efficient",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01Efficient-20260706-115001-aero_hardware01_efficient_continue_20260706_114959/checkpoints/000157286400",
+  "seed": 1,
+  "rollout_index": 2,
+  "steps_requested": 250,
+  "steps_exported": 250,
+  "real_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "raw_action_formula": "policy output in [-1,1]",
+  "u_formula": "u_real_order = clip(0.5 * (raw_action + 1), 0, 1)",
+  "video": "analysis/hardware01_exact_rollout_trace_20260706/hardware01_rollout2.mp4",
+  "trace": "analysis/hardware01_exact_rollout_trace_20260706/hardware01_rollout2_u_trace.json",
+  "u_summary": {
+    "thumb_abd": {
+      "min": 0.32415565848350525,
+      "max": 0.897084653377533,
+      "mean": 0.7317091822624207,
+      "span": 0.5729290246963501
+    },
+    "thumb_flex": {
+      "min": 0.13872972130775452,
+      "max": 0.9804890155792236,
+      "mean": 0.6449016332626343,
+      "span": 0.8417593240737915
+    },
+    "thumb_tendon": {
+      "min": 0.4449954926967621,
+      "max": 0.9403077363967896,
+      "mean": 0.7717587351799011,
+      "span": 0.49531224370002747
+    },
+    "index": {
+      "min": 0.25174418091773987,
+      "max": 0.6353930830955505,
+      "mean": 0.4517362117767334,
+      "span": 0.38364890217781067
+    },
+    "middle": {
+      "min": 0.06688952445983887,
+      "max": 0.8235361576080322,
+      "mean": 0.37772107124328613,
+      "span": 0.7566466331481934
+    },
+    "ring": {
+      "min": 0.3235681653022766,
+      "max": 0.9328654408454895,
+      "mean": 0.6349585652351379,
+      "span": 0.6092972755432129
+    },
+    "pinky": {
+      "min": 0.5659016966819763,
+      "max": 0.9497629404067993,
+      "mean": 0.8271414041519165,
+      "span": 0.383861243724823
+    }
+  },
+  "score": 2.8178340792655945
+}

@@ -1,0 +1,86 @@
+{
+  "selected_policy": "mild_transfer_newest_20260617",
+  "checkpoint": "/home/hw/aero-hand-sim/runs/aero_transfer_mild_continue_auto_v2_20260617_170844/AeroCubeRotateZAxis-20260617-170846/checkpoints/000100270080",
+  "overrides": {
+    "reward_config.scales.action_rate": -2.0,
+    "reward_config.scales.energy": -0.0001
+  },
+  "dt_s": 0.05,
+  "steps": 500,
+  "duration_s": 25.0,
+  "done_step_before_horizon": 241,
+  "sim_actuator_order": [
+    "right_index_A_tendon",
+    "right_middle_A_tendon",
+    "right_ring_A_tendon",
+    "right_pinky_A_tendon",
+    "right_thumb_A_cmc_abd",
+    "right_th1_A_tendon",
+    "right_th2_A_tendon"
+  ],
+  "physical_channel_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "sim_to_physical_index": [
+    4,
+    5,
+    6,
+    0,
+    1,
+    2,
+    3
+  ],
+  "raw_rest": [
+    0.014053559166857405,
+    0.0,
+    0.00032043945983062307,
+    0.0,
+    0.000289921416037232,
+    0.0,
+    0.0
+  ],
+  "physical_mapping_mode": "raw_rest + playback_scale * max(0, mapped_sim_action)",
+  "default_playback_scale": 0.25,
+  "sim_action_abs_max_by_channel": [
+    0.680216908454895,
+    0.7735522389411926,
+    0.5839264988899231,
+    0.9820953607559204,
+    0.9437177181243896,
+    0.427152544260025,
+    0.4125165343284607
+  ],
+  "sim_action_abs_mean_by_channel": [
+    0.3527238956913352,
+    0.5761865120530129,
+    0.2514259163402021,
+    0.6385996390506625,
+    0.446144511786988,
+    0.2261011371403001,
+    0.12394853648683056
+  ],
+  "physical_target_min_by_channel": [
+    0.014053559166857405,
+    0.0,
+    0.00032043945983062307,
+    0.0,
+    0.06643239851116434,
+    0.0,
+    0.0
+  ],
+  "physical_target_max_by_channel": [
+    0.06956895650691669,
+    0.018432743847370148,
+    0.1034495730419458,
+    0.17005422711372375,
+    0.1936779811513354,
+    0.08467214554548264,
+    0.0
+  ]
+}

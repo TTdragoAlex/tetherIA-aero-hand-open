@@ -1,0 +1,84 @@
+Environment Config:
+action_repeat: 1
+action_scale:
+- 0.02
+- 0.02
+- 0.02
+- 0.02
+- 0.7
+- 0.003
+- 0.012
+ctrl_dt: 0.05
+early_termination: true
+episode_length: 500
+force_obs_scale: 100.0
+force_reward_scale: 100.0
+history_len: 1
+include_actuator_force_obs: true
+noise_config:
+  level: 1.0
+  scales:
+    joint_pos: 0.05
+    tendon_length: 0.005
+reward_config:
+  scales:
+    action_rate: -2.0
+    angvel: 1.0
+    energy: -0.0001
+    index_ring_participation: 0.12
+    linvel: 0.0
+    middle_pinky_dominance: -0.03
+    non_thumb_force: -0.02
+    pose: 0.0
+    stalled_force: -0.05
+    termination: -100.0
+    torques: 0.0
+sim_dt: 0.01
+stalled_angvel_scale: 1.0
+
+PPO Training Parameters:
+action_repeat: 1
+batch_size: 256
+discounting: 0.97
+entropy_cost: 0.01
+episode_length: 500
+learning_rate: 0.0003
+network_factory:
+  policy_hidden_layer_sizes: &id001 !!python/tuple
+  - 512
+  - 256
+  - 128
+  policy_obs_key: state
+  value_hidden_layer_sizes: *id001
+  value_obs_key: privileged_state
+normalize_observations: true
+num_envs: 8192
+num_evals: 10
+num_minibatches: 32
+num_resets_per_eval: 1
+num_timesteps: 300000000
+num_updates_per_batch: 4
+reward_scaling: 1.0
+unroll_length: 40
+
+Experiment name: AeroCubeRotateZAxisRealObsParticipation-20260629-163348
+Logs are being stored in: /home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348
+Restoring from: /home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObs-20260629-103814-real_obs_dr_v1_continue_20260629_103812/checkpoints/000169738240
+Checkpoint path: /home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348/checkpoints
+0: reward=64.885
+33423360: reward=92.542
+66846720: reward=103.424
+100270080: reward=110.969
+133693440: reward=114.127
+167116800: reward=116.728
+200540160: reward=120.303
+233963520: reward=111.568
+267386880: reward=114.690
+300810240: reward=117.995
+Done training.
+Time to JIT compile: 32.24691264099965
+Time to train: 3206.8599325329997
+Starting inference...
+FPS for rendering: 10.0
+  0%|          | 0/250 [00:00<?, ?it/s] 28%|██▊       | 69/250 [00:00<00:00, 681.31it/s] 55%|█████▌    | 138/250 [00:00<00:00, 662.60it/s] 82%|████████▏ | 205/250 [00:00<00:00, 656.28it/s]100%|██████████| 250/250 [00:00<00:00, 659.10it/s]
+Rollout video saved as '/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348/rollout0.mp4'.

@@ -1,0 +1,115 @@
+{
+  "env_name": "AeroCubeRotateZAxisRealObs",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisRealObsParticipation-20260629-163348/checkpoints/000200540160",
+  "video_rollout_index": 2,
+  "seed": 1,
+  "num_rollouts": 3,
+  "actor_observation_type": "real_obs",
+  "action_mapping": {
+    "sim_action_order": [
+      "index",
+      "middle",
+      "ring",
+      "pinky",
+      "right_thumb_A_cmc_abd",
+      "right_th1_A_tendon",
+      "right_th2_A_tendon"
+    ],
+    "physical_order": [
+      "thumb_abd",
+      "thumb_flex",
+      "thumb_tendon",
+      "index",
+      "middle",
+      "ring",
+      "pinky"
+    ],
+    "sim_to_physical_index": [
+      4,
+      5,
+      6,
+      0,
+      1,
+      2,
+      3
+    ],
+    "action_sign_by_physical": {
+      "thumb_abd": -1.0,
+      "thumb_flex": -1.0,
+      "thumb_tendon": 1.0,
+      "index": 1.0,
+      "middle": 1.0,
+      "ring": 1.0,
+      "pinky": -1.0
+    },
+    "formula": "clip(raw_rest + playback_scale * sign * sim_action[sim_to_physical_index], 0, 1)",
+    "raw_rest": {
+      "thumb_abd": 0.014,
+      "thumb_flex": 0.0,
+      "thumb_tendon": 0.0,
+      "index": 0.0,
+      "middle": 0.0,
+      "ring": 0.0,
+      "pinky": 0.0
+    }
+  },
+  "playback_scale": 1.0,
+  "steps_requested": 1000,
+  "steps_exported": 1000,
+  "target_summary": {
+    "thumb_abd": {
+      "min": 0.0,
+      "max": 0.4303383529186249,
+      "mean": 0.022982299327850342,
+      "span": 0.4303383529186249,
+      "nonzero_gt_005": 96
+    },
+    "thumb_flex": {
+      "min": 0.0,
+      "max": 0.958648681640625,
+      "mean": 0.31448644399642944,
+      "span": 0.958648681640625,
+      "nonzero_gt_005": 801
+    },
+    "thumb_tendon": {
+      "min": 0.0,
+      "max": 0.5308258533477783,
+      "mean": 0.14811743795871735,
+      "span": 0.5308258533477783,
+      "nonzero_gt_005": 472
+    },
+    "index": {
+      "min": 0.0,
+      "max": 0.6381727457046509,
+      "mean": 0.015612510032951832,
+      "span": 0.6381727457046509,
+      "nonzero_gt_005": 53
+    },
+    "middle": {
+      "min": 0.0,
+      "max": 0.6512921452522278,
+      "mean": 0.22325876355171204,
+      "span": 0.6512921452522278,
+      "nonzero_gt_005": 509
+    },
+    "ring": {
+      "min": 0.0,
+      "max": 0.08470223844051361,
+      "mean": 8.470223838230595e-05,
+      "span": 0.08470223844051361,
+      "nonzero_gt_005": 1
+    },
+    "pinky": {
+      "min": 0.0,
+      "max": 0.6914549469947815,
+      "mean": 0.39336010813713074,
+      "span": 0.6914549469947815,
+      "nonzero_gt_005": 999
+    }
+  },
+  "selection_score": 0.38142216205596924,
+  "safety_replay_defaults": {
+    "current_abort_ma": 4000.0,
+    "temperature_abort_c": 60.0
+  }
+}
