@@ -310,3 +310,44 @@ cd "/Users/alextang/Documents/Robot Hand"
 
 At 20 Hz, the 125-step trace lasts about 6.25 seconds, so `--repeat 10` lasts
 about 62.5 seconds.
+
+## Current RealTunedWindow Training Run
+This env bakes the mostly working replay transform into training:
+
+```text
+env = AeroCubeRotateZAxisHardware01RealTunedWindow
+scale = [0.90, 0.50, 0.60, 0.50, 1.00, 1.00, 1.00]
+bias  = [-0.02, -0.32, -0.14, 0.30, 0.00, 0.00, 0.00]
+order = [thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]
+```
+
+Check the run:
+
+```bash
+cd /home/hw/aero-hand-sim
+cat runs/nohup_logs/latest_hardware01_real_tuned_window_run.txt
+ps -p 112171 -o pid,etime,pcpu,pmem,cmd
+tail -120 runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log
+```
+
+Launch command used:
+
+```bash
+cd /home/hw/aero-hand-sim
+RUN_ID=aero_hardware01_real_tuned_window_fresh_20260708_165830
+LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
+echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_tuned_window_run.txt
+nohup env MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
+  --env_name=AeroCubeRotateZAxisHardware01RealTunedWindow \
+  --domain_randomization \
+  --num_timesteps=150000000 \
+  --num_evals=25 \
+  --reward_scaling=1.0 \
+  --num_videos=3 \
+  --suffix=${RUN_ID} > "$LOG" 2>&1 &
+```
+
+Remote source backup before edit:
+`/home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/`.
+Copied source snapshot:
+`sim/real_tuned_window_remote_source_20260708/`.

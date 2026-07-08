@@ -61,11 +61,23 @@ Completed monitor/copy/review status:
 - Hardware result: rollout 0 still pushed the cube off by the thumb even though telemetry stayed safe. Sim still does not model the real lateral thumb failure strongly enough.
 - Manual transform result: lowering thumb flex/tendon much more and raising/compressing index support made rollout 0 look mostly working on the real hand. The next training variant should train inside this transformed command window rather than rely on replay-time overrides.
 
-## 4. Export New Closed-Loop Actor Only After Physics Fix
-- Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.
+## 4. Monitor RealTunedWindow Training
+- Task: Check remote PID/log/checkpoints/videos for `AeroCubeRotateZAxisHardware01RealTunedWindow`.
+- Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
+- PID: `112171`
+- Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
+- Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830`
+- Verify: process alive or completed cleanly; reward progresses; rollout videos appear.
+
+## 5. Review RealTunedWindow Videos
+- Task: Copy generated rollout videos to `sim/hardware01_real_tuned_window_YYYYMMDD/` and inspect them.
+- Verify: cube stays seated while rotating; no thumb-index trap, ring-pocket jam, or lateral ejection.
+
+## 6. Export New Closed-Loop Actor Only After Tuned Exact Trace
+- Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_tuned_window_<step>/`.
 - Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
 
-## 5. Live Closed-Loop Test
+## 7. Live Closed-Loop Test
 - Task: Run exported actor through `scripts/live_policy_control.py` only after exact trace looks plausible.
 - Verify: Motion remains dynamic; current logs do not show unexplained startup spikes; cube rotation improves relative to exact trace.
 
@@ -78,6 +90,7 @@ Completed monitor/copy/review status:
 - Do not proceed with the current PhysicsID checkpoint as a live-policy candidate; exact replay still shows thumb lateral ejection on real hardware.
 - Do not test PhysicsID rollout 1 or rollout 2 as direct candidates unless deliberately diagnosing range effects; rollout 1 has more thumb flex and rollout 2 has wider finger motion.
 - Do not treat the best manual transform as the final solution; it reveals the sim-to-real command/contact mismatch that should be built into training.
+- Do not export live actor from RealTunedWindow until videos and exact trace replay pass; the point of this env is to train the replay-time transform into the policy first.
 - Use the corrected seeded physics sweep at `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`; the earlier unseeded native sweep started from the wrong cube placement.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.

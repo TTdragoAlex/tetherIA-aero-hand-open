@@ -441,6 +441,19 @@ This maps the first 120 steps to thumb flex `0.105-0.319`, thumb tendon
 `0.241-0.478`, and index `0.641-0.921`. Treat this as a command-window target
 for the next training variant, not as the final replay-only solution.
 
+The next training variant is now running:
+
+- Environment: `AeroCubeRotateZAxisHardware01RealTunedWindow`
+- Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
+- Log:
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
+- Source snapshot:
+  `sim/real_tuned_window_remote_source_20260708/`
+
+`RealTunedWindow` bakes the operator-tuned replay transform into the training
+command calibration and adds penalties for ring-pocket trapping and leaving the
+real-working command window.
+
 Previous smooth run details:
 
 - Run id: `aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
@@ -468,12 +481,10 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-a
 
 ## Next Safest Tasks
 
-1. Stop live-policy export for the raw `PhysicsID` checkpoint.
-2. Train the next env inside the operator-tuned command window: low thumb
-   flex/tendon, broad thumb abduction, high compressed index support.
-3. Add reward/contact penalties for real trap modes: thumb-index trap,
-   thumb clamp/ejection, ring-finger pocketing, and low rotation with high
-   contact/command.
+1. Monitor `AeroCubeRotateZAxisHardware01RealTunedWindow`.
+2. Copy and review generated rollout videos once the run completes.
+3. Export exact smoothed traces from the best/final tuned checkpoint before any
+   live actor export.
 
 ## Git Notes
 

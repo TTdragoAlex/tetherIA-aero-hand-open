@@ -1,0 +1,174 @@
+diff -ru /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/__init__.py /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/__init__.py
+--- /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/__init__.py	2026-07-08 10:46:44.940091087 +0800
++++ /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/__init__.py	2026-07-08 16:56:19.132710899 +0800
+@@ -51,6 +51,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedSmooth,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedAntiTrap,
+     "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedPhysicsID,
++    "AeroCubeRotateZAxisHardware01RealTunedWindow": aero_hand_rotate_z.CubeRotateZAxisHardware01RealTunedWindow,
+ }
+ 
+ _cfgs = {
+@@ -74,6 +75,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.hardware_01_real_calibrated_smooth_config,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.hardware_01_real_calibrated_anti_trap_config,
+     "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.hardware_01_real_calibrated_physics_id_config,
++    "AeroCubeRotateZAxisHardware01RealTunedWindow": aero_hand_rotate_z.hardware_01_real_tuned_window_config,
+ }
+ 
+ _randomizer = {
+@@ -90,6 +92,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.domain_randomize,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.domain_randomize,
+     "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.domain_randomize_physics_id,
++    "AeroCubeRotateZAxisHardware01RealTunedWindow": aero_hand_rotate_z.domain_randomize_physics_id,
+ }
+ 
+ 
+diff -ru /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/manipulation_params.py /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/manipulation_params.py
+--- /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/manipulation_params.py	2026-07-08 10:43:17.070889133 +0800
++++ /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/manipulation_params.py	2026-07-08 16:56:19.132765560 +0800
+@@ -153,7 +153,7 @@
+         value_obs_key="privileged_state",
+     )
+     rl_config.num_resets_per_eval = 1
+-  elif env_name in ("AeroCubeRotateZAxis", "AeroCubeRotateZAxisRealObs", "AeroCubeRotateZAxisRealObsParticipation", "AeroCubeRotateZAxisHardwareObs", "AeroCubeRotateZAxisHardware01RealOrder", "AeroCubeRotateZAxisHardware01Randomized", "AeroCubeRotateZAxisHardware01Efficient", "AeroCubeRotateZAxisHardware01RealCalibrated", "AeroCubeRotateZAxisHardware01RealCalibratedSmooth", "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap", "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID"):
++  elif env_name in ("AeroCubeRotateZAxis", "AeroCubeRotateZAxisRealObs", "AeroCubeRotateZAxisRealObsParticipation", "AeroCubeRotateZAxisHardwareObs", "AeroCubeRotateZAxisHardware01RealOrder", "AeroCubeRotateZAxisHardware01Randomized", "AeroCubeRotateZAxisHardware01Efficient", "AeroCubeRotateZAxisHardware01RealCalibrated", "AeroCubeRotateZAxisHardware01RealCalibratedSmooth", "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap", "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID", "AeroCubeRotateZAxisHardware01RealTunedWindow"):
+     rl_config.num_timesteps = 300_000_000
+     rl_config.num_evals = 10
+     rl_config.num_minibatches = 32
+Only in /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708: real_tuned_window_remote_source.patch
+diff -ru /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/rotate_z.py /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/rotate_z.py
+--- /home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/rotate_z.py	2026-07-08 10:47:27.323935295 +0800
++++ /home/hw/aero-hand-sim/analysis/real_tuned_window_remote_source_20260708/rotate_z.py	2026-07-08 16:56:19.132602156 +0800
+@@ -56,6 +56,7 @@
+ HARDWARE_01_REAL_CALIBRATED_SMOOTH_ACTION_MODE = "hardware_01_real_order_real_calibrated_smooth"
+ HARDWARE_01_REAL_CALIBRATED_ANTI_TRAP_ACTION_MODE = "hardware_01_real_order_real_calibrated_anti_trap"
+ HARDWARE_01_REAL_CALIBRATED_PHYSICS_ID_ACTION_MODE = "hardware_01_real_order_real_calibrated_physics_id"
++HARDWARE_01_REAL_TUNED_WINDOW_ACTION_MODE = "hardware_01_real_order_real_tuned_window"
+ 
+ 
+ 
+@@ -116,6 +117,8 @@
+               thumb_index_trap=0.0,
+               thumb_index_pinch=0.0,
+               cube_planar_drift=0.0,
++              ring_pocket_trap=0.0,
++              tuned_command_window=0.0,
+               termination=-100.0,
+               action_rate=-1.0,
+           ),
+@@ -290,6 +293,32 @@
+   return config
+ 
+ 
++def hardware_01_real_tuned_window_config() -> config_dict.ConfigDict:
++  """PhysicsID follow-up using the operator-tuned real replay command window.
++
++  The best 2026-07-08 hardware replay kept the PhysicsID rollout timing but
++  required much lower thumb flex/tendon commands and a high compressed index
++  support range.  Train inside that real-working command window instead of
++  relying on a replay-time override.
++  """
++  config = hardware_01_real_calibrated_physics_id_config()
++  config.action_mode = HARDWARE_01_REAL_TUNED_WINDOW_ACTION_MODE
++  config.real_command_to_sim_u_scale = [0.90, 0.50, 0.60, 0.50, 1.00, 1.00, 1.00]
++  config.real_command_to_sim_u_bias = [-0.02, -0.32, -0.14, 0.30, 0.0, 0.0, 0.0]
++  config.reward_config.scales.thumb_index_trap = -0.80
++  config.reward_config.scales.thumb_index_pinch = -0.55
++  config.reward_config.scales.ring_pocket_trap = -0.45
++  config.reward_config.scales.tuned_command_window = -0.35
++  config.reward_config.scales.cube_planar_drift = -0.95
++  config.reward_config.scales.linvel = -0.30
++  config.reward_config.scales.thumb_overcurl = -0.28
++  config.reward_config.scales.static_clamp = -0.22
++  config.reward_config.scales.action_magnitude = -0.025
++  config.reward_config.scales.coordinated_finger_participation = 0.05
++  config.reward_config.scales.index_ring_participation = 0.06
++  return config
++
++
+ class CubeRotateZAxis(aero_hand_base.AeroHandEnv):
+   """Rotate a cube around the z-axis as fast as possible wihout dropping it."""
+ 
+@@ -337,6 +366,7 @@
+         HARDWARE_01_REAL_CALIBRATED_SMOOTH_ACTION_MODE,
+         HARDWARE_01_REAL_CALIBRATED_ANTI_TRAP_ACTION_MODE,
+         HARDWARE_01_REAL_CALIBRATED_PHYSICS_ID_ACTION_MODE,
++        HARDWARE_01_REAL_TUNED_WINDOW_ACTION_MODE,
+     )
+ 
+   def _uses_action_shape_randomization(self) -> bool:
+@@ -684,6 +714,8 @@
+         "thumb_index_trap": self._cost_thumb_index_trap(data, action, cube_angvel),
+         "thumb_index_pinch": self._cost_thumb_index_pinch(action, cube_angvel),
+         "cube_planar_drift": self._cost_cube_planar_drift(cube_pos, palm_pos, cube_angvel),
++        "ring_pocket_trap": self._cost_ring_pocket_trap(data, cube_angvel),
++        "tuned_command_window": self._cost_tuned_command_window(action, cube_angvel),
+     }
+ 
+   def _cost_torques(self, torques: jax.Array) -> jax.Array:
+@@ -811,6 +843,20 @@
+       return jp.mean(jp.square(action - self._home_hardware_u()))
+     return jp.mean(jp.square(action))
+ 
++  def _cost_tuned_command_window(
++      self, action: jax.Array, cube_angvel: jax.Array
++  ) -> jax.Array:
++    if self._config.get("action_mode") != HARDWARE_01_REAL_TUNED_WINDOW_ACTION_MODE:
++      return jp.zeros(())
++    # Real-order u: [thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky].
++    thumb_flex_over = jp.square(jp.maximum(action[1] - 0.34, 0.0))
++    thumb_tendon_over = jp.square(jp.maximum(action[2] - 0.52, 0.0))
++    index_under = jp.square(jp.maximum(0.58 - action[3], 0.0))
++    index_over = 0.25 * jp.square(jp.maximum(action[3] - 0.94, 0.0))
++    return (thumb_flex_over + thumb_tendon_over + index_under + index_over) * (
++        0.25 + 0.75 * self._low_rotation_gate(cube_angvel)
++    )
++
+   def _cost_action_accel(
+       self, act: jax.Array, last_act: jax.Array, last_last_act: jax.Array
+   ) -> jax.Array:
+@@ -833,6 +879,24 @@
+     planar_error = jp.linalg.norm((cube_pos - palm_pos)[:2])
+     return planar_error * (0.35 + 0.65 * self._low_rotation_gate(cube_angvel))
+ 
++  def _cost_ring_pocket_trap(
++      self, data: mjx.Data, cube_angvel: jax.Array
++  ) -> jax.Array:
++    if not self._uses_hardware_01_action_mode():
++      return jp.zeros(())
++    fingertips = self.get_fingertip_positions(data).reshape((5, 3))
++    ring_tip = fingertips[2]
++    pinky_tip = fingertips[3]
++    cube_pos = self.get_cube_position(data)
++    palm_pos = self.get_palm_position(data)
++    ring_cube_dist = jp.linalg.norm(ring_tip - cube_pos)
++    pinky_cube_dist = jp.linalg.norm(pinky_tip - cube_pos)
++    palm_cube_dist = jp.linalg.norm(palm_pos - cube_pos)
++    ring_near = jp.exp(-jp.square(ring_cube_dist) / (2.0 * 0.060 * 0.060))
++    pinky_near = jp.exp(-jp.square(pinky_cube_dist) / (2.0 * 0.075 * 0.075))
++    palm_near = jp.exp(-jp.square(palm_cube_dist) / (2.0 * 0.095 * 0.095))
++    return ring_near * (0.5 + 0.5 * pinky_near) * palm_near * self._low_rotation_gate(cube_angvel)
++
+   def _cost_linvel(self, cube_linvel: jax.Array) -> jax.Array:
+     return jp.linalg.norm(cube_linvel, ord=1, axis=-1)
+ 
+@@ -1046,6 +1110,17 @@
+       config_overrides: Optional[Dict[str, Union[str, int, list[Any]]]] = None,
+   ):
+     super().__init__(config, config_overrides)
++
++
++class CubeRotateZAxisHardware01RealTunedWindow(CubeRotateZAxis):
++  """PhysicsID follow-up trained in the operator-tuned real command window."""
++
++  def __init__(
++      self,
++      config: config_dict.ConfigDict = hardware_01_real_tuned_window_config(),
++      config_overrides: Optional[Dict[str, Union[str, int, list[Any]]]] = None,
++  ):
++    super().__init__(config, config_overrides)
+ 
+ 
+ def domain_randomize(

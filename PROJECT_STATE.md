@@ -72,6 +72,15 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - `--channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3`
   - Resulting command ranges: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle unchanged `0.115-0.640`.
   - Interpretation: the sim policy shape has value, but real transfer needs much lower thumb flex/tendon and a much higher index support baseline. The sim still does not reproduce real trapping outcomes.
+- New remote training env implemented on Ubuntu PC: `AeroCubeRotateZAxisHardware01RealTunedWindow`.
+- `RealTunedWindow` inherits `PhysicsID`, bakes the operator-tuned replay transform into `real_command_to_sim_u_scale/bias`, and adds `reward/ring_pocket_trap` plus `reward/tuned_command_window`.
+- RealTunedWindow training started on 2026-07-08:
+  - PID: `112171`
+  - Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
+  - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
+  - Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830`
+  - Remote source backup: `/home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/`
+  - Copied source snapshot: `sim/real_tuned_window_remote_source_20260708/`
 
 ## Important Files
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.
@@ -84,6 +93,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/hardware01_real_calibrated_antitrap_trace_20260707/`: exact anti-trap rollout traces exported after env smoothing in physical command order.
 - `sim/hardware01_real_calibrated_physics_id_20260708/`: copied PhysicsID rollout videos, config, and training log.
 - `sim/hardware01_real_calibrated_physics_id_trace_20260708/`: exact PhysicsID `u_real_order` traces exported after env smoothing.
+- `sim/real_tuned_window_remote_source_20260708/`: copied source files and patch for the new RealTunedWindow env.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.
@@ -223,6 +233,17 @@ Physics-identification work:
   - Best operator-reported command used PhysicsID rollout 0 with thumb flex/tendon heavily lowered and index baseline raised.
   - Dry-run range for that command: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle `0.115-0.640`, ring `0.370-0.772`, pinky `0.405-0.786`.
   - This should be treated as a real-calibration target for the next training variant, not as proof that replay-time hand tuning is the final solution.
+
+RealTunedWindow training:
+- Env: `AeroCubeRotateZAxisHardware01RealTunedWindow`
+- Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
+- PID: `112171`
+- Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
+- Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830`
+- Smoke tests passed:
+  - `py_compile` on changed remote source files.
+  - Env load: action mode `hardware_01_real_order_real_tuned_window`, actor obs shape `(21,)`, reward keys `tuned_command_window` and `ring_pocket_trap` present.
+  - Randomizer shapes: `geom_friction (2, 98, 3)`, `tendon_stiffness (2, 20)`.
 
 Best recent real exact-trace replay command:
 ```bash

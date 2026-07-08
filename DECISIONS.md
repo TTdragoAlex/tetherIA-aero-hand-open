@@ -95,3 +95,9 @@
 - Decision: Build the next training variant around the operator-tuned PhysicsID rollout 0 transform rather than treating replay-time channel overrides as the final deployment method.
 - Why: The mostly working real replay needed very low thumb flex/tendon, broad thumb abduction, and a high compressed index baseline. This is a structured sim-to-real command/contact mismatch: sim did not trap the cube, while the real hand did unless the command window was changed substantially.
 - Rejected: Continuing manual channel tuning as the main path, because that improves one trace but does not teach a deployable policy to avoid the real trap modes.
+
+## Decision: Train RealTunedWindow before live export
+- Date: 2026-07-08
+- Decision: Add and train `AeroCubeRotateZAxisHardware01RealTunedWindow`, which bakes the operator-tuned replay transform into the sim action calibration and adds ring-pocket plus tuned-command-window penalties.
+- Why: The one-minute replay worked about 80% of the time only after a large real command transform. Training inside that command window gives the policy a chance to learn robust timing/contact without permanent replay-time overrides.
+- Rejected: Exporting a live actor from raw `PhysicsID`, because exact replay required substantial real-side transformation to work.
