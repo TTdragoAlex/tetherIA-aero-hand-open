@@ -1,0 +1,33 @@
+{
+  "variant": "baseline_xml",
+  "params": {
+    "note": "Raw XML physics."
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/baseline_xml.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.1315261520506492,
+      -0.009005974597698028,
+      -0.02934249874882745
+    ],
+    "final_planar_delta": [
+      0.03429677561536934,
+      0.004081631459826653
+    ],
+    "max_planar_displacement": 0.057954223388845996,
+    "mean_planar_displacement": 0.042614168069699886,
+    "final_height": -0.02934249874882745,
+    "min_height": -0.037999005432321584,
+    "max_abs_z_angvel": 8.36744873242266,
+    "mean_abs_z_angvel": 1.5453203755781852,
+    "max_contacts": 11,
+    "mean_contacts": 3.576,
+    "ejected_metric": -0.6374399456213373
+  }
+}

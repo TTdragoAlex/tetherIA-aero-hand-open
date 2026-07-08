@@ -71,3 +71,9 @@
 - Decision: Do not proceed to live policy from the current anti-trap checkpoint. Start physics/contact identification first.
 - Why: Visual review of `/Users/alextang/Downloads/IMG_5309.mov` showed the cube moving slightly, but the thumb pushed it laterally off the hand before useful opposing finger contact developed. That points to a sim-real contact/geometry/support mismatch, not a command-safety problem.
 - Rejected: More reward-only training from the same assumptions, because the replay failure is a structured physical mismatch rather than simple insufficient exploration.
+
+## Decision: Train a physics-ID anti-ejection variant
+- Date: 2026-07-08
+- Decision: Add `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID` and train it before any live-policy export.
+- Why: The seeded native sweep showed the real-like bad direction is thumb-dominant contact with weak opposing finger support. Soft spring changes alone were not enough to explain the failure. The new variant adds lateral cube-drift cost and randomizes palm/cube friction, thumb-vs-finger friction, tendon spring stiffness, and weak finger actuation.
+- Rejected: Directly testing the anti-trap live actor, because the exact trace already showed thumb lateral ejection on the real hand.

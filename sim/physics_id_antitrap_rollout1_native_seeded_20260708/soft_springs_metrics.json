@@ -1,0 +1,35 @@
+{
+  "variant": "soft_springs",
+  "params": {
+    "distal_spring_scale": 0.35,
+    "mcp_spring_scale": 0.5,
+    "damping_scale": 1.35
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/soft_springs.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.12478741827920255,
+      0.006837233913668091,
+      -0.023882620511374193
+    ],
+    "final_planar_delta": [
+      0.0275580418439227,
+      0.019924839971192772
+    ],
+    "max_planar_displacement": 0.05432240755416751,
+    "mean_planar_displacement": 0.04091519198060291,
+    "final_height": -0.023882620511374193,
+    "min_height": -0.03431201023922139,
+    "max_abs_z_angvel": 7.440667542811981,
+    "mean_abs_z_angvel": 1.2881155909537183,
+    "max_contacts": 10,
+    "mean_contacts": 3.736,
+    "ejected_metric": -0.5253296083750058
+  }
+}

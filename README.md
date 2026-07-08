@@ -235,6 +235,8 @@ Working:
 - Mapping/audit tools and telemetry logging exist.
 - Anti-trap rollout 1 exact trace has been exported and safely replayed on
   hardware with no cube and with cube.
+- Physics-identification tooling now exists for replaying the anti-trap exact
+  trace under native MuJoCo physics variants.
 
 Partially working:
 
@@ -379,6 +381,29 @@ little, but the thumb pushes it laterally off the hand before the fingers form a
 useful opposing contact. Do not export/test the live actor from this checkpoint
 as the next step. Start physics identification before more reward-only training.
 
+Physics-identification result:
+
+```text
+sim/physics_id_antitrap_rollout1_native_seeded_20260708/
+sim/physics_id_remote_source_20260708/
+```
+
+The corrected seeded sweep starts from the same environment reset path as
+anti-trap rollout 1. Its strongest failure direction is thumb-dominant contact
+with weak opposing finger support. Softening springs alone did not best explain
+the replay failure because the soft-spring variant kept more useful z rotation.
+
+New training env on the Ubuntu PC:
+
+- `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`
+- Adds `reward/cube_planar_drift`.
+- Uses a dedicated wider randomizer for cube/palm friction, thumb-vs-finger
+  friction, tendon spring stiffness, and weak opposing finger actuation.
+- Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+- PID: `107128`
+- Log:
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+
 Previous smooth run details:
 
 - Run id: `aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
@@ -406,11 +431,11 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-154512-ae
 
 ## Next Safest Tasks
 
-1. Start physics identification for the thumb/finger contact mismatch.
-2. Compare exact sim rollout contact geometry against the real replay video,
-   focusing on thumb lateral push, palm support, and opposing index/middle
-   contact.
-3. Update the sim/contact model before launching another policy-training run.
+1. Monitor the `PhysicsID` training run.
+2. Copy generated rollout videos back to
+   `sim/hardware01_real_calibrated_physics_id_YYYYMMDD/`.
+3. Only if videos avoid thumb lateral ejection, export an exact trace and repeat
+   the no-cube/cube replay gate.
 
 ## Git Notes
 

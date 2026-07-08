@@ -58,6 +58,14 @@ ps -p 92318 -o pid,etime,pcpu,pmem,cmd
 tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log
 ```
 
+Check current physics-ID calibrated run:
+```bash
+cd /home/hw/aero-hand-sim
+cat runs/nohup_logs/latest_hardware01_real_calibrated_physics_id_run.txt
+ps -p 107128 -o pid,etime,pcpu,pmem,cmd
+tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
+```
+
 ## Start A New Training Run
 Only do this if the current run is finished or intentionally stopped.
 ```bash
@@ -103,6 +111,24 @@ LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
 echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_antitrap_run.txt
 nohup env MUJOCO_GL=egl /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
   --env_name=AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap \
+  --num_timesteps=150000000 \
+  --num_evals=25 \
+  --reward_scaling=1.0 \
+  --num_videos=3 \
+  --suffix=${RUN_ID} > "$LOG" 2>&1 &
+echo $!
+```
+
+For the physics-ID variant, use:
+
+```bash
+cd /home/hw/aero-hand-sim
+RUN_ID=aero_hardware01_real_calibrated_physics_id_fresh_$(date +%Y%m%d_%H%M%S)
+LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
+echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_physics_id_run.txt
+nohup env MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
+  --env_name=AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID \
+  --domain_randomization \
   --num_timesteps=150000000 \
   --num_evals=25 \
   --reward_scaling=1.0 \
@@ -194,3 +220,7 @@ The first `RealCalibrated` videos were judged too jittery for hardware replay.
 The `RealCalibratedSmooth` videos were smoother, but rollout 1 and rollout 2
 showed thumb-index trapping. Wait for anti-trap rollout videos before
 exporting/replaying a trace.
+
+The anti-trap real replay was electrically safe but visually failed: the thumb
+pushed the cube laterally off the hand. Use the physics-ID variant before any
+new live-policy attempt.

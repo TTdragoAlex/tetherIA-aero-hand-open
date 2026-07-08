@@ -1,0 +1,35 @@
+{
+  "variant": "train_like_grip",
+  "params": {
+    "cube_friction": 0.3,
+    "tip_friction": 0.8,
+    "palm_friction": 0.25
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/train_like_grip.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.1265290383427978,
+      -0.0057218005910324955,
+      -0.025287394867511703
+    ],
+    "final_planar_delta": [
+      0.029299661907517954,
+      0.007365805466492186
+    ],
+    "max_planar_displacement": 0.05539851886134354,
+    "mean_planar_displacement": 0.04221559084764266,
+    "final_height": -0.025287394867511703,
+    "min_height": -0.03718199107935278,
+    "max_abs_z_angvel": 7.6699809685883595,
+    "mean_abs_z_angvel": 1.815460689806893,
+    "max_contacts": 9,
+    "mean_contacts": 3.112,
+    "ejected_metric": -0.7615587915517583
+  }
+}

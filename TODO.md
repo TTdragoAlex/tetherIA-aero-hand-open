@@ -33,15 +33,22 @@ Completed monitor/copy status:
 - Smooth video review: much better rhythm and less jitter, but rollout 1 and rollout 2 often wedge the cube between thumb and index. Train anti-trap before hardware replay.
 - Anti-trap videos copied to Mac: `sim/hardware01_real_calibrated_antitrap_20260707/`.
 
-## 2. Physics Identification
-- Task: Compare real no-cube/cube motion to the exact sim rollout, then tune spring/contact/friction assumptions before more reward-only policy training.
-- Verify: Identified mismatch explains why the same trace cages/jams/pushes in reality but rotates in sim.
+## 2. Monitor `PhysicsID` Training
+- Task: Check remote PID/log/checkpoints/videos for `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`.
+- Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+- PID: `107128`
+- Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+- Verify: Process alive or completed cleanly; reward progresses; rollout videos appear.
 
-## 3. Export New Closed-Loop Actor Only After Physics Fix
+## 3. Review `PhysicsID` Videos
+- Task: Copy generated rollout videos to `sim/hardware01_real_calibrated_physics_id_YYYYMMDD/` and inspect them.
+- Verify: Cube does not get pushed laterally off the palm by the thumb; rotation comes from opposing finger support, not thumb ejection or thumb-index trapping.
+
+## 4. Export New Closed-Loop Actor Only After Physics Fix
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.
 - Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
 
-## 4. Live Closed-Loop Test
+## 5. Live Closed-Loop Test
 - Task: Run exported actor through `scripts/live_policy_control.py` only after exact trace looks plausible.
 - Verify: Motion remains dynamic; current logs do not show unexplained startup spikes; cube rotation improves relative to exact trace.
 
@@ -51,6 +58,7 @@ Completed monitor/copy status:
 - Do not replay the `RealCalibratedSmooth` run on hardware yet; it still uses a thumb-index trap/pinch strategy in some rollouts.
 - Do not proceed to live policy solely because telemetry passed; visual cube behavior must show plausible rolling first.
 - Do not proceed with the current anti-trap checkpoint as a live-policy candidate; replay video shows thumb lateral ejection.
+- Use the corrected seeded physics sweep at `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`; the earlier unseeded native sweep started from the wrong cube placement.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.
 - Cube can jam against index/middle if placed too low or too close to fingertips.

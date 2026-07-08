@@ -1,0 +1,36 @@
+{
+  "variant": "weak_opposing_fingers",
+  "params": {
+    "cube_friction": 0.18,
+    "finger_tip_friction": 0.3,
+    "thumb_friction": 0.75,
+    "finger_actuator_kp_scale": 0.55
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/weak_opposing_fingers.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.1270404153925403,
+      0.005104710020755555,
+      -0.024859734600685572
+    ],
+    "final_planar_delta": [
+      0.02981103895726045,
+      0.018192316078280237
+    ],
+    "max_planar_displacement": 0.05159066683125037,
+    "mean_planar_displacement": 0.039341489539498994,
+    "final_height": -0.024859734600685572,
+    "min_height": -0.0334437996273464,
+    "max_abs_z_angvel": 7.723070649139092,
+    "mean_abs_z_angvel": 1.1090295991768055,
+    "max_contacts": 9,
+    "mean_contacts": 3.992,
+    "ejected_metric": -0.44747265279831216
+  }
+}

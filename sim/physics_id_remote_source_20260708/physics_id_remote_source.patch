@@ -1,0 +1,213 @@
+--- /home/hw/aero-hand-sim/backups/20260708_104317_physics_id/rotate_z.py	2026-07-07 15:09:51.630555105 +0800
++++ mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py	2026-07-08 10:47:27.323935295 +0800
+@@ -55,6 +55,7 @@
+ HARDWARE_01_REAL_CALIBRATED_ACTION_MODE = "hardware_01_real_order_real_calibrated"
+ HARDWARE_01_REAL_CALIBRATED_SMOOTH_ACTION_MODE = "hardware_01_real_order_real_calibrated_smooth"
+ HARDWARE_01_REAL_CALIBRATED_ANTI_TRAP_ACTION_MODE = "hardware_01_real_order_real_calibrated_anti_trap"
++HARDWARE_01_REAL_CALIBRATED_PHYSICS_ID_ACTION_MODE = "hardware_01_real_order_real_calibrated_physics_id"
+ 
+ 
+ 
+@@ -114,6 +115,7 @@
+               thumb_action_accel=0.0,
+               thumb_index_trap=0.0,
+               thumb_index_pinch=0.0,
++              cube_planar_drift=0.0,
+               termination=-100.0,
+               action_rate=-1.0,
+           ),
+@@ -270,6 +272,24 @@
+   return config
+ 
+ 
++def hardware_01_real_calibrated_physics_id_config() -> config_dict.ConfigDict:
++  """Anti-trap variant shaped by the 2026-07-08 sim-real replay failure.
++
++  The real anti-trap trace was electrically safe but the thumb pushed the cube
++  laterally off the hand. This variant keeps the anti-trap cadence while adding
++  a direct lateral cube-drift cost and slightly stronger anti-ejection pressure
++  before any live-policy test is attempted.
++  """
++  config = hardware_01_real_calibrated_anti_trap_config()
++  config.action_mode = HARDWARE_01_REAL_CALIBRATED_PHYSICS_ID_ACTION_MODE
++  config.reward_config.scales.cube_planar_drift = -0.80
++  config.reward_config.scales.linvel = -0.28
++  config.reward_config.scales.thumb_index_pinch = -0.35
++  config.reward_config.scales.thumb_overcurl = -0.20
++  config.reward_config.scales.coordinated_finger_participation = 0.08
++  return config
++
++
+ class CubeRotateZAxis(aero_hand_base.AeroHandEnv):
+   """Rotate a cube around the z-axis as fast as possible wihout dropping it."""
+ 
+@@ -316,6 +336,7 @@
+         HARDWARE_01_REAL_CALIBRATED_ACTION_MODE,
+         HARDWARE_01_REAL_CALIBRATED_SMOOTH_ACTION_MODE,
+         HARDWARE_01_REAL_CALIBRATED_ANTI_TRAP_ACTION_MODE,
++        HARDWARE_01_REAL_CALIBRATED_PHYSICS_ID_ACTION_MODE,
+     )
+ 
+   def _uses_action_shape_randomization(self) -> bool:
+@@ -662,6 +683,7 @@
+         "thumb_action_accel": self._cost_thumb_action_accel(action, info["last_act"], info["last_last_act"]),
+         "thumb_index_trap": self._cost_thumb_index_trap(data, action, cube_angvel),
+         "thumb_index_pinch": self._cost_thumb_index_pinch(action, cube_angvel),
++        "cube_planar_drift": self._cost_cube_planar_drift(cube_pos, palm_pos, cube_angvel),
+     }
+ 
+   def _cost_torques(self, torques: jax.Array) -> jax.Array:
+@@ -801,6 +823,16 @@
+         jp.abs(qvel) * jp.abs(qfrc_actuator)
+     )  # Change: only use the control joints
+ 
++
++  def _cost_cube_planar_drift(
++      self, cube_pos: jax.Array, palm_pos: jax.Array, cube_angvel: jax.Array
++  ) -> jax.Array:
++    # Penalize lateral displacement from the palm, especially when the cube is
++    # not producing useful z rotation. This targets the real replay failure
++    # where the thumb pushed the cube sideways off the hand.
++    planar_error = jp.linalg.norm((cube_pos - palm_pos)[:2])
++    return planar_error * (0.35 + 0.65 * self._low_rotation_gate(cube_angvel))
++
+   def _cost_linvel(self, cube_linvel: jax.Array) -> jax.Array:
+     return jp.linalg.norm(cube_linvel, ord=1, axis=-1)
+ 
+@@ -821,6 +853,81 @@
+     return jp.sum(jp.square(joint_angles - self._default_pose))
+ 
+ 
++def domain_randomize_physics_id(
++    model: mjx.Model, rng: jax.Array):
++  """Wider randomization for the real thumb-ejection failure mode.
++
++  The 2026-07-08 exact trace replay was safe, but the thumb pushed the cube
++  laterally off the real hand. This randomizer keeps the existing base
++  randomization and adds per-env variation for palm/cube friction, thumb-vs-
++  finger contact balance, tendon spring stiffness, and weak opposing fingers.
++  """
++  mj_model = CubeRotateZAxis().mj_model
++  cube_geom_id = mj_model.geom("cube").id
++  palm_geom_ids = np.array([
++      mj_model.geom(n).id for n in [
++          "palm_collision_5", "palm_collision_6", "palm_collision_7",
++          "palm_collision_8", "palm_collision_9", "palm_collision_10",
++          "palm_collision_11",
++      ]
++  ])
++  finger_tip_geom_ids = np.array([mj_model.geom(n).id for n in ["if_tip", "mf_tip", "rf_tip", "pf_tip"]])
++  thumb_geom_ids = np.array([mj_model.geom(n).id for n in ["th_mp_collision", "th_bs_collision_1", "th_px_collision_1", "th_tip"]])
++  distal_spring_ids = np.array([mj_model.tendon(n).id for n in ["if_spring0", "mf_spring0", "rf_spring0", "pf_spring0", "th_spring1"]])
++  mcp_spring_ids = np.array([mj_model.tendon(n).id for n in ["if_spring1", "mf_spring1", "rf_spring1", "pf_spring1", "th_spring0"]])
++  finger_actuator_ids = jp.array([0, 1, 2, 3], dtype=jp.int32)
++  thumb_actuator_ids = jp.array([4, 5, 6], dtype=jp.int32)
++
++  model, in_axes = domain_randomize(model, rng)
++
++  @jax.vmap
++  def rand_extra(rng, geom_friction, tendon_stiffness, actuator_gainprm, actuator_biasprm):
++    rng, cube_key, finger_key, thumb_key, palm_key = jax.random.split(rng, 5)
++    cube_friction = jax.random.uniform(cube_key, (), minval=0.10, maxval=0.45)
++    finger_friction = jax.random.uniform(finger_key, (), minval=0.20, maxval=0.90)
++    thumb_friction = jax.random.uniform(thumb_key, (), minval=0.45, maxval=1.15)
++    palm_friction = jax.random.uniform(palm_key, (), minval=0.08, maxval=0.30)
++    geom_friction = geom_friction.at[cube_geom_id, 0].set(cube_friction)
++    geom_friction = geom_friction.at[finger_tip_geom_ids, 0].set(finger_friction)
++    geom_friction = geom_friction.at[thumb_geom_ids, 0].set(thumb_friction)
++    geom_friction = geom_friction.at[palm_geom_ids, 0].set(palm_friction)
++
++    rng, distal_key, mcp_key = jax.random.split(rng, 3)
++    distal_scale = jax.random.uniform(distal_key, (), minval=0.30, maxval=1.10)
++    mcp_scale = jax.random.uniform(mcp_key, (), minval=0.40, maxval=1.10)
++    tendon_stiffness = tendon_stiffness.at[distal_spring_ids].multiply(distal_scale)
++    tendon_stiffness = tendon_stiffness.at[mcp_spring_ids].multiply(mcp_scale)
++
++    rng, finger_kp_key, thumb_kp_key = jax.random.split(rng, 3)
++    finger_kp_scale = jax.random.uniform(finger_kp_key, (), minval=0.45, maxval=1.10)
++    thumb_kp_scale = jax.random.uniform(thumb_kp_key, (), minval=0.75, maxval=1.20)
++    finger_kp = actuator_gainprm[finger_actuator_ids, 0] * finger_kp_scale
++    thumb_kp = actuator_gainprm[thumb_actuator_ids, 0] * thumb_kp_scale
++    actuator_gainprm = actuator_gainprm.at[finger_actuator_ids, 0].set(finger_kp)
++    actuator_gainprm = actuator_gainprm.at[thumb_actuator_ids, 0].set(thumb_kp)
++    actuator_biasprm = actuator_biasprm.at[finger_actuator_ids, 1].set(-finger_kp)
++    actuator_biasprm = actuator_biasprm.at[thumb_actuator_ids, 1].set(-thumb_kp)
++    return geom_friction, tendon_stiffness, actuator_gainprm, actuator_biasprm
++
++  batched_tendon_stiffness = jp.repeat(model.tendon_stiffness[None, :], rng.shape[0], axis=0)
++  geom_friction, tendon_stiffness, actuator_gainprm, actuator_biasprm = rand_extra(
++      rng, model.geom_friction, batched_tendon_stiffness, model.actuator_gainprm, model.actuator_biasprm
++  )
++  model = model.tree_replace({
++      "geom_friction": geom_friction,
++      "tendon_stiffness": tendon_stiffness,
++      "actuator_gainprm": actuator_gainprm,
++      "actuator_biasprm": actuator_biasprm,
++  })
++  in_axes = in_axes.tree_replace({
++      "geom_friction": 0,
++      "tendon_stiffness": 0,
++      "actuator_gainprm": 0,
++      "actuator_biasprm": 0,
++  })
++  return model, in_axes
++
++
+ class CubeRotateZAxisRealObs(CubeRotateZAxis):
+   """Cube rotation variant whose actor observes deployable hand signals only."""
+ 
+@@ -930,6 +1037,17 @@
+     super().__init__(config=config, config_overrides=config_overrides)
+ 
+ 
++class CubeRotateZAxisHardware01RealCalibratedPhysicsID(CubeRotateZAxis):
++  """Physics-ID follow-up after real replay showed lateral thumb ejection."""
++
++  def __init__(
++      self,
++      config: config_dict.ConfigDict = hardware_01_real_calibrated_physics_id_config(),
++      config_overrides: Optional[Dict[str, Union[str, int, list[Any]]]] = None,
++  ):
++    super().__init__(config, config_overrides)
++
++
+ def domain_randomize(
+ model: mjx.Model, rng: jax.Array):
+   mj_model = CubeRotateZAxis().mj_model
+--- /home/hw/aero-hand-sim/backups/20260708_104317_physics_id/manipulation_init.py	2026-07-07 15:09:51.630635252 +0800
++++ mujoco_playground/mujoco_playground/_src/manipulation/__init__.py	2026-07-08 10:46:44.940091087 +0800
+@@ -50,6 +50,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibrated": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibrated,
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedSmooth,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedAntiTrap,
++    "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.CubeRotateZAxisHardware01RealCalibratedPhysicsID,
+ }
+ 
+ _cfgs = {
+@@ -72,6 +73,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibrated": aero_hand_rotate_z.hardware_01_real_calibrated_config,
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.hardware_01_real_calibrated_smooth_config,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.hardware_01_real_calibrated_anti_trap_config,
++    "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.hardware_01_real_calibrated_physics_id_config,
+ }
+ 
+ _randomizer = {
+@@ -87,6 +89,7 @@
+     "AeroCubeRotateZAxisHardware01RealCalibrated": aero_hand_rotate_z.domain_randomize,
+     "AeroCubeRotateZAxisHardware01RealCalibratedSmooth": aero_hand_rotate_z.domain_randomize,
+     "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap": aero_hand_rotate_z.domain_randomize,
++    "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID": aero_hand_rotate_z.domain_randomize_physics_id,
+ }
+ 
+ 
+--- /home/hw/aero-hand-sim/backups/20260708_104317_physics_id/manipulation_params.py	2026-07-07 15:09:51.630669176 +0800
++++ mujoco_playground/mujoco_playground/config/manipulation_params.py	2026-07-08 10:43:17.070889133 +0800
+@@ -153,7 +153,7 @@
+         value_obs_key="privileged_state",
+     )
+     rl_config.num_resets_per_eval = 1
+-  elif env_name in ("AeroCubeRotateZAxis", "AeroCubeRotateZAxisRealObs", "AeroCubeRotateZAxisRealObsParticipation", "AeroCubeRotateZAxisHardwareObs", "AeroCubeRotateZAxisHardware01RealOrder", "AeroCubeRotateZAxisHardware01Randomized", "AeroCubeRotateZAxisHardware01Efficient", "AeroCubeRotateZAxisHardware01RealCalibrated", "AeroCubeRotateZAxisHardware01RealCalibratedSmooth", "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap"):
++  elif env_name in ("AeroCubeRotateZAxis", "AeroCubeRotateZAxisRealObs", "AeroCubeRotateZAxisRealObsParticipation", "AeroCubeRotateZAxisHardwareObs", "AeroCubeRotateZAxisHardware01RealOrder", "AeroCubeRotateZAxisHardware01Randomized", "AeroCubeRotateZAxisHardware01Efficient", "AeroCubeRotateZAxisHardware01RealCalibrated", "AeroCubeRotateZAxisHardware01RealCalibratedSmooth", "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap", "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID"):
+     rl_config.num_timesteps = 300_000_000
+     rl_config.num_evals = 10
+     rl_config.num_minibatches = 32

@@ -1,0 +1,37 @@
+{
+  "variant": "soft_slippery",
+  "params": {
+    "cube_friction": 0.12,
+    "tip_friction": 0.35,
+    "palm_friction": 0.1,
+    "distal_spring_scale": 0.35,
+    "mcp_spring_scale": 0.5
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/soft_slippery.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.13080068968506828,
+      -0.0043722378579808315,
+      -0.030512256234527975
+    ],
+    "final_planar_delta": [
+      0.03357131324978843,
+      0.00871536819954385
+    ],
+    "max_planar_displacement": 0.05964903056641787,
+    "mean_planar_displacement": 0.04198664016182002,
+    "final_height": -0.030512256234527975,
+    "min_height": -0.03922143772547516,
+    "max_abs_z_angvel": 8.701348792245895,
+    "mean_abs_z_angvel": 1.3786548067339846,
+    "max_contacts": 9,
+    "mean_contacts": 4.344,
+    "ejected_metric": -0.5607456324638752
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "variant": "thumb_dominant_ejector",
+  "params": {
+    "cube_friction": 0.14,
+    "finger_tip_friction": 0.25,
+    "thumb_friction": 0.95,
+    "palm_friction": 0.1,
+    "finger_actuator_kp_scale": 0.5,
+    "distal_spring_scale": 0.4
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/thumb_dominant_ejector.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.12730232087836588,
+      0.011213245797369854,
+      -0.02527676263154912
+    ],
+    "final_planar_delta": [
+      0.03007294444308603,
+      0.024300851854894535
+    ],
+    "max_planar_displacement": 0.05174802217905397,
+    "mean_planar_displacement": 0.0409197654946495,
+    "final_height": -0.02527676263154912,
+    "min_height": -0.03401900251783708,
+    "max_abs_z_angvel": 4.43854732205921,
+    "mean_abs_z_angvel": 0.8851139660597289,
+    "max_contacts": 10,
+    "mean_contacts": 4.152,
+    "ejected_metric": -0.34655326254782404
+  }
+}

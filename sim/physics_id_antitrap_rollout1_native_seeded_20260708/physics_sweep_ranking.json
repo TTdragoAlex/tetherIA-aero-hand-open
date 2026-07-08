@@ -1,0 +1,264 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap",
+  "trace": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_u_trace.json",
+  "order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "summaries": [
+    {
+      "variant": "thumb_dominant_ejector",
+      "params": {
+        "cube_friction": 0.14,
+        "finger_tip_friction": 0.25,
+        "thumb_friction": 0.95,
+        "palm_friction": 0.1,
+        "finger_actuator_kp_scale": 0.5,
+        "distal_spring_scale": 0.4
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/thumb_dominant_ejector.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.12730232087836588,
+          0.011213245797369854,
+          -0.02527676263154912
+        ],
+        "final_planar_delta": [
+          0.03007294444308603,
+          0.024300851854894535
+        ],
+        "max_planar_displacement": 0.05174802217905397,
+        "mean_planar_displacement": 0.0409197654946495,
+        "final_height": -0.02527676263154912,
+        "min_height": -0.03401900251783708,
+        "max_abs_z_angvel": 4.43854732205921,
+        "mean_abs_z_angvel": 0.8851139660597289,
+        "max_contacts": 10,
+        "mean_contacts": 4.152,
+        "ejected_metric": -0.34655326254782404
+      }
+    },
+    {
+      "variant": "weak_opposing_fingers",
+      "params": {
+        "cube_friction": 0.18,
+        "finger_tip_friction": 0.3,
+        "thumb_friction": 0.75,
+        "finger_actuator_kp_scale": 0.55
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/weak_opposing_fingers.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.1270404153925403,
+          0.005104710020755555,
+          -0.024859734600685572
+        ],
+        "final_planar_delta": [
+          0.02981103895726045,
+          0.018192316078280237
+        ],
+        "max_planar_displacement": 0.05159066683125037,
+        "mean_planar_displacement": 0.039341489539498994,
+        "final_height": -0.024859734600685572,
+        "min_height": -0.0334437996273464,
+        "max_abs_z_angvel": 7.723070649139092,
+        "mean_abs_z_angvel": 1.1090295991768055,
+        "max_contacts": 9,
+        "mean_contacts": 3.992,
+        "ejected_metric": -0.44747265279831216
+      }
+    },
+    {
+      "variant": "soft_springs",
+      "params": {
+        "distal_spring_scale": 0.35,
+        "mcp_spring_scale": 0.5,
+        "damping_scale": 1.35
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/soft_springs.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.12478741827920255,
+          0.006837233913668091,
+          -0.023882620511374193
+        ],
+        "final_planar_delta": [
+          0.0275580418439227,
+          0.019924839971192772
+        ],
+        "max_planar_displacement": 0.05432240755416751,
+        "mean_planar_displacement": 0.04091519198060291,
+        "final_height": -0.023882620511374193,
+        "min_height": -0.03431201023922139,
+        "max_abs_z_angvel": 7.440667542811981,
+        "mean_abs_z_angvel": 1.2881155909537183,
+        "max_contacts": 10,
+        "mean_contacts": 3.736,
+        "ejected_metric": -0.5253296083750058
+      }
+    },
+    {
+      "variant": "soft_slippery",
+      "params": {
+        "cube_friction": 0.12,
+        "tip_friction": 0.35,
+        "palm_friction": 0.1,
+        "distal_spring_scale": 0.35,
+        "mcp_spring_scale": 0.5
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/soft_slippery.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.13080068968506828,
+          -0.0043722378579808315,
+          -0.030512256234527975
+        ],
+        "final_planar_delta": [
+          0.03357131324978843,
+          0.00871536819954385
+        ],
+        "max_planar_displacement": 0.05964903056641787,
+        "mean_planar_displacement": 0.04198664016182002,
+        "final_height": -0.030512256234527975,
+        "min_height": -0.03922143772547516,
+        "max_abs_z_angvel": 8.701348792245895,
+        "mean_abs_z_angvel": 1.3786548067339846,
+        "max_contacts": 9,
+        "mean_contacts": 4.344,
+        "ejected_metric": -0.5607456324638752
+      }
+    },
+    {
+      "variant": "baseline_xml",
+      "params": {
+        "note": "Raw XML physics."
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/baseline_xml.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.1315261520506492,
+          -0.009005974597698028,
+          -0.02934249874882745
+        ],
+        "final_planar_delta": [
+          0.03429677561536934,
+          0.004081631459826653
+        ],
+        "max_planar_displacement": 0.057954223388845996,
+        "mean_planar_displacement": 0.042614168069699886,
+        "final_height": -0.02934249874882745,
+        "min_height": -0.037999005432321584,
+        "max_abs_z_angvel": 8.36744873242266,
+        "mean_abs_z_angvel": 1.5453203755781852,
+        "max_contacts": 11,
+        "mean_contacts": 3.576,
+        "ejected_metric": -0.6374399456213373
+      }
+    },
+    {
+      "variant": "train_like_grip",
+      "params": {
+        "cube_friction": 0.3,
+        "tip_friction": 0.8,
+        "palm_friction": 0.25
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/train_like_grip.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.1265290383427978,
+          -0.0057218005910324955,
+          -0.025287394867511703
+        ],
+        "final_planar_delta": [
+          0.029299661907517954,
+          0.007365805466492186
+        ],
+        "max_planar_displacement": 0.05539851886134354,
+        "mean_planar_displacement": 0.04221559084764266,
+        "final_height": -0.025287394867511703,
+        "min_height": -0.03718199107935278,
+        "max_abs_z_angvel": 7.6699809685883595,
+        "mean_abs_z_angvel": 1.815460689806893,
+        "max_contacts": 9,
+        "mean_contacts": 3.112,
+        "ejected_metric": -0.7615587915517583
+      }
+    },
+    {
+      "variant": "slippery_cube_palm",
+      "params": {
+        "cube_friction": 0.12,
+        "tip_friction": 0.35,
+        "palm_friction": 0.1
+      },
+      "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/slippery_cube_palm.mp4",
+      "metrics": {
+        "steps": 125,
+        "initial_cube_pos": [
+          0.09722937643527985,
+          -0.013087606057524681,
+          0.058820586651563644
+        ],
+        "final_cube_pos": [
+          0.13705279076005739,
+          -0.009820195838823651,
+          -0.03390028224660678
+        ],
+        "final_planar_delta": [
+          0.03982341432477754,
+          0.0032674102187010296
+        ],
+        "max_planar_displacement": 0.06131306217938998,
+        "mean_planar_displacement": 0.04238435422976963,
+        "final_height": -0.03390028224660678,
+        "min_height": -0.04088537390456888,
+        "max_abs_z_angvel": 8.292484833060744,
+        "mean_abs_z_angvel": 1.845448938350744,
+        "max_contacts": 11,
+        "mean_contacts": 4.344,
+        "ejected_metric": -0.7691389600784448
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "variant": "slippery_cube_palm",
+  "params": {
+    "cube_friction": 0.12,
+    "tip_friction": 0.35,
+    "palm_friction": 0.1
+  },
+  "video": "analysis/physics_id_antitrap_rollout1_native_seeded_20260708/slippery_cube_palm.mp4",
+  "metrics": {
+    "steps": 125,
+    "initial_cube_pos": [
+      0.09722937643527985,
+      -0.013087606057524681,
+      0.058820586651563644
+    ],
+    "final_cube_pos": [
+      0.13705279076005739,
+      -0.009820195838823651,
+      -0.03390028224660678
+    ],
+    "final_planar_delta": [
+      0.03982341432477754,
+      0.0032674102187010296
+    ],
+    "max_planar_displacement": 0.06131306217938998,
+    "mean_planar_displacement": 0.04238435422976963,
+    "final_height": -0.03390028224660678,
+    "min_height": -0.04088537390456888,
+    "max_abs_z_angvel": 8.292484833060744,
+    "mean_abs_z_angvel": 1.845448938350744,
+    "max_contacts": 11,
+    "mean_contacts": 4.344,
+    "ejected_metric": -0.7691389600784448
+  }
+}

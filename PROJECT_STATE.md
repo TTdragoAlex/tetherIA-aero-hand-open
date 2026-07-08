@@ -37,6 +37,11 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - Anti-trap variant inherits the smooth settings and adds low-rotation penalties for thumb/index geometric trapping and thumb/index pinch commands.
 - Exact anti-trap `u_real_order` traces exported from checkpoint `000157286400` under `sim/hardware01_real_calibrated_antitrap_trace_20260707/`.
 - Anti-trap rollout 1 exact trace replay completed on hardware with no cube and with cube on 2026-07-08; both runs stayed below safety abort limits.
+- Physics-identification diagnostic script copied locally as `scripts/remote_replay_antitrap_trace_physics_sweep_native.py`.
+- Corrected seeded physics sweep copied under `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`.
+- Remote source diff and changed files copied under `sim/physics_id_remote_source_20260708/`.
+- New remote training env implemented on Ubuntu PC: `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`.
+- `PhysicsID` inherits anti-trap, adds `reward/cube_planar_drift`, and uses a dedicated wider randomizer for palm/cube friction, thumb-vs-finger contact balance, tendon spring stiffness, and weak opposing finger actuation.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -164,6 +169,24 @@ Anti-trap exact trace export and hardware replay:
   - No abort.
 - Visual review from `/Users/alextang/Downloads/IMG_5309.mov`: cube moves slightly, but the thumb acts as a lateral ejector and pushes the cube off the hand. This is not a live-policy candidate.
 - Next direction: start physics-identification / sim-real contact investigation before more reward-only policy training. The key mismatch appears to be thumb/finger contact geometry and support, not telemetry safety or command delivery.
+
+Physics-identification work:
+- Native MuJoCo exact-trace sweep script: `scripts/remote_replay_antitrap_trace_physics_sweep_native.py`
+- Correct seeded sweep output: `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`
+- Remote source patch: `sim/physics_id_remote_source_20260708/physics_id_remote_source.patch`
+- Important correction: the first unseeded native sweep started from the XML `home` keyframe and placed the cube incorrectly, so it is not a faithful diagnostic. Use the seeded sweep.
+- Seeded ranking: the thumb-dominant / weak-opposition variant had the worst ejection-like score because it reduced useful z rotation most while still drifting laterally. Soft springs alone kept more useful z rotation, so spring softness is not sufficient as the only explanation.
+- New env: `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`
+- Remote source backup before edit: `/home/hw/aero-hand-sim/backups/20260708_104317_physics_id/`
+- Smoke tests passed:
+  - `py_compile` on changed files.
+  - Env load: action mode `hardware_01_real_order_real_calibrated_physics_id`, action repeat `2`, smoothing max delta `0.035`, actor obs shape `(21,)`, `reward/cube_planar_drift` present.
+  - Dedicated randomizer output shapes: `geom_friction (2, 98, 3)`, `tendon_stiffness (2, 20)`.
+- Training started:
+  - PID: `107128`
+  - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+  - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+  - Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
 
 Best recent real exact-trace replay command:
 ```bash
