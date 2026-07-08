@@ -162,7 +162,8 @@ Anti-trap exact trace export and hardware replay:
   - Max sampled temperature: `36 C`
   - Max sampled target/position error: `0.048`
   - No abort.
-- Remaining decision depends on operator visual review: if the cube showed plausible intermittent rolling without sustained thumb-index trapping, export/test the live actor next; if it only caged, jammed, or pushed the cube, start physics-identification instead of another reward-only variant.
+- Visual review from `/Users/alextang/Downloads/IMG_5309.mov`: cube moves slightly, but the thumb acts as a lateral ejector and pushes the cube off the hand. This is not a live-policy candidate.
+- Next direction: start physics-identification / sim-real contact investigation before more reward-only policy training. The key mismatch appears to be thumb/finger contact geometry and support, not telemetry safety or command delivery.
 
 Best recent real exact-trace replay command:
 ```bash

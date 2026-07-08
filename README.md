@@ -374,10 +374,10 @@ sim/hardware01_real_calibrated_antitrap_trace_20260707/
   max sampled current `1436.5 mA`, max temp `36 C`, max sampled position error
   `0.048`, no abort.
 
-The next decision depends on visual review of the cube run: if it showed
-plausible intermittent rolling without sustained thumb-index trapping, export
-and test the anti-trap live actor. If it mostly caged, jammed, or pushed the
-cube, start physics identification before more reward-only training.
+Visual review from `/Users/alextang/Downloads/IMG_5309.mov`: the cube moves a
+little, but the thumb pushes it laterally off the hand before the fingers form a
+useful opposing contact. Do not export/test the live actor from this checkpoint
+as the next step. Start physics identification before more reward-only training.
 
 Previous smooth run details:
 
@@ -406,11 +406,11 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-154512-ae
 
 ## Next Safest Tasks
 
-1. Get operator visual interpretation of the 2026-07-08 cube replay.
-2. If cube replay showed plausible rolling, export the anti-trap actor and test
-   live closed-loop control conservatively.
-3. If cube replay caged/jammed/pushed the cube, start physics identification
-   before more reward-only policy training.
+1. Start physics identification for the thumb/finger contact mismatch.
+2. Compare exact sim rollout contact geometry against the real replay video,
+   focusing on thumb lateral push, palm support, and opposing index/middle
+   contact.
+3. Update the sim/contact model before launching another policy-training run.
 
 ## Git Notes
 

@@ -65,3 +65,9 @@
 - Decision: Treat the anti-trap rollout 1 exact trace as telemetry-safe on hardware, but do not run live closed-loop policy until the cube replay is visually judged to produce plausible rolling rather than caging, jamming, or pushing.
 - Why: The no-cube and cube replays both stayed well below current and temperature abort limits, but transfer success depends on contact behavior. Safe actuator telemetry does not prove the cube is being rotated in the intended way.
 - Evidence: `logs/hardware01_u_trace_replay_20260708_093016.csv` and `logs/hardware01_u_trace_replay_20260708_093326.csv` both completed 125 steps with no abort.
+
+## Decision: Start physics identification after anti-trap replay
+- Date: 2026-07-08
+- Decision: Do not proceed to live policy from the current anti-trap checkpoint. Start physics/contact identification first.
+- Why: Visual review of `/Users/alextang/Downloads/IMG_5309.mov` showed the cube moving slightly, but the thumb pushed it laterally off the hand before useful opposing finger contact developed. That points to a sim-real contact/geometry/support mismatch, not a command-safety problem.
+- Rejected: More reward-only training from the same assumptions, because the replay failure is a structured physical mismatch rather than simple insufficient exploration.
