@@ -67,6 +67,11 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - It is unknown whether the new calibration/randomization fixes the midrange joint-coupling mismatch or only makes sim videos look better. This must be checked by exact trace replay before live policy testing.
 - The `PhysicsID` videos look mechanically plausible in sim, but this is not proof of real transfer. Next step is exact `u_real_order` trace export and dry-run before any hardware movement.
 - PhysicsID exact replay failed visually in the same real-world direction: the thumb still pushes the cube off the hand. Do not test rollout 1 or 2 as live candidates; rollout 1 has higher thumb flex and rollout 2 has wider finger motion. Next work should directly reduce/penalize thumb lateral authority or fix thumb/palm contact geometry.
+- Operator tuning found a mostly working real replay transform on PhysicsID rollout 0:
+  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50`
+  - `--channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3`
+  - Resulting command ranges: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle unchanged `0.115-0.640`.
+  - Interpretation: the sim policy shape has value, but real transfer needs much lower thumb flex/tendon and a much higher index support baseline. The sim still does not reproduce real trapping outcomes.
 
 ## Important Files
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.
@@ -214,6 +219,10 @@ Physics-identification work:
   - Long replay telemetry stayed safe: max sampled current about `1430-1521 mA`, max temperature about `47-50 C`, max target/position error about `0.05`.
   - Operator visual result: cube is still pushed off by the thumb.
   - Interpretation: command delivery and safety are not the bottleneck; the sim still underestimates real thumb lateral ejection or overestimates opposing finger/palm support.
+- Manual tuning result:
+  - Best operator-reported command used PhysicsID rollout 0 with thumb flex/tendon heavily lowered and index baseline raised.
+  - Dry-run range for that command: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle `0.115-0.640`, ring `0.370-0.772`, pinky `0.405-0.786`.
+  - This should be treated as a real-calibration target for the next training variant, not as proof that replay-time hand tuning is the final solution.
 
 Best recent real exact-trace replay command:
 ```bash

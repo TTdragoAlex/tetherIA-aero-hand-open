@@ -45,6 +45,11 @@ Completed monitor/copy status:
 - Option A: Run one deliberately thumb-attenuated rollout 0 diagnostic with cube to test whether reducing thumb lateral authority keeps the cube seated. This is a diagnostic override, not a deployable policy result.
 - Option B: Skip more hardware diagnostics and train a new thumb-limited / anti-ejection env that explicitly penalizes high thumb abduction/lateral cube drift and strengthens opposing finger/palm support assumptions.
 - Verify: success is not just less ejection; the cube should remain seated while receiving visible rolling torque.
+- Current best operator-tuned replay:
+  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50`
+  - `--channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3`
+  - Dry-run ranges: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle unchanged `0.115-0.640`.
+  - Operator result: mostly working, but still not final policy; use this as the command-window target for the next sim/training variant.
 
 Completed monitor/copy/review status:
 - Remote training completed cleanly.
@@ -54,6 +59,7 @@ Completed monitor/copy/review status:
 - Videos/config/log copied to Mac: `sim/hardware01_real_calibrated_physics_id_20260708/`.
 - Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without obvious thumb lateral ejection in sampled frames.
 - Hardware result: rollout 0 still pushed the cube off by the thumb even though telemetry stayed safe. Sim still does not model the real lateral thumb failure strongly enough.
+- Manual transform result: lowering thumb flex/tendon much more and raising/compressing index support made rollout 0 look mostly working on the real hand. The next training variant should train inside this transformed command window rather than rely on replay-time overrides.
 
 ## 4. Export New Closed-Loop Actor Only After Physics Fix
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.
@@ -71,6 +77,7 @@ Completed monitor/copy/review status:
 - Do not proceed with the current anti-trap checkpoint as a live-policy candidate; replay video shows thumb lateral ejection.
 - Do not proceed with the current PhysicsID checkpoint as a live-policy candidate; exact replay still shows thumb lateral ejection on real hardware.
 - Do not test PhysicsID rollout 1 or rollout 2 as direct candidates unless deliberately diagnosing range effects; rollout 1 has more thumb flex and rollout 2 has wider finger motion.
+- Do not treat the best manual transform as the final solution; it reveals the sim-to-real command/contact mismatch that should be built into training.
 - Use the corrected seeded physics sweep at `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`; the earlier unseeded native sweep started from the wrong cube placement.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.

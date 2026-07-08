@@ -428,6 +428,19 @@ still pushed the cube off the hand. Do not test rollout 1 or 2 as direct live
 candidates; the next work should either run one thumb-attenuated diagnostic or
 train a new thumb-limited / anti-ejection variant.
 
+Latest operator-tuned replay result: PhysicsID rollout 0 became mostly working
+on the real hand when replayed with very low thumb flex/tendon and a high
+compressed index baseline:
+
+```text
+channel_scale = thumb_abd=0.90, thumb_flex=0.5, thumb_tendon=0.6, index=0.50
+channel_bias  = thumb_abd=-0.02, thumb_flex=-0.32, thumb_tendon=-0.14, index=0.3
+```
+
+This maps the first 120 steps to thumb flex `0.105-0.319`, thumb tendon
+`0.241-0.478`, and index `0.641-0.921`. Treat this as a command-window target
+for the next training variant, not as the final replay-only solution.
+
 Previous smooth run details:
 
 - Run id: `aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
@@ -455,11 +468,12 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-a
 
 ## Next Safest Tasks
 
-1. Stop live-policy export for the current `PhysicsID` checkpoint.
-2. Optionally run one thumb-attenuated rollout 0 diagnostic to see whether
-   reducing thumb abduction/flex/tendon authority keeps the cube seated.
-3. Train the next env with explicit thumb-lateral anti-ejection constraints or
-   corrected thumb/palm support geometry, depending on the diagnostic result.
+1. Stop live-policy export for the raw `PhysicsID` checkpoint.
+2. Train the next env inside the operator-tuned command window: low thumb
+   flex/tendon, broad thumb abduction, high compressed index support.
+3. Add reward/contact penalties for real trap modes: thumb-index trap,
+   thumb clamp/ejection, ring-finger pocketing, and low rotation with high
+   contact/command.
 
 ## Git Notes
 

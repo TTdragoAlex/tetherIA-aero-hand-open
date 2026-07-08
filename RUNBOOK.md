@@ -269,3 +269,25 @@ This changes rollout 0 approximately to thumb_abd `0.376-0.675`, thumb_flex
 If this keeps the cube seated, train the next env with explicit thumb-abduction
 range/penalty constraints. If it still ejects, prioritize thumb/palm contact
 geometry and opposing support in sim.
+
+Best operator-tuned PhysicsID rollout 0 replay so far:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --trace sim/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json \
+  --steps 120 \
+  --playback-scale 1.00 \
+  --channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50 \
+  --channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3 \
+  --max-step-delta 0.08 \
+  --sample-every 5
+```
+
+Dry-run range for this command: thumb_abd `0.346-0.884`, thumb_flex
+`0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle
+`0.115-0.640`, ring `0.370-0.772`, pinky `0.405-0.786`. The operator reported
+this as mostly working. Treat it as evidence for the next training command
+window: very low thumb flex/tendon, broad thumb abduction, high index support,
+and unchanged middle support.

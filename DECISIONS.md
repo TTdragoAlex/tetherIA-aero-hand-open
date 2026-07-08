@@ -89,3 +89,9 @@
 - Decision: Do not test the current `PhysicsID` checkpoint as a live actor and do not treat rollout 1 or 2 as direct next candidates.
 - Why: Rollout 0 exact replay was electrically safe but still pushed the cube off by the thumb. Rollout 1 has a higher thumb-flex range and rollout 2 has wider finger excursions, so they are unlikely to solve a thumb-ejection failure as direct candidates.
 - Rejected: Continuing through the remaining `PhysicsID` rollouts, because the repeated failure mode is now specific enough to require a thumb-lateral diagnostic or a new thumb-limited/anti-ejection training variant.
+
+## Decision: Use the operator-tuned replay as the next command-window target
+- Date: 2026-07-08
+- Decision: Build the next training variant around the operator-tuned PhysicsID rollout 0 transform rather than treating replay-time channel overrides as the final deployment method.
+- Why: The mostly working real replay needed very low thumb flex/tendon, broad thumb abduction, and a high compressed index baseline. This is a structured sim-to-real command/contact mismatch: sim did not trap the cube, while the real hand did unless the command window was changed substantially.
+- Rejected: Continuing manual channel tuning as the main path, because that improves one trace but does not teach a deployable policy to avoid the real trap modes.
