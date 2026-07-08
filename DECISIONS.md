@@ -59,3 +59,9 @@
 - Decision: Add `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap` with thumb/index trap and pinch penalties while keeping the smooth run's action-repeat and slew cap.
 - Why: Smooth rollout 1 and rollout 2 rotated the cube, but often by wedging it between thumb and index. That failure mode is likely worse on the real hand because compliance, backlash, and current limits turn a simulated pinch pocket into a stuck cube.
 - Rejected: Replaying the smooth trace immediately, because the videos show the right speed but the wrong contact strategy.
+
+## Decision: Gate live policy on visual cube replay
+- Date: 2026-07-08
+- Decision: Treat the anti-trap rollout 1 exact trace as telemetry-safe on hardware, but do not run live closed-loop policy until the cube replay is visually judged to produce plausible rolling rather than caging, jamming, or pushing.
+- Why: The no-cube and cube replays both stayed well below current and temperature abort limits, but transfer success depends on contact behavior. Safe actuator telemetry does not prove the cube is being rotated in the intended way.
+- Evidence: `logs/hardware01_u_trace_replay_20260708_093016.csv` and `logs/hardware01_u_trace_replay_20260708_093326.csv` both completed 125 steps with no abort.

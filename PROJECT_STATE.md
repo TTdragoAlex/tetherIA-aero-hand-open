@@ -35,6 +35,8 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - Smooth variant changes include `action_repeat=2`, `action_smoothing_max_delta=0.035`, stronger action/thumb rate and accel penalties, and `linvel=-0.18`.
 - New anti-trap remote training env implemented on Ubuntu PC: `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`.
 - Anti-trap variant inherits the smooth settings and adds low-rotation penalties for thumb/index geometric trapping and thumb/index pinch commands.
+- Exact anti-trap `u_real_order` traces exported from checkpoint `000157286400` under `sim/hardware01_real_calibrated_antitrap_trace_20260707/`.
+- Anti-trap rollout 1 exact trace replay completed on hardware with no cube and with cube on 2026-07-08; both runs stayed below safety abort limits.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -58,6 +60,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `scripts/audit_sim_to_real_mapping.py`: mapping correctness audit.
 - `sim/hardware01_exact_rollout_trace_20260706/`: exact sim rollout videos and `u_real_order` traces for replay/compare.
 - `sim/hardware01_real_calibrated_20260707/`: copied videos from the completed `RealCalibrated` run.
+- `sim/hardware01_real_calibrated_antitrap_trace_20260707/`: exact anti-trap rollout traces exported after env smoothing in physical command order.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.
@@ -138,6 +141,28 @@ Anti-trap training run completed:
   - `sim/hardware01_real_calibrated_antitrap_20260707/rollout1.mp4`
   - `sim/hardware01_real_calibrated_antitrap_20260707/rollout2.mp4`
 - Video review: less obvious thumb-index wedging than the smooth run, especially rollout 1, but still a cradle/pocket rolling strategy rather than a clean free roll. Do not move directly to hardware replay without deliberate review.
+
+Anti-trap exact trace export and hardware replay:
+- Source env: `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`
+- Source checkpoint: `000157286400`
+- Selected trace: `sim/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_u_trace.json`
+- Trace field: `u_real_order`, exported from `next_state.info["last_act"]` after hardware01 mapping and smoothing clamp, not raw policy output.
+- Physical command order: `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`
+- Replay-time scale/bias: none.
+- Dry-run passed with max trace delta `0.070`, under replay cap `0.08`.
+- No-cube replay log: `logs/hardware01_u_trace_replay_20260708_093016.csv`
+  - Rows: `125`
+  - Max sampled absolute current: `1436.5 mA`
+  - Max sampled temperature: `35 C`
+  - Max sampled target/position error: `0.052`
+  - No abort.
+- Cube replay log: `logs/hardware01_u_trace_replay_20260708_093326.csv`
+  - Rows: `125`
+  - Max sampled absolute current: `1436.5 mA`
+  - Max sampled temperature: `36 C`
+  - Max sampled target/position error: `0.048`
+  - No abort.
+- Remaining decision depends on operator visual review: if the cube showed plausible intermittent rolling without sustained thumb-index trapping, export/test the live actor next; if it only caged, jammed, or pushed the cube, start physics-identification instead of another reward-only variant.
 
 Best recent real exact-trace replay command:
 ```bash

@@ -1,0 +1,155 @@
+[
+  {
+    "rollout_index": 1,
+    "trace": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_u_trace.json",
+    "metadata": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_metadata.json",
+    "steps_exported": 125,
+    "episode_reward_sum": 9.411422729492188,
+    "target_summary": {
+      "thumb_abd": {
+        "min": 0.1938265562057495,
+        "max": 0.584887683391571,
+        "span": 0.39106112718582153,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_flex": {
+        "min": 0.16534322500228882,
+        "max": 0.6879174709320068,
+        "span": 0.522574245929718,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_tendon": {
+        "min": 0.3704603910446167,
+        "max": 0.7329424023628235,
+        "span": 0.3624820113182068,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "index": {
+        "min": 0.11494961380958557,
+        "max": 0.6380703449249268,
+        "span": 0.5231207609176636,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "middle": {
+        "min": 0.05459979176521301,
+        "max": 0.5800726413726807,
+        "span": 0.52547287940979,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "ring": {
+        "min": 0.2900000214576721,
+        "max": 0.6638162136077881,
+        "span": 0.37381619215011597,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "pinky": {
+        "min": 0.3620697557926178,
+        "max": 0.6427209377288818,
+        "span": 0.28065118193626404,
+        "max_abs_step_delta": 0.0700000524520874
+      }
+    }
+  },
+  {
+    "rollout_index": 2,
+    "trace": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout2_u_trace.json",
+    "metadata": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout2_metadata.json",
+    "steps_exported": 125,
+    "episode_reward_sum": 8.743020057678223,
+    "target_summary": {
+      "thumb_abd": {
+        "min": 0.22638460993766785,
+        "max": 0.6543946266174316,
+        "span": 0.4280100166797638,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_flex": {
+        "min": 0.1517728865146637,
+        "max": 0.7000001072883606,
+        "span": 0.5482271909713745,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_tendon": {
+        "min": 0.3413127660751343,
+        "max": 0.7115095257759094,
+        "span": 0.37019675970077515,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "index": {
+        "min": 0.08122971653938293,
+        "max": 0.6412298083305359,
+        "span": 0.5600000619888306,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "middle": {
+        "min": 0.06487813591957092,
+        "max": 0.6551936268806458,
+        "span": 0.5903154611587524,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "ring": {
+        "min": 0.36808210611343384,
+        "max": 0.8221508860588074,
+        "span": 0.45406877994537354,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "pinky": {
+        "min": 0.3668212294578552,
+        "max": 0.6400001049041748,
+        "span": 0.2731788754463196,
+        "max_abs_step_delta": 0.0700000524520874
+      }
+    }
+  },
+  {
+    "rollout_index": 0,
+    "trace": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout0_u_trace.json",
+    "metadata": "analysis/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout0_metadata.json",
+    "steps_exported": 125,
+    "episode_reward_sum": 8.210245132446289,
+    "target_summary": {
+      "thumb_abd": {
+        "min": 0.2071961760520935,
+        "max": 0.6079584360122681,
+        "span": 0.40076225996017456,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_flex": {
+        "min": 0.15938079357147217,
+        "max": 0.7411807775497437,
+        "span": 0.5817999839782715,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "thumb_tendon": {
+        "min": 0.38999998569488525,
+        "max": 0.7907744646072388,
+        "span": 0.4007744789123535,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "index": {
+        "min": 0.08627426624298096,
+        "max": 0.660342276096344,
+        "span": 0.574068009853363,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "middle": {
+        "min": 0.01850944757461548,
+        "max": 0.551695704460144,
+        "span": 0.5331862568855286,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "ring": {
+        "min": 0.35604602098464966,
+        "max": 0.7247755527496338,
+        "span": 0.36872953176498413,
+        "max_abs_step_delta": 0.0700000524520874
+      },
+      "pinky": {
+        "min": 0.4278659224510193,
+        "max": 0.6732257008552551,
+        "span": 0.24535977840423584,
+        "max_abs_step_delta": 0.0700000524520874
+      }
+    }
+  }
+]

@@ -233,6 +233,8 @@ Working:
 - Exact sim traces can be replayed on real hardware.
 - Closed-loop live actor control can command dynamic motions.
 - Mapping/audit tools and telemetry logging exist.
+- Anti-trap rollout 1 exact trace has been exported and safely replayed on
+  hardware with no cube and with cube.
 
 Partially working:
 
@@ -249,7 +251,9 @@ Not solved:
 - Finger strength/contact differs from sim depending on mapping and scale.
 - The first `RealCalibrated` run was too jittery for hardware replay.
 - The smoother follow-up still wedged the cube between thumb and index in some
-  rollouts, so the current training target is an anti-trap variant.
+  rollouts.
+- The anti-trap cube replay passed telemetry safety; visual cube-rotation quality
+  still decides whether to proceed to live policy or physics identification.
 
 ## Current Best Baseline Artifacts
 
@@ -347,6 +351,34 @@ Review outcome: anti-trap is less visibly wedged than the smooth run, especially
 rollout 1, but it still uses a shallow cradle/pocket rolling strategy. Hardware
 replay should wait until this contact style is deliberately accepted.
 
+Exact anti-trap trace export and hardware replay:
+
+```text
+sim/hardware01_real_calibrated_antitrap_trace_20260707/
+```
+
+- Source env: `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`
+- Source checkpoint: `000157286400`
+- Selected trace:
+  `sim/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_u_trace.json`
+- Trace field: `u_real_order` from env-smoothed `last_act`, not raw policy
+  output.
+- Physical command order:
+  `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`
+- Replay-time scale/bias: none.
+- Dry-run passed with max trace delta `0.070`, under replay cap `0.08`.
+- No-cube log: `logs/hardware01_u_trace_replay_20260708_093016.csv`;
+  max sampled current `1436.5 mA`, max temp `35 C`, max sampled position error
+  `0.052`, no abort.
+- Cube log: `logs/hardware01_u_trace_replay_20260708_093326.csv`;
+  max sampled current `1436.5 mA`, max temp `36 C`, max sampled position error
+  `0.048`, no abort.
+
+The next decision depends on visual review of the cube run: if it showed
+plausible intermittent rolling without sustained thumb-index trapping, export
+and test the anti-trap live actor. If it mostly caged, jammed, or pushed the
+cube, start physics identification before more reward-only training.
+
 Previous smooth run details:
 
 - Run id: `aero_hardware01_real_calibrated_smooth_fresh_20260707_104654`
@@ -374,13 +406,11 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-154512-ae
 
 ## Next Safest Tasks
 
-1. Review the `RealCalibratedAntiTrap` videos in `sim/hardware01_real_calibrated_antitrap_20260707/`.
-2. Decide whether the remaining cradle/pocket strategy is acceptable for an exact trace dry-run.
-3. Export exact `u_real_order` trace only if the video review passes.
-4. Export the best actor and exact `u_real_order` trace.
-5. Replay the trace on the real mounted hand with no cube.
-6. Replay with cube only after no-cube replay is safe and plausible.
-7. Run live closed-loop control only after exact trace replay looks good.
+1. Get operator visual interpretation of the 2026-07-08 cube replay.
+2. If cube replay showed plausible rolling, export the anti-trap actor and test
+   live closed-loop control conservatively.
+3. If cube replay caged/jammed/pushed the cube, start physics identification
+   before more reward-only policy training.
 
 ## Git Notes
 

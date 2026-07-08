@@ -1,8 +1,11 @@
 # TODO.md
 
-## 1. Review `RealCalibratedAntiTrap` Videos
-- Task: Open and inspect copied rollout videos in `sim/hardware01_real_calibrated_antitrap_20260707/`.
-- Verify: Cube rotates without getting wedged tightly between thumb and index, and motion remains plausible for real hardware.
+## 1. Review 2026-07-08 Anti-Trap Cube Replay
+- Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
+- Verify: Cube rotates at least intermittently without sustained thumb-index trapping or repeated jamming.
+- Trace: `sim/hardware01_real_calibrated_antitrap_trace_20260707/hardware01_antitrap_rollout1_u_trace.json`
+- No-cube log: `logs/hardware01_u_trace_replay_20260708_093016.csv`
+- Cube log: `logs/hardware01_u_trace_replay_20260708_093326.csv`
 - Run id: `aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203`
 - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log`
 - Final checkpoint: `000157286400`
@@ -29,30 +32,23 @@ Completed monitor/copy status:
 - Smooth video review: much better rhythm and less jitter, but rollout 1 and rollout 2 often wedge the cube between thumb and index. Train anti-trap before hardware replay.
 - Anti-trap videos copied to Mac: `sim/hardware01_real_calibrated_antitrap_20260707/`.
 
-## 3. Export New Closed-Loop Actor
+## 2. Export New Closed-Loop Actor If Cube Replay Looked Good
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.
 - Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
 
-## 4. Export Exact `u_real_order` Trace
-- Task: Export at least one matching sim video and JSON `u_real_order` trace from the selected checkpoint.
-- Verify: JSON command order is `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`; video filename and trace filename share rollout id.
-
-## 5. No-Cube Real Replay
-- Task: Replay the exact trace on the mounted, clear hand without cube.
-- Verify: No abort; max current stays below `4000 mA`; temp below `60 C`; motion visually matches sim posture better than old policy.
-
-## 6. Cube Real Replay
-- Task: Replay the same trace with cube placed in the known best position.
-- Verify: Cube receives rolling torque instead of only being caged; log current/temp; stop if repeated `>4000 mA` current aborts.
-
-## 7. Live Closed-Loop Test
+## 3. Live Closed-Loop Test
 - Task: Run exported actor through `scripts/live_policy_control.py` only after exact trace looks plausible.
 - Verify: Motion remains dynamic; current logs do not show unexplained startup spikes; cube rotation improves relative to exact trace.
+
+## 4. Physics Identification If Cube Replay Did Not Look Good
+- Task: Compare real no-cube/cube motion to the exact sim rollout, then tune spring/contact/friction assumptions before more reward-only policy training.
+- Verify: Identified mismatch explains why the same trace cages/jams/pushes in reality but rotates in sim.
 
 ## Known Bugs / Risks
 - Do not double-apply the old replay scale/bias to new `RealCalibrated` traces; the calibration should already be inside the trained env/export.
 - Do not replay the first `RealCalibrated` run on hardware; use it only as evidence that smoother training is needed.
 - Do not replay the `RealCalibratedSmooth` run on hardware yet; it still uses a thumb-index trap/pinch strategy in some rollouts.
+- Do not proceed to live policy solely because telemetry passed; visual cube behavior must show plausible rolling first.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.
 - Cube can jam against index/middle if placed too low or too close to fingertips.
@@ -62,6 +58,6 @@ Completed monitor/copy status:
 ## Verification Before Calling Work Done
 - New env compiles and smoke-tests.
 - Sim video looks mechanically plausible.
-- Exact trace replay without cube is safe.
-- Exact trace replay with cube gives visible rolling attempt.
+- Exact trace replay without cube is safe. Completed 2026-07-08, max sampled current `1436.5 mA`, max temp `35 C`.
+- Exact trace replay with cube gives visible rolling attempt. Telemetry completed 2026-07-08, max sampled current `1436.5 mA`, max temp `36 C`; visual result still needs operator decision.
 - Closed-loop actor artifacts are copied to Mac with reproducible command notes.

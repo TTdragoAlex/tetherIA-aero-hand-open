@@ -1,0 +1,132 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-151205-aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203/checkpoints/000157286400",
+  "run_dir": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-151205-aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203",
+  "seed": 1,
+  "rollout_index": 1,
+  "steps_requested": 250,
+  "steps_exported": 125,
+  "physical_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "trace_field": "u_real_order",
+  "u_source": "next_state.info['last_act'], after hardware01 mapping and action_smoothing_max_delta clamp",
+  "raw_action_formula": "policy deterministic tanh output in [-1, 1]",
+  "action_repeat": 2,
+  "action_smoothing_max_delta": 0.035,
+  "reward_scales": {
+    "action_accel": -6.0,
+    "action_magnitude": -0.035,
+    "action_rate": -3.5,
+    "angvel": 1.0,
+    "coordinated_finger_participation": 0.04,
+    "energy": -0.0002,
+    "index_ring_participation": 0.1,
+    "linvel": -0.22,
+    "middle_pinky_dominance": -0.04,
+    "non_thumb_force": -0.07,
+    "pose": 0.0,
+    "stalled_force": -0.14,
+    "static_clamp": -0.18,
+    "termination": -100.0,
+    "thumb_action_accel": -8.0,
+    "thumb_action_rate": -5.0,
+    "thumb_index_pinch": -0.28,
+    "thumb_index_trap": -0.45,
+    "thumb_overcurl": -0.16,
+    "torques": 0.0
+  },
+  "episode_reward_sum": 9.411422729492188,
+  "target_summary": {
+    "thumb_abd": {
+      "min": 0.1938265562057495,
+      "max": 0.584887683391571,
+      "span": 0.39106112718582153,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "thumb_flex": {
+      "min": 0.16534322500228882,
+      "max": 0.6879174709320068,
+      "span": 0.522574245929718,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "thumb_tendon": {
+      "min": 0.3704603910446167,
+      "max": 0.7329424023628235,
+      "span": 0.3624820113182068,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "index": {
+      "min": 0.11494961380958557,
+      "max": 0.6380703449249268,
+      "span": 0.5231207609176636,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "middle": {
+      "min": 0.05459979176521301,
+      "max": 0.5800726413726807,
+      "span": 0.52547287940979,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "ring": {
+      "min": 0.2900000214576721,
+      "max": 0.6638162136077881,
+      "span": 0.37381619215011597,
+      "max_abs_step_delta": 0.0700000524520874
+    },
+    "pinky": {
+      "min": 0.3620697557926178,
+      "max": 0.6427209377288818,
+      "span": 0.28065118193626404,
+      "max_abs_step_delta": 0.0700000524520874
+    }
+  },
+  "raw_action_summary": {
+    "thumb_abd": {
+      "min": -0.7494186758995056,
+      "max": 0.6457523703575134,
+      "span": 1.395171046257019
+    },
+    "thumb_flex": {
+      "min": -0.7220291495323181,
+      "max": 0.7651715874671936,
+      "span": 1.4872007369995117
+    },
+    "thumb_tendon": {
+      "min": -0.6278362274169922,
+      "max": 0.7939390540122986,
+      "span": 1.4217753410339355
+    },
+    "index": {
+      "min": -0.8765494227409363,
+      "max": 0.8072488307952881,
+      "span": 1.6837983131408691
+    },
+    "middle": {
+      "min": -0.8961641788482666,
+      "max": 0.6847779750823975,
+      "span": 1.580942153930664
+    },
+    "ring": {
+      "min": -0.7839326858520508,
+      "max": 0.7035880088806152,
+      "span": 1.487520694732666
+    },
+    "pinky": {
+      "min": -0.48839056491851807,
+      "max": 0.6841113567352295,
+      "span": 1.1725019216537476
+    }
+  },
+  "safety_replay_defaults": {
+    "current_abort_ma": 4000.0,
+    "temperature_abort_c": 60.0
+  },
+  "do_not_apply_old_replay_calibration": true
+}
