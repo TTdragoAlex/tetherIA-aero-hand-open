@@ -179,9 +179,19 @@ def run(args: argparse.Namespace) -> int:
         }
         for row in rows
     ]
+    if args.repeat < 1:
+        raise RuntimeError("--repeat must be >= 1")
+    if args.repeat > 1:
+        base = selected
+        selected = []
+        for repeat_idx in range(args.repeat):
+            for row in base:
+                selected.append({**row, "repeat": repeat_idx})
 
     print(f"trace: {args.trace}")
     print(f"selected_steps: {len(selected)} start_step={args.start_step}")
+    if args.repeat > 1:
+        print(f"repeat: {args.repeat} loops; duration ~= {len(selected) / args.rate:.1f}s")
     print(f"rate: {args.rate:.2f} Hz playback_scale={args.playback_scale:.3f} center={args.scale_center:.3f}")
     if args.channel_scale:
         print("channel_scale:", fmt(channel_scale))
@@ -266,6 +276,7 @@ def main() -> int:
     parser.add_argument("--calibration", type=Path, default=DEFAULT_CALIBRATION_PATH)
     parser.add_argument("--start-step", type=int, default=0)
     parser.add_argument("--steps", type=int)
+    parser.add_argument("--repeat", type=int, default=1, help="Repeat the selected trace this many times without resting between loops.")
     parser.add_argument("--rate", type=float, default=20.0)
     parser.add_argument("--playback-scale", type=float, default=1.0, help="Scale around --scale-center; 1.0 is exact trace.")
     parser.add_argument("--scale-center", type=float, default=0.5)

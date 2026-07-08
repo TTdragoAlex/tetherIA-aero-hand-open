@@ -291,3 +291,22 @@ Dry-run range for this command: thumb_abd `0.346-0.884`, thumb_flex
 this as mostly working. Treat it as evidence for the next training command
 window: very low thumb flex/tendon, broad thumb abduction, high index support,
 and unchanged middle support.
+
+For a roughly one-minute replay, repeat the same trace 10 times without resting
+between loops:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --trace sim/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json \
+  --playback-scale 1.00 \
+  --channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50 \
+  --channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3 \
+  --max-step-delta 0.08 \
+  --sample-every 5 \
+  --repeat 10
+```
+
+At 20 Hz, the 125-step trace lasts about 6.25 seconds, so `--repeat 10` lasts
+about 62.5 seconds.
