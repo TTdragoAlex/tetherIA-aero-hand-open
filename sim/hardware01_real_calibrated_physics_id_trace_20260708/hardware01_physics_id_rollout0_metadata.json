@@ -1,0 +1,77 @@
+{
+  "env_name": "AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID",
+  "checkpoint_root": "/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812/checkpoints/000157286400",
+  "seed": 1,
+  "rollout_index": 0,
+  "steps_requested": 250,
+  "steps_exported": 125,
+  "real_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "trace_field": "u_real_order",
+  "u_formula": "u_real_order = next_state.info[\"last_act\"] after env hardware mapping and smoothing clamp",
+  "raw_u_field": "raw_u_real_order_before_smoothing = clip(0.5 * (raw_action + 1), 0, 1)",
+  "replay_time_scale_bias": "none; RealCalibrated env already trained with scale/bias",
+  "trace": "analysis/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json",
+  "u_summary": {
+    "thumb_abd": {
+      "min": 0.3512447476387024,
+      "max": 0.9492446184158325,
+      "mean": 0.6397848725318909,
+      "span": 0.5979998707771301
+    },
+    "thumb_flex": {
+      "min": 0.3499999940395355,
+      "max": 0.7784034013748169,
+      "mean": 0.5808389186859131,
+      "span": 0.42840340733528137
+    },
+    "thumb_tendon": {
+      "min": 0.30192965269088745,
+      "max": 0.6968833208084106,
+      "mean": 0.5145915746688843,
+      "span": 0.3949536681175232
+    },
+    "index": {
+      "min": 0.1825716197490692,
+      "max": 0.7425717711448669,
+      "mean": 0.4673415720462799,
+      "span": 0.5600001811981201
+    },
+    "middle": {
+      "min": 0.049277544021606445,
+      "max": 0.6400001049041748,
+      "mean": 0.29566487669944763,
+      "span": 0.5907225608825684
+    },
+    "ring": {
+      "min": 0.3704591691493988,
+      "max": 0.772009551525116,
+      "mean": 0.580701470375061,
+      "span": 0.40155038237571716
+    },
+    "pinky": {
+      "min": 0.40464699268341064,
+      "max": 0.7861534357070923,
+      "mean": 0.5988773703575134,
+      "span": 0.38150644302368164
+    }
+  },
+  "max_abs_step_delta_by_channel": {
+    "thumb_abd": 0.0700000524520874,
+    "thumb_flex": 0.0700000524520874,
+    "thumb_tendon": 0.0700000524520874,
+    "index": 0.0700000524520874,
+    "middle": 0.0700000524520874,
+    "ring": 0.0700000524520874,
+    "pinky": 0.0700000524520874
+  },
+  "max_abs_step_delta": 0.0700000524520874,
+  "score": 2.545226663351059
+}

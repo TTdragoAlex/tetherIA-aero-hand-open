@@ -242,3 +242,30 @@ the cube staying seated and rotating without obvious thumb-side ejection in sim.
 Next step is to export an exact smoothed `u_real_order` trace, dry-run
 `scripts/replay_hardware01_u_trace_safe.py` without old channel scale/bias, then
 decide whether a no-cube hardware replay is worth doing.
+
+PhysicsID rollout 0 exact replay was tested on hardware and stayed electrically
+safe, but visually failed: the thumb still pushed the cube off the hand. Do not
+move to live actor export from this checkpoint.
+
+If doing one more hardware diagnostic before retraining, use a deliberately
+thumb-attenuated override on rollout 0. This is not a valid base-policy replay;
+it is only a diagnostic for whether thumb lateral authority is the main failure:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --trace sim/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json \
+  --steps 120 \
+  --playback-scale 1.00 \
+  --channel-scale thumb_abd=0.50,thumb_flex=0.85,thumb_tendon=0.85 \
+  --channel-bias thumb_abd=-0.05 \
+  --max-step-delta 0.08 \
+  --sample-every 5
+```
+
+This changes rollout 0 approximately to thumb_abd `0.376-0.675`, thumb_flex
+`0.372-0.737`, and thumb_tendon `0.332-0.667`, while leaving fingers unchanged.
+If this keeps the cube seated, train the next env with explicit thumb-abduction
+range/penalty constraints. If it still ejects, prioritize thumb/palm contact
+geometry and opposing support in sim.

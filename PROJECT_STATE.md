@@ -49,6 +49,8 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Best logged reward observed: `11.654` at `144179200`
   - Copied artifacts: `sim/hardware01_real_calibrated_physics_id_20260708/`
   - Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without the obvious thumb lateral ejection seen in the real anti-trap replay.
+- Exact `PhysicsID` traces were exported from checkpoint `000157286400` under `sim/hardware01_real_calibrated_physics_id_trace_20260708/`.
+- PhysicsID rollout 0 was tested on hardware on 2026-07-08. Telemetry was safe, but the cube was still pushed off by the thumb, so this checkpoint is not a live-policy candidate.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -64,6 +66,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - The completed `RealCalibratedSmooth` rollout videos looked much smoother, but rollout 1 and rollout 2 often rotate the cube while it is wedged between thumb and index. Do not replay this policy on the real hand until an anti-trap variant is reviewed.
 - It is unknown whether the new calibration/randomization fixes the midrange joint-coupling mismatch or only makes sim videos look better. This must be checked by exact trace replay before live policy testing.
 - The `PhysicsID` videos look mechanically plausible in sim, but this is not proof of real transfer. Next step is exact `u_real_order` trace export and dry-run before any hardware movement.
+- PhysicsID exact replay failed visually in the same real-world direction: the thumb still pushes the cube off the hand. Do not test rollout 1 or 2 as live candidates; rollout 1 has higher thumb flex and rollout 2 has wider finger motion. Next work should directly reduce/penalize thumb lateral authority or fix thumb/palm contact geometry.
 
 ## Important Files
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.
@@ -75,6 +78,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/hardware01_real_calibrated_20260707/`: copied videos from the completed `RealCalibrated` run.
 - `sim/hardware01_real_calibrated_antitrap_trace_20260707/`: exact anti-trap rollout traces exported after env smoothing in physical command order.
 - `sim/hardware01_real_calibrated_physics_id_20260708/`: copied PhysicsID rollout videos, config, and training log.
+- `sim/hardware01_real_calibrated_physics_id_trace_20260708/`: exact PhysicsID `u_real_order` traces exported after env smoothing.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.
@@ -200,6 +204,16 @@ Physics-identification work:
   - Best logged reward observed: `11.654` at `144179200`
   - Copied local artifacts: `sim/hardware01_real_calibrated_physics_id_20260708/`
   - Initial video review: all three rollouts rotate the cube while keeping it seated; no obvious thumb-side ejection in the sampled frames.
+- Exact trace export:
+  - Local trace dir: `sim/hardware01_real_calibrated_physics_id_trace_20260708/`
+  - Trace field: `u_real_order = next_state.info["last_act"]` after hardware mapping and smoothing clamp.
+  - Dry-run passed for rollouts 0, 1, and 2 with max exported step delta `0.070`, under replay cap `0.08`.
+  - Rollout 0 selected as safest first hardware candidate because thumb/finger ranges were less aggressive than rollouts 1 and 2.
+- Hardware replay result:
+  - Recent logs: `logs/hardware01_u_trace_replay_20260708_145913.csv`, `logs/hardware01_u_trace_replay_20260708_150221.csv`, `logs/hardware01_u_trace_replay_20260708_150234.csv`, `logs/hardware01_u_trace_replay_20260708_150254.csv`, `logs/hardware01_u_trace_replay_20260708_150258.csv`
+  - Long replay telemetry stayed safe: max sampled current about `1430-1521 mA`, max temperature about `47-50 C`, max target/position error about `0.05`.
+  - Operator visual result: cube is still pushed off by the thumb.
+  - Interpretation: command delivery and safety are not the bottleneck; the sim still underestimates real thumb lateral ejection or overestimates opposing finger/palm support.
 
 Best recent real exact-trace replay command:
 ```bash

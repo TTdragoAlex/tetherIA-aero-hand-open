@@ -258,8 +258,9 @@ Not solved:
   rollouts.
 - The anti-trap cube replay passed telemetry safety but failed visually: the
   thumb pushed the cube laterally off the hand.
-- `PhysicsID` sim videos look better, but exact trace replay is still required
-  before live policy export.
+- `PhysicsID` sim videos looked better, but exact trace replay still failed on
+  the real hand: the thumb pushed the cube off again. Do not export a live actor
+  from this checkpoint.
 
 ## Current Best Baseline Artifacts
 
@@ -422,8 +423,10 @@ sim/hardware01_real_calibrated_physics_id_20260708/aero_hardware01_real_calibrat
 
 Review outcome: rollouts 0, 1, and 2 keep the cube seated and rotating in sim
 without obvious thumb-side ejection in sampled frames. This is promising, but it
-does not justify live actor export yet. The next gate is exact smoothed
-`u_real_order` trace export and dry-run with no old replay-time scale/bias.
+did not transfer: rollout 0 exact replay was electrically safe, but the thumb
+still pushed the cube off the hand. Do not test rollout 1 or 2 as direct live
+candidates; the next work should either run one thumb-attenuated diagnostic or
+train a new thumb-limited / anti-ejection variant.
 
 Previous smooth run details:
 
@@ -452,12 +455,11 @@ find logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-a
 
 ## Next Safest Tasks
 
-1. Export exact smoothed `u_real_order` traces from the `PhysicsID` final
-   checkpoint `000157286400`.
-2. Dry-run `scripts/replay_hardware01_u_trace_safe.py` without `--run` and
-   without old replay-time channel scale/bias.
-3. Only if the dry-run command ranges look safe, repeat the no-cube/cube replay
-   gate before any live actor export.
+1. Stop live-policy export for the current `PhysicsID` checkpoint.
+2. Optionally run one thumb-attenuated rollout 0 diagnostic to see whether
+   reducing thumb abduction/flex/tendon authority keeps the cube seated.
+3. Train the next env with explicit thumb-lateral anti-ejection constraints or
+   corrected thumb/palm support geometry, depending on the diagnostic result.
 
 ## Git Notes
 

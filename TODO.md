@@ -33,16 +33,18 @@ Completed monitor/copy status:
 - Smooth video review: much better rhythm and less jitter, but rollout 1 and rollout 2 often wedge the cube between thumb and index. Train anti-trap before hardware replay.
 - Anti-trap videos copied to Mac: `sim/hardware01_real_calibrated_antitrap_20260707/`.
 
-## 2. Export `PhysicsID` Exact Trace
-- Task: Export exact `u_real_order` rollout trace from `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID` after env smoothing.
+## 2. PhysicsID Exact Replay Result
+- Task: Use exact `u_real_order` rollout trace from `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID` after env smoothing.
 - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
-- Preferred checkpoint: start with final `000157286400`, because the copied videos appear to come from the final policy and look stable. Consider also rendering/exporting best reward checkpoint `000144179200` if final trace replay is questionable.
-- Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+- Checkpoint: `000157286400`
+- Trace dir: `sim/hardware01_real_calibrated_physics_id_trace_20260708/`
 - Verify: order is `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`; trace field is smoothed `u_real_order`; no replay-time scale/bias is applied.
+- Result: rollout 0 was safest by range and replay telemetry was safe, but the cube was still pushed off by the thumb. Do not proceed to live actor export.
 
-## 3. Dry-Run `PhysicsID` Replay
-- Task: Run `scripts/replay_hardware01_u_trace_safe.py` without `--run` on the exported trace.
-- Verify: max step delta is compatible with `--max-step-delta 0.08`, thumb/index ranges do not look extreme, and no old channel scale/bias is applied.
+## 3. Choose Next Thumb-Ejection Diagnostic
+- Option A: Run one deliberately thumb-attenuated rollout 0 diagnostic with cube to test whether reducing thumb lateral authority keeps the cube seated. This is a diagnostic override, not a deployable policy result.
+- Option B: Skip more hardware diagnostics and train a new thumb-limited / anti-ejection env that explicitly penalizes high thumb abduction/lateral cube drift and strengthens opposing finger/palm support assumptions.
+- Verify: success is not just less ejection; the cube should remain seated while receiving visible rolling torque.
 
 Completed monitor/copy/review status:
 - Remote training completed cleanly.
@@ -51,6 +53,7 @@ Completed monitor/copy/review status:
 - Best logged reward observed: `11.654` at `144179200`.
 - Videos/config/log copied to Mac: `sim/hardware01_real_calibrated_physics_id_20260708/`.
 - Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without obvious thumb lateral ejection in sampled frames.
+- Hardware result: rollout 0 still pushed the cube off by the thumb even though telemetry stayed safe. Sim still does not model the real lateral thumb failure strongly enough.
 
 ## 4. Export New Closed-Loop Actor Only After Physics Fix
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.
@@ -66,6 +69,8 @@ Completed monitor/copy/review status:
 - Do not replay the `RealCalibratedSmooth` run on hardware yet; it still uses a thumb-index trap/pinch strategy in some rollouts.
 - Do not proceed to live policy solely because telemetry passed; visual cube behavior must show plausible rolling first.
 - Do not proceed with the current anti-trap checkpoint as a live-policy candidate; replay video shows thumb lateral ejection.
+- Do not proceed with the current PhysicsID checkpoint as a live-policy candidate; exact replay still shows thumb lateral ejection on real hardware.
+- Do not test PhysicsID rollout 1 or rollout 2 as direct candidates unless deliberately diagnosing range effects; rollout 1 has more thumb flex and rollout 2 has wider finger motion.
 - Use the corrected seeded physics sweep at `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`; the earlier unseeded native sweep started from the wrong cube placement.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.

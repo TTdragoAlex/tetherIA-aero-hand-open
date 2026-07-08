@@ -83,3 +83,9 @@
 - Decision: Treat the completed `PhysicsID` videos as promising, but require exact smoothed `u_real_order` trace export and dry-run before any hardware movement or live actor export.
 - Why: Rollouts 0, 1, and 2 keep the cube seated and rotating in sim without obvious thumb-side ejection, but the previous anti-trap policy also looked plausible before failing on real contact. Exact trace replay remains the safest way to isolate sim-real physics mismatch from live feedback issues.
 - Rejected: Exporting the live actor immediately from the final checkpoint, because the real hand has already shown that visually acceptable sim contact can become thumb lateral ejection on hardware.
+
+## Decision: Stop current PhysicsID transfer after thumb ejection
+- Date: 2026-07-08
+- Decision: Do not test the current `PhysicsID` checkpoint as a live actor and do not treat rollout 1 or 2 as direct next candidates.
+- Why: Rollout 0 exact replay was electrically safe but still pushed the cube off by the thumb. Rollout 1 has a higher thumb-flex range and rollout 2 has wider finger excursions, so they are unlikely to solve a thumb-ejection failure as direct candidates.
+- Rejected: Continuing through the remaining `PhysicsID` rollouts, because the repeated failure mode is now specific enough to require a thumb-lateral diagnostic or a new thumb-limited/anti-ejection training variant.
