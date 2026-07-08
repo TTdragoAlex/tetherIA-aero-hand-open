@@ -1,0 +1,150 @@
+nohup: ignoring input
+Environment Config:
+action_gamma_max: 1.3
+action_gamma_min: 0.75
+action_mode: hardware_01_real_order_real_calibrated_physics_id
+action_repeat: 2
+action_scale:
+- 0.02
+- 0.02
+- 0.02
+- 0.02
+- 0.7
+- 0.003
+- 0.012
+action_shape_randomization: true
+action_smoothing_max_delta: 0.035
+ctrl_dt: 0.05
+cube_start_pos:
+- 0.1
+- 0.0
+- 0.05
+cube_start_pos_jitter:
+- 0.02
+- 0.02
+- 0.012
+early_termination: true
+episode_length: 500
+force_obs_scale: 100.0
+force_reward_scale: 100.0
+hardware_position_obs: true
+history_len: 1
+include_actuator_force_obs: true
+noise_config:
+  level: 1.0
+  scales:
+    joint_pos: 0.05
+    tendon_length: 0.005
+real_command_calibration: true
+real_command_to_sim_u_bias:
+- -0.12
+- -0.22
+- -0.18
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+real_command_to_sim_u_scale:
+- 0.21
+- 0.21
+- 0.315
+- 1.35
+- 1.35
+- 1.25
+- 1.2
+reward_config:
+  scales:
+    action_accel: -6.0
+    action_magnitude: -0.035
+    action_rate: -3.5
+    angvel: 1.0
+    coordinated_finger_participation: 0.08
+    cube_planar_drift: -0.8
+    energy: -0.0002
+    index_ring_participation: 0.1
+    linvel: -0.28
+    middle_pinky_dominance: -0.04
+    non_thumb_force: -0.07
+    pose: 0.0
+    stalled_force: -0.14
+    static_clamp: -0.18
+    termination: -100.0
+    thumb_action_accel: -8.0
+    thumb_action_rate: -5.0
+    thumb_index_pinch: -0.35
+    thumb_index_trap: -0.45
+    thumb_overcurl: -0.2
+    torques: 0.0
+sim_dt: 0.01
+stalled_angvel_scale: 1.0
+tendon_endpoint_randomization_frac: 0.22
+thumb_abd_endpoint_randomization: 0.06
+thumb_abd_flip: false
+thumb_abd_u0_ctrl: 0.05
+thumb_abd_u1_ctrl: 1.45
+
+PPO Training Parameters:
+action_repeat: 2
+batch_size: 256
+discounting: 0.97
+entropy_cost: 0.01
+episode_length: 500
+learning_rate: 0.0003
+network_factory:
+  policy_hidden_layer_sizes: &id001 !!python/tuple
+  - 512
+  - 256
+  - 128
+  policy_obs_key: state
+  value_hidden_layer_sizes: *id001
+  value_obs_key: privileged_state
+normalize_observations: true
+num_envs: 8192
+num_evals: 25
+num_minibatches: 32
+num_resets_per_eval: 1
+num_timesteps: 150000000
+num_updates_per_batch: 4
+reward_scaling: 1.0
+unroll_length: 40
+
+Experiment name: AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812
+Logs are being stored in: /home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812
+No checkpoint path provided, not restoring from checkpoint
+Checkpoint path: /home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812/checkpoints
+0: reward=-3.469
+6553600: reward=-1.975
+13107200: reward=-0.817
+19660800: reward=1.411
+26214400: reward=2.942
+32768000: reward=4.559
+39321600: reward=5.974
+45875200: reward=6.638
+52428800: reward=7.150
+58982400: reward=7.070
+65536000: reward=7.835
+72089600: reward=8.617
+78643200: reward=8.606
+85196800: reward=8.929
+91750400: reward=9.405
+98304000: reward=9.684
+104857600: reward=10.007
+111411200: reward=10.302
+117964800: reward=10.290
+124518400: reward=10.978
+131072000: reward=10.857
+137625600: reward=10.208
+144179200: reward=11.654
+150732800: reward=11.441
+157286400: reward=11.216
+Done training.
+Time to JIT compile: 36.413408641004935
+Time to train: 1730.2431185239693
+Starting inference...
+FPS for rendering: 10.0
+  0%|          | 0/250 [00:00<?, ?it/s] 28%|██▊       | 69/250 [00:00<00:00, 684.72it/s] 56%|█████▋    | 141/250 [00:00<00:00, 701.34it/s] 85%|████████▌ | 213/250 [00:00<00:00, 708.36it/s]100%|██████████| 250/250 [00:00<00:00, 705.36it/s]
+Rollout video saved as '/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812/rollout0.mp4'.
+  0%|          | 0/250 [00:00<?, ?it/s] 25%|██▍       | 62/250 [00:00<00:00, 619.41it/s] 51%|█████     | 127/250 [00:00<00:00, 633.87it/s] 76%|███████▋  | 191/250 [00:00<00:00, 610.27it/s]100%|██████████| 250/250 [00:00<00:00, 620.08it/s]
+Rollout video saved as '/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812/rollout1.mp4'.
+  0%|          | 0/250 [00:00<?, ?it/s] 27%|██▋       | 68/250 [00:00<00:00, 674.44it/s] 56%|█████▌    | 140/250 [00:00<00:00, 698.92it/s] 84%|████████▍ | 211/250 [00:00<00:00, 701.92it/s]100%|██████████| 250/250 [00:00<00:00, 700.28it/s]
+Rollout video saved as '/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812/rollout2.mp4'.

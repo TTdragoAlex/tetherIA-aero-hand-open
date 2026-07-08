@@ -237,6 +237,8 @@ Working:
   hardware with no cube and with cube.
 - Physics-identification tooling now exists for replaying the anti-trap exact
   trace under native MuJoCo physics variants.
+- The first `PhysicsID` training run completed and its rollout videos were
+  copied back to the Mac.
 
 Partially working:
 
@@ -254,8 +256,10 @@ Not solved:
 - The first `RealCalibrated` run was too jittery for hardware replay.
 - The smoother follow-up still wedged the cube between thumb and index in some
   rollouts.
-- The anti-trap cube replay passed telemetry safety; visual cube-rotation quality
-  still decides whether to proceed to live policy or physics identification.
+- The anti-trap cube replay passed telemetry safety but failed visually: the
+  thumb pushed the cube laterally off the hand.
+- `PhysicsID` sim videos look better, but exact trace replay is still required
+  before live policy export.
 
 ## Current Best Baseline Artifacts
 
@@ -400,9 +404,26 @@ New training env on the Ubuntu PC:
 - Uses a dedicated wider randomizer for cube/palm friction, thumb-vs-finger
   friction, tendon spring stiffness, and weak opposing finger actuation.
 - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
-- PID: `107128`
 - Log:
   `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+- Final checkpoint: `000157286400`
+- Final logged reward: `11.216`
+- Best logged reward observed: `11.654` at `144179200`
+
+Copied PhysicsID artifacts:
+
+```text
+sim/hardware01_real_calibrated_physics_id_20260708/rollout0.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/rollout1.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/rollout2.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/config.json
+sim/hardware01_real_calibrated_physics_id_20260708/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
+```
+
+Review outcome: rollouts 0, 1, and 2 keep the cube seated and rotating in sim
+without obvious thumb-side ejection in sampled frames. This is promising, but it
+does not justify live actor export yet. The next gate is exact smoothed
+`u_real_order` trace export and dry-run with no old replay-time scale/bias.
 
 Previous smooth run details:
 
@@ -416,26 +437,27 @@ Previous smooth run details:
 
 Latest documented remote run:
 
-- Environment: `AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap`
-- Run id: `aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203`
+- Environment: `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`
+- Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
 - Log:
-  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log`
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
 
 Check it from the training PC:
 
 ```bash
 cd /home/hw/aero-hand-sim
-tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_antitrap_fresh_20260707_151203.log
-find logs/AeroCubeRotateZAxisHardware01RealCalibratedAntiTrap-20260707-154512-aero_hardware01_real_calibrated_antitrap_render_20260707_154510 -maxdepth 1 -type f -name 'rollout*.mp4' -print
+tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
+find logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812 -maxdepth 1 -type f -name 'rollout*.mp4' -print
 ```
 
 ## Next Safest Tasks
 
-1. Monitor the `PhysicsID` training run.
-2. Copy generated rollout videos back to
-   `sim/hardware01_real_calibrated_physics_id_YYYYMMDD/`.
-3. Only if videos avoid thumb lateral ejection, export an exact trace and repeat
-   the no-cube/cube replay gate.
+1. Export exact smoothed `u_real_order` traces from the `PhysicsID` final
+   checkpoint `000157286400`.
+2. Dry-run `scripts/replay_hardware01_u_trace_safe.py` without `--run` and
+   without old replay-time channel scale/bias.
+3. Only if the dry-run command ranges look safe, repeat the no-cube/cube replay
+   gate before any live actor export.
 
 ## Git Notes
 

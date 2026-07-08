@@ -1,0 +1,93 @@
+{
+    "action_gamma_max": 1.3,
+    "action_gamma_min": 0.75,
+    "action_mode": "hardware_01_real_order_real_calibrated_physics_id",
+    "action_repeat": 2,
+    "action_scale": [
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.7,
+        0.003,
+        0.012
+    ],
+    "action_shape_randomization": true,
+    "action_smoothing_max_delta": 0.035,
+    "ctrl_dt": 0.05,
+    "cube_start_pos": [
+        0.1,
+        0.0,
+        0.05
+    ],
+    "cube_start_pos_jitter": [
+        0.02,
+        0.02,
+        0.012
+    ],
+    "early_termination": true,
+    "episode_length": 500,
+    "force_obs_scale": 100.0,
+    "force_reward_scale": 100.0,
+    "hardware_position_obs": true,
+    "history_len": 1,
+    "include_actuator_force_obs": true,
+    "noise_config": {
+        "level": 1.0,
+        "scales": {
+            "joint_pos": 0.05,
+            "tendon_length": 0.005
+        }
+    },
+    "real_command_calibration": true,
+    "real_command_to_sim_u_bias": [
+        -0.12,
+        -0.22,
+        -0.18,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "real_command_to_sim_u_scale": [
+        0.21,
+        0.21,
+        0.315,
+        1.35,
+        1.35,
+        1.25,
+        1.2
+    ],
+    "reward_config": {
+        "scales": {
+            "action_accel": -6.0,
+            "action_magnitude": -0.035,
+            "action_rate": -3.5,
+            "angvel": 1.0,
+            "coordinated_finger_participation": 0.08,
+            "cube_planar_drift": -0.8,
+            "energy": -0.0002,
+            "index_ring_participation": 0.1,
+            "linvel": -0.28,
+            "middle_pinky_dominance": -0.04,
+            "non_thumb_force": -0.07,
+            "pose": 0.0,
+            "stalled_force": -0.14,
+            "static_clamp": -0.18,
+            "termination": -100.0,
+            "thumb_action_accel": -8.0,
+            "thumb_action_rate": -5.0,
+            "thumb_index_pinch": -0.35,
+            "thumb_index_trap": -0.45,
+            "thumb_overcurl": -0.2,
+            "torques": 0.0
+        }
+    },
+    "sim_dt": 0.01,
+    "stalled_angvel_scale": 1.0,
+    "tendon_endpoint_randomization_frac": 0.22,
+    "thumb_abd_endpoint_randomization": 0.06,
+    "thumb_abd_flip": false,
+    "thumb_abd_u0_ctrl": 0.05,
+    "thumb_abd_u1_ctrl": 1.45
+}

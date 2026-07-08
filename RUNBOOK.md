@@ -224,3 +224,21 @@ exporting/replaying a trace.
 The anti-trap real replay was electrically safe but visually failed: the thumb
 pushed the cube laterally off the hand. Use the physics-ID variant before any
 new live-policy attempt.
+
+Latest copied `PhysicsID` artifacts:
+
+```text
+sim/hardware01_real_calibrated_physics_id_20260708/rollout0.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/rollout1.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/rollout2.mp4
+sim/hardware01_real_calibrated_physics_id_20260708/config.json
+sim/hardware01_real_calibrated_physics_id_20260708/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
+```
+
+The `PhysicsID` training run completed cleanly. Final checkpoint is
+`000157286400`, final logged reward is `11.216`, and best logged reward observed
+was `11.654` at `144179200`. Initial visual review of rollouts 0, 1, and 2 shows
+the cube staying seated and rotating without obvious thumb-side ejection in sim.
+Next step is to export an exact smoothed `u_real_order` trace, dry-run
+`scripts/replay_hardware01_u_trace_safe.py` without old channel scale/bias, then
+decide whether a no-cube hardware replay is worth doing.

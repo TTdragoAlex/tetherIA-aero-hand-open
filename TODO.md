@@ -33,16 +33,24 @@ Completed monitor/copy status:
 - Smooth video review: much better rhythm and less jitter, but rollout 1 and rollout 2 often wedge the cube between thumb and index. Train anti-trap before hardware replay.
 - Anti-trap videos copied to Mac: `sim/hardware01_real_calibrated_antitrap_20260707/`.
 
-## 2. Monitor `PhysicsID` Training
-- Task: Check remote PID/log/checkpoints/videos for `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`.
+## 2. Export `PhysicsID` Exact Trace
+- Task: Export exact `u_real_order` rollout trace from `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID` after env smoothing.
 - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
-- PID: `107128`
+- Preferred checkpoint: start with final `000157286400`, because the copied videos appear to come from the final policy and look stable. Consider also rendering/exporting best reward checkpoint `000144179200` if final trace replay is questionable.
 - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
-- Verify: Process alive or completed cleanly; reward progresses; rollout videos appear.
+- Verify: order is `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`; trace field is smoothed `u_real_order`; no replay-time scale/bias is applied.
 
-## 3. Review `PhysicsID` Videos
-- Task: Copy generated rollout videos to `sim/hardware01_real_calibrated_physics_id_YYYYMMDD/` and inspect them.
-- Verify: Cube does not get pushed laterally off the palm by the thumb; rotation comes from opposing finger support, not thumb ejection or thumb-index trapping.
+## 3. Dry-Run `PhysicsID` Replay
+- Task: Run `scripts/replay_hardware01_u_trace_safe.py` without `--run` on the exported trace.
+- Verify: max step delta is compatible with `--max-step-delta 0.08`, thumb/index ranges do not look extreme, and no old channel scale/bias is applied.
+
+Completed monitor/copy/review status:
+- Remote training completed cleanly.
+- Final checkpoint: `000157286400`.
+- Final logged reward: `11.216`.
+- Best logged reward observed: `11.654` at `144179200`.
+- Videos/config/log copied to Mac: `sim/hardware01_real_calibrated_physics_id_20260708/`.
+- Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without obvious thumb lateral ejection in sampled frames.
 
 ## 4. Export New Closed-Loop Actor Only After Physics Fix
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_calibrated_<step>/`.

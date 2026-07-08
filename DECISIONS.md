@@ -77,3 +77,9 @@
 - Decision: Add `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID` and train it before any live-policy export.
 - Why: The seeded native sweep showed the real-like bad direction is thumb-dominant contact with weak opposing finger support. Soft spring changes alone were not enough to explain the failure. The new variant adds lateral cube-drift cost and randomizes palm/cube friction, thumb-vs-finger friction, tendon spring stiffness, and weak finger actuation.
 - Rejected: Directly testing the anti-trap live actor, because the exact trace already showed thumb lateral ejection on the real hand.
+
+## Decision: Gate PhysicsID transfer through exact trace replay
+- Date: 2026-07-08
+- Decision: Treat the completed `PhysicsID` videos as promising, but require exact smoothed `u_real_order` trace export and dry-run before any hardware movement or live actor export.
+- Why: Rollouts 0, 1, and 2 keep the cube seated and rotating in sim without obvious thumb-side ejection, but the previous anti-trap policy also looked plausible before failing on real contact. Exact trace replay remains the safest way to isolate sim-real physics mismatch from live feedback issues.
+- Rejected: Exporting the live actor immediately from the final checkpoint, because the real hand has already shown that visually acceptable sim contact can become thumb lateral ejection on hardware.

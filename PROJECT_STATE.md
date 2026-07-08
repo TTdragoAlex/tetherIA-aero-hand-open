@@ -42,6 +42,13 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - Remote source diff and changed files copied under `sim/physics_id_remote_source_20260708/`.
 - New remote training env implemented on Ubuntu PC: `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`.
 - `PhysicsID` inherits anti-trap, adds `reward/cube_planar_drift`, and uses a dedicated wider randomizer for palm/cube friction, thumb-vs-finger contact balance, tendon spring stiffness, and weak opposing finger actuation.
+- `PhysicsID` training completed cleanly on 2026-07-08:
+  - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+  - Final checkpoint: `000157286400`
+  - Final logged reward: `11.216`
+  - Best logged reward observed: `11.654` at `144179200`
+  - Copied artifacts: `sim/hardware01_real_calibrated_physics_id_20260708/`
+  - Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without the obvious thumb lateral ejection seen in the real anti-trap replay.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -56,6 +63,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - The completed `RealCalibrated` rollout videos looked too jittery: cube rotation came with bouncing, trapped-object impacts, and frequent thumb motion. Do not replay this policy on the real hand.
 - The completed `RealCalibratedSmooth` rollout videos looked much smoother, but rollout 1 and rollout 2 often rotate the cube while it is wedged between thumb and index. Do not replay this policy on the real hand until an anti-trap variant is reviewed.
 - It is unknown whether the new calibration/randomization fixes the midrange joint-coupling mismatch or only makes sim videos look better. This must be checked by exact trace replay before live policy testing.
+- The `PhysicsID` videos look mechanically plausible in sim, but this is not proof of real transfer. Next step is exact `u_real_order` trace export and dry-run before any hardware movement.
 
 ## Important Files
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.
@@ -66,6 +74,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/hardware01_exact_rollout_trace_20260706/`: exact sim rollout videos and `u_real_order` traces for replay/compare.
 - `sim/hardware01_real_calibrated_20260707/`: copied videos from the completed `RealCalibrated` run.
 - `sim/hardware01_real_calibrated_antitrap_trace_20260707/`: exact anti-trap rollout traces exported after env smoothing in physical command order.
+- `sim/hardware01_real_calibrated_physics_id_20260708/`: copied PhysicsID rollout videos, config, and training log.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.
@@ -182,11 +191,15 @@ Physics-identification work:
   - `py_compile` on changed files.
   - Env load: action mode `hardware_01_real_order_real_calibrated_physics_id`, action repeat `2`, smoothing max delta `0.035`, actor obs shape `(21,)`, `reward/cube_planar_drift` present.
   - Dedicated randomizer output shapes: `geom_friction (2, 98, 3)`, `tendon_stiffness (2, 20)`.
-- Training started:
-  - PID: `107128`
+- Training completed:
   - Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
   - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
   - Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+  - Final checkpoint: `000157286400`
+  - Final logged reward: `11.216`
+  - Best logged reward observed: `11.654` at `144179200`
+  - Copied local artifacts: `sim/hardware01_real_calibrated_physics_id_20260708/`
+  - Initial video review: all three rollouts rotate the cube while keeping it seated; no obvious thumb-side ejection in the sampled frames.
 
 Best recent real exact-trace replay command:
 ```bash
