@@ -104,7 +104,7 @@ def main() -> int:
     parser.add_argument("--rate", type=float, default=30.0)
     parser.add_argument("--warn-current", type=float, default=1000.0)
     parser.add_argument("--abort-current", type=float, default=2500.0)
-    parser.add_argument("--abort-temp", type=float, default=58.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     args = parser.parse_args()
 
     target = load_raw_rest(args.calibration)

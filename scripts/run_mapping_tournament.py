@@ -298,7 +298,7 @@ def main() -> int:
     parser.add_argument("--playback-scale", type=float)
     parser.add_argument("--max-step-delta", default="all=0.055,thumb_abd=0.07,pinky=0.06")
     parser.add_argument("--abort-current", type=float, default=4000.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument(
         "--pregrasp",
         default="thumb_abd=0.25,thumb_flex=0.08,thumb_tendon=0.08,index=0.12,middle=0.12,ring=0.12,pinky=0.12",

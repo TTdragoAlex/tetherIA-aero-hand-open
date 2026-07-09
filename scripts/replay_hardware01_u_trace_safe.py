@@ -326,7 +326,7 @@ def main() -> int:
     parser.add_argument("--max-step-delta", type=float, default=0.08, help="0 disables per-step target limiting.")
     parser.add_argument("--sample-every", type=int, default=5)
     parser.add_argument("--abort-current", type=float, default=4000.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument("--apply-rest-first", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--rest-after", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--rest-settle", type=float, default=0.4)

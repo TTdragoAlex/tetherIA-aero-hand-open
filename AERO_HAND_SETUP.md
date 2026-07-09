@@ -142,7 +142,7 @@ Actual movement test:
 ./.venv/bin/python scripts/gesture_smoke_test.py --run
 ```
 
-The script warns above 450 mA by default and aborts above 2500 mA or 60 C. Short current spikes are expected; sustained heat is the stronger danger signal. Keep the GUI disconnected while running Python scripts so the serial port is not already in use.
+The script warns above 450 mA by default and aborts above 2500 mA or 65 C. Short current spikes are expected; sustained heat is the stronger danger signal. Keep the GUI disconnected while running Python scripts so the serial port is not already in use.
 
 ## TetherIA Gesture Sequence
 
@@ -172,7 +172,7 @@ Current interpretation for this hand:
 > 1500 mA: bad if sustained, reduce pose or stop
 > 2500 mA: hard abort threshold
 Temp >= 55 C: warning
-Temp >= 60 C: stop
+Temp >= 65 C: stop
 ```
 
 ## Auto-Scaling Gesture Test
@@ -198,7 +198,7 @@ start scale: 1.00
 minimum scale: 0.55
 step: 0.05
 accept if max current <= 1500 mA and max temp <= 50 C
-hard abort if current >= 2500 mA or temp >= 60 C
+hard abort if current >= 2500 mA or temp >= 65 C
 ```
 
 ## Named Gesture API
@@ -268,7 +268,7 @@ Default thresholds:
 ```text
 target/report current: 1500 mA
 console warning: 800 mA
-hard abort: 3500 mA or 60 C
+hard abort: 3500 mA or 65 C
 ```
 
 The hard abort is intentionally higher than the target line so the profiler can

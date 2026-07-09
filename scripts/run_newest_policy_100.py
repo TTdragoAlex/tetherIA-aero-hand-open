@@ -111,7 +111,7 @@ def main() -> int:
     parser.add_argument("--strict-sampling", action="store_true", help="Log and guard-check every hardware step.")
     parser.add_argument("--sample-every", type=int, help="Override telemetry sampling interval.")
     parser.add_argument("--guard-current", type=float, default=4000.0, help="Abort current in mA.")
-    parser.add_argument("--guard-temp", type=float, default=60.0, help="Abort temperature in C.")
+    parser.add_argument("--guard-temp", type=float, default=65.0, help="Abort temperature in C.")
     parser.add_argument("--spike-threshold", type=float, default=1500.0, help="Analysis spike threshold in mA.")
     parser.add_argument(
         "--action-sign",

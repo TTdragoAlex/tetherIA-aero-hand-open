@@ -4,7 +4,7 @@
 - Real hand is connected to Mac by USB serial only when explicitly testing.
 - Hand must be mounted and clear before any `--run` command.
 - Disconnect hand when not needed if servo noise is uncomfortable.
-- Safety defaults: current abort `4000 mA`, temperature abort `60 C`.
+- Safety defaults: current abort `4000 mA`, temperature abort `65 C`.
 - Real command order: `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`.
 
 ## Mac Setup From Scratch

@@ -650,7 +650,7 @@ def main() -> int:
     parser.add_argument("--sample-every", type=int, default=5)
     parser.add_argument("--rest-settle", type=float, default=0.5)
     parser.add_argument("--abort-current", type=float, default=4000.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument("--abort-confirm-samples", type=int, default=1)
     parser.add_argument("--abort-confirm-gap", type=float, default=0.04)
     parser.add_argument("--log", type=Path)

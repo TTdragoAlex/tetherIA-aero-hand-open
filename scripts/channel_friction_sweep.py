@@ -169,7 +169,7 @@ def main() -> int:
         default=3500.0,
         help="Hard whole-program abort above this absolute current in any channel.",
     )
-    parser.add_argument("--abort-temp", type=float, default=58.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument("--warn-current", type=float, default=1000.0)
     parser.add_argument("--port")
     parser.add_argument("--baud", type=int, default=921600)

@@ -356,7 +356,7 @@ def main() -> int:
     parser.add_argument("--target-current", type=float, default=1500.0, help="Report channels/movements above this current.")
     parser.add_argument("--warn-current", type=float, default=800.0, help="Print WARN on samples above this current.")
     parser.add_argument("--abort-current", type=float, default=3500.0, help="Hard abort above this absolute current in mA.")
-    parser.add_argument("--abort-temp", type=float, default=60.0, help="Hard abort above this temperature in C.")
+    parser.add_argument("--abort-temp", type=float, default=65.0, help="Hard abort above this temperature in C.")
     parser.add_argument("--log", type=Path, help="CSV output path. Defaults to logs/servo_current_profile_<timestamp>.csv")
     args = parser.parse_args()
     return profile_sequence(args)

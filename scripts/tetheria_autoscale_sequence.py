@@ -208,7 +208,7 @@ def main() -> int:
     parser.add_argument("--hard-current", type=float, default=2500.0, help="Abort an attempt immediately above this absolute current mA.")
     parser.add_argument("--warn-current", type=float, default=450.0, help="Warn above this absolute current in mA.")
     parser.add_argument("--warn-temp", type=float, default=55.0, help="Warn above this temperature in C.")
-    parser.add_argument("--abort-temp", type=float, default=60.0, help="Abort an attempt immediately above this temperature C.")
+    parser.add_argument("--abort-temp", type=float, default=65.0, help="Abort an attempt immediately above this temperature C.")
     parser.add_argument("--rate", type=float, default=50.0, help="Command rate while interpolating gestures.")
     parser.add_argument("--settle", type=float, default=0.15, help="Seconds to wait before telemetry after each gesture.")
     parser.add_argument("--initial-settle", type=float, default=0.5, help="Seconds to wait after the first open-palm command.")

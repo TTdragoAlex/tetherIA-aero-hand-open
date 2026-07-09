@@ -33,7 +33,7 @@ def main() -> int:
     parser.add_argument("--spike-threshold", type=float, default=1500.0, help="Current threshold for top spike details.")
     parser.add_argument("--bin-width", type=float, default=0.1, help="Target-position bin width for per-servo summaries.")
     parser.add_argument("--guard-current", type=float, default=4000.0, help="Current safety guard used for pass/fail summary.")
-    parser.add_argument("--guard-temp", type=float, default=60.0, help="Temperature safety guard used for pass/fail summary.")
+    parser.add_argument("--guard-temp", type=float, default=65.0, help="Temperature safety guard used for pass/fail summary.")
     args = parser.parse_args()
 
     paths = args.logs

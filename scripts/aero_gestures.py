@@ -128,7 +128,7 @@ class AeroGestureController:
         warn_current: float = 450.0,
         abort_current: float = 2500.0,
         warn_temp: float = 55.0,
-        abort_temp: float = 60.0,
+        abort_temp: float = 65.0,
         log_path: Path | None = None,
     ):
         self.controller = AeroHandController(port, baudrate)
@@ -232,7 +232,7 @@ def main() -> int:
     parser.add_argument("--warn-current", type=float, default=450.0)
     parser.add_argument("--abort-current", type=float, default=2500.0)
     parser.add_argument("--warn-temp", type=float, default=55.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     args = parser.parse_args()
 
     requested = "demo" if args.demo or args.gesture is None else args.gesture

@@ -28,7 +28,7 @@ general closed-loop policy:
 - Do not move the physical hand unless it is connected, mounted, and clear.
 - Hardware-moving scripts dry-run by default. Add `--run` only when ready.
 - Current abort at `4000 mA` unless explicitly testing safety itself.
-- Temperature abort at `60 C` unless explicitly testing safety itself (Feetech lists the motors can go up 85 C).
+- Temperature abort at `65 C` unless explicitly testing safety itself (Feetech lists the motors can go up 85 C).
 - Physical command order is:
   `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`
 

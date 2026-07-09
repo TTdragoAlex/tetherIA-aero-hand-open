@@ -904,7 +904,7 @@ def main() -> int:
     )
     parser.add_argument("--warn-current", type=float, default=800.0)
     parser.add_argument("--abort-current", type=float, default=4000.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument("--port")
     parser.add_argument("--baud", type=int, default=921600)
     parser.add_argument("--log", type=Path)

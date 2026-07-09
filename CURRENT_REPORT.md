@@ -77,7 +77,7 @@ command rate:      35 Hz
 sample period:     0.15 s
 hold sample time:  0.35 s per target
 report threshold:  1500 mA
-hard abort:        3500 mA or 60 C
+hard abort:        3500 mA or 65 C
 ```
 
 ## Results

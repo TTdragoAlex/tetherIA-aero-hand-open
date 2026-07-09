@@ -58,7 +58,7 @@ Default safety aborts:
 
 ```text
 current: 4000 mA
-temperature: 60 C
+temperature: 65 C
 ```
 
 Real-hand tests should log commands, positions, currents, temperatures, and

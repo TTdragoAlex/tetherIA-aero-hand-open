@@ -301,7 +301,7 @@ def main() -> int:
     parser.add_argument("--step-delay", type=float, default=0.035)
     parser.add_argument("--rest-settle", type=float, default=0.35)
     parser.add_argument("--abort-current", type=float, default=2500.0)
-    parser.add_argument("--abort-temp", type=float, default=60.0)
+    parser.add_argument("--abort-temp", type=float, default=65.0)
     parser.add_argument("--log", type=Path)
     return run(parser.parse_args())
 

@@ -124,7 +124,7 @@ def main() -> int:
     parser.add_argument("--warn-current", type=float, default=450.0, help="Warn above this absolute current in mA.")
     parser.add_argument("--warn-temp", type=float, default=55.0, help="Warn above this temperature in C.")
     parser.add_argument("--abort-current", type=float, default=2500.0, help="Abort above this absolute current in mA.")
-    parser.add_argument("--abort-temp", type=float, default=60.0, help="Abort above this temperature in C.")
+    parser.add_argument("--abort-temp", type=float, default=65.0, help="Abort above this temperature in C.")
     args = parser.parse_args()
     return run_sequence(args)
 
