@@ -59,6 +59,8 @@ failure on exact traces before training another reward-only policy variant.
 - `aero_hand_calibration.json`: Current Mac-side raw rest/open calibration.
 - `PROJECT_STATE.md`, `DECISIONS.md`, `TODO.md`, `RUNBOOK.md`: Current handoff,
   decisions, next tasks, and operator commands.
+- `PROBLEM_FIX_LOG.md`: Chronological problem/attempt/fix history explaining
+  why the current sim-to-real approach looks the way it does.
 - `ARTIFACT_INDEX.md`: Chronological guide to copied sim videos, traces, logs,
   and which artifacts are still useful.
 
