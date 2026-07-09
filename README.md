@@ -38,9 +38,11 @@ remaining issue is sim-to-real transfer. Current policies can touch and move the
 cube, but the real hand usually cages or pushes it instead of producing the
 rolling torque seen in sim videos.
 
-Current hypothesis: the transfer layer is mostly working; the larger mismatch is
-in sim environment assumptions, contact geometry, thumb/finger posture, and
-training rewards.
+Current hypothesis: command replay is safe enough to debug, but the simulator is
+not yet physically honest enough. Policies that look good in sim still fail on
+the real hand, usually by trapping, caging, or pushing the cube away. The next
+main work is sim-real identification: make the simulator reproduce the real
+failure on exact traces before training another reward-only policy variant.
 
 ## Repository Layout
 
@@ -57,6 +59,8 @@ training rewards.
 - `aero_hand_calibration.json`: Current Mac-side raw rest/open calibration.
 - `PROJECT_STATE.md`, `DECISIONS.md`, `TODO.md`, `RUNBOOK.md`: Current handoff,
   decisions, next tasks, and operator commands.
+- `ARTIFACT_INDEX.md`: Chronological guide to copied sim videos, traces, logs,
+  and which artifacts are still useful.
 
 The Ubuntu training PC source lives outside this repository:
 
@@ -66,6 +70,36 @@ hw@192.168.9.63:/home/hw/aero-hand-sim
 
 That remote source is not git-controlled, so create timestamped backups before
 editing it.
+
+## How To Read The Artifacts
+
+Most simulation videos are stored under `sim/` in folders named with the
+experiment and date. Dates use `YYYYMMDD`; for example,
+`hardware01_real_calibrated_physics_id_20260708` is the PhysicsID run from
+2026-07-08.
+
+Inside one experiment folder, `rollout0.mp4`, `rollout1.mp4`, and `rollout2.mp4`
+are separate rendered evaluation episodes from the same checkpoint. They are not
+globally meaningful names; always read them together with the folder name.
+
+For a chronological map of the important folders and what each one proved, read
+`ARTIFACT_INDEX.md`.
+
+Trace folders contain replayable `u_real_order` JSON commands in physical hand
+order:
+
+```text
+[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]
+```
+
+The current best real-hand fitted replay is packaged as:
+
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+Add `--run` only when the hand is connected, mounted, and clear.
 
 
 ## Confirmed Sim Action Facts
@@ -428,31 +462,46 @@ still pushed the cube off the hand. Do not test rollout 1 or 2 as direct live
 candidates; the next work should either run one thumb-attenuated diagnostic or
 train a new thumb-limited / anti-ejection variant.
 
-Latest operator-tuned replay result: PhysicsID rollout 0 became mostly working
-on the real hand when replayed with very low thumb flex/tendon and a high
-compressed index baseline:
+Latest operator-tuned replay result: PhysicsID rollout 0 became the best
+real-hand open-loop baseline when replayed with very low thumb flex/tendon,
+raised index support, raised middle support, and a small pinky bias. This is now
+packaged as the named preset `physics_id_rollout0_real_hand_fitted`:
 
-```text
-channel_scale = thumb_abd=0.90, thumb_flex=0.5, thumb_tendon=0.6, index=0.50
-channel_bias  = thumb_abd=-0.02, thumb_flex=-0.32, thumb_tendon=-0.14, index=0.3
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --preset physics_id_rollout0_real_hand_fitted
 ```
 
-This maps the first 120 steps to thumb flex `0.105-0.319`, thumb tendon
-`0.241-0.478`, and index `0.641-0.921`. Treat this as a command-window target
-for the next training variant, not as the final replay-only solution.
+Preset details:
 
-The next training variant is now running:
+```text
+channel_scale = thumb_abd=0.90, thumb_flex=0.5, thumb_tendon=0.6, index=0.50, middle=0.7
+channel_bias  = thumb_abd=-0.04, thumb_flex=-0.32, thumb_tendon=-0.14, index=0.34, middle=0.12, pinky=0.04
+```
+
+Dry-run ranges: thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`,
+thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle `0.304-0.718`,
+ring `0.370-0.772`, pinky `0.445-0.826`.
+
+This is a fitted open-loop replay, not a trained closed-loop actor.
+
+RealTunedWindow follow-up:
 
 - Environment: `AeroCubeRotateZAxisHardware01RealTunedWindow`
 - Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
-- Log:
-  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
+- Final checkpoint: `000157286400`
+- Final/best logged reward: `6.621`
+- Copied videos/config/log:
+  `sim/hardware01_real_tuned_window_20260708/`
+- Copied exact traces:
+  `sim/hardware01_real_tuned_window_trace_20260708/`
 - Source snapshot:
   `sim/real_tuned_window_remote_source_20260708/`
 
-`RealTunedWindow` bakes the operator-tuned replay transform into the training
-command calibration and adds penalties for ring-pocket trapping and leaving the
-real-working command window.
+Outcome: RealTunedWindow looked plausible in sim, but real replay still failed
+with the same trapping/ejection behavior. Do not export this live actor. This is
+the main evidence that the next work should be sim-real identification rather
+than another sim-success reward variant.
 
 Previous smooth run details:
 
@@ -464,27 +513,30 @@ Previous smooth run details:
 
 ## Remote Training Run
 
-Latest documented remote run:
+Latest completed remote run:
 
-- Environment: `AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID`
-- Run id: `aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812`
+- Environment: `AeroCubeRotateZAxisHardware01RealTunedWindow`
+- Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
 - Log:
-  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log`
+  `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
 
 Check it from the training PC:
 
 ```bash
 cd /home/hw/aero-hand-sim
-tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
-find logs/AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID-20260708-104814-aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812 -maxdepth 1 -type f -name 'rollout*.mp4' -print
+tail -120 runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log
+find logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830 -maxdepth 1 -type f -name 'rollout*.mp4' -print
 ```
 
 ## Next Safest Tasks
 
-1. Monitor `AeroCubeRotateZAxisHardware01RealTunedWindow`.
-2. Copy and review generated rollout videos once the run completes.
-3. Export exact smoothed traces from the best/final tuned checkpoint before any
-   live actor export.
+1. Build a sim-real identification replay harness around exact traces.
+2. Make the simulator reproduce the real trapping/ejection failure before more
+   policy training.
+3. Use `physics_id_rollout0_real_hand_fitted` as the current real-hand fitted
+   open-loop baseline.
+4. Only return to policy training after the modified sim ranks failed and
+   manually fitted traces in the same direction as the real hand.
 
 ## Git Notes
 

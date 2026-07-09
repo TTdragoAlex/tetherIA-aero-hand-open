@@ -1,0 +1,88 @@
+# Artifact Index
+
+This file is a plain-English map for the copied simulation videos, traces, and
+logs. It is meant for readers who are new to the project and do not already know
+which `rollout0.mp4` belongs to which experiment.
+
+## Naming Rules
+
+- Dates in folder names use `YYYYMMDD`.
+- `rollout0.mp4`, `rollout1.mp4`, and `rollout2.mp4` are usually three sampled
+  evaluation rollouts from the same training checkpoint.
+- `_trace_` folders contain JSON command traces that can be replayed on the real
+  hand with `scripts/replay_hardware01_u_trace_safe.py`.
+- `u_trace.json` files use the real hardware order:
+  `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`.
+- `config.json` and `*.log` files document the training configuration and remote
+  training log copied from the Ubuntu training PC.
+- Some local file modification times are later than the run date because videos
+  were copied from the training PC to the Mac after training completed.
+
+## Current Best Real-Hand Replay
+
+The best labeled real-hand open-loop replay is:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+This is not a trained closed-loop policy. It is a named replay preset for the
+current best fitted exact trace:
+
+- Source trace:
+  `sim/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json`
+- Scale:
+  `thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7`
+- Bias:
+  `thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`
+- Dry-run command ranges:
+  thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`,
+  thumb_tendon `0.241-0.478`, index `0.681-0.961`,
+  middle `0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`.
+
+## Main Experiment Timeline
+
+| Date | Folder | What It Is | Outcome |
+| --- | --- | --- | --- |
+| 2026-06-29 | `sim/actuator_diagnostics/` | Per-actuator sign/range videos from the original sim action space. | Helped identify action sign/order confusion. |
+| 2026-07-03 | `sim/hardware01_action_diagnostics/` | Hardware-order `u=0..1` diagnostic videos for each channel. | Established the real-order channel convention used later. |
+| 2026-07-06 | `sim/hardware01_randomized_20260706/` and `sim/hardware01_randomized_continue*_20260706/` | Early randomized hardware01 training runs. | Useful baselines, not final transfer candidates. |
+| 2026-07-06 | `sim/hardware01_efficient_*_20260706/` | Efficient hardware01 policy variants. | Produced preserved baseline actor and videos. |
+| 2026-07-06 | `sim/hardware01_exact_rollout_trace_20260706/` | Exact `u_real_order` traces and matching videos from the old efficient policy. | Exact trace replay became the main transfer-debug method. |
+| 2026-07-07 | `sim/hardware01_real_calibrated_20260707/` | First real-calibrated training run. | Sim rotated the cube but was too jittery/bouncy for hardware. |
+| 2026-07-07 | `sim/hardware01_real_calibrated_smooth_20260707/` | Smooth variant with action slew limiting and stronger smoothness costs. | Smoother, but often used thumb-index wedging. |
+| 2026-07-07 | `sim/hardware01_real_calibrated_antitrap_20260707/` | Smooth plus anti-trap penalties. | Better in sim, but still cradle/pocket-like. |
+| 2026-07-07 | `sim/hardware01_real_calibrated_antitrap_trace_20260707/` | Exact anti-trap traces exported after env smoothing. | Hardware replay was electrically safe but visually failed: thumb pushed cube off. |
+| 2026-07-08 | `sim/physics_id_antitrap_rollout1_native_seeded_20260708/` | Seeded native MuJoCo physics sweep replaying anti-trap rollout 1. | Suggested thumb-dominant contact plus weak opposing support as a failure direction. |
+| 2026-07-08 | `sim/physics_id_remote_source_20260708/` | Source snapshot and patch for the PhysicsID environment. | Documents the remote sim changes. |
+| 2026-07-08 | `sim/hardware01_real_calibrated_physics_id_20260708/` | PhysicsID training videos/config/log. | Looked good in sim, but exact replay still pushed the cube off in reality. |
+| 2026-07-08 | `sim/hardware01_real_calibrated_physics_id_trace_20260708/` | Exact PhysicsID traces exported after smoothing. | Source for the current best real-hand-fitted replay preset. |
+| 2026-07-08/09 | `sim/real_tuned_window_remote_source_20260708/` | Source snapshot and patch for RealTunedWindow. | Documents training the operator-fitted command window into sim. |
+| 2026-07-09 | `sim/hardware01_real_tuned_window_20260708/` | RealTunedWindow videos/config/log copied to the Mac. | Looked plausible in sim, but real replay still failed. |
+| 2026-07-09 | `sim/hardware01_real_tuned_window_trace_20260708/` | Exact RealTunedWindow traces. | Dry-run passed; real replay failure confirmed sim-real mismatch. |
+
+## How To Interpret A `rollout*.mp4`
+
+Do not compare `rollout0.mp4` files across folders as if they are the same
+policy. The folder name is the experiment identity. For example:
+
+- `sim/hardware01_real_calibrated_20260707/rollout0.mp4` is the first sampled
+  video from the first real-calibrated run.
+- `sim/hardware01_real_calibrated_physics_id_20260708/rollout0.mp4` is the first
+  sampled video from the later PhysicsID run.
+
+Within one folder, `rollout0`, `rollout1`, and `rollout2` are usually the three
+rendered evaluation episodes from the same checkpoint. They are useful for
+checking whether a policy has consistent behavior or only succeeds in one seed.
+
+## Current Conclusion
+
+The simulator can now produce many policies that look plausible in video, but
+those policies repeatedly fail on the real hand by trapping, caging, or pushing
+the cube away. The next main work is therefore not another reward-only training
+variant. The next main work is sim-real identification: replay exact traces in
+sim and tune geometry/contact/compliance until the simulator reproduces the same
+failure modes seen on the real hand.

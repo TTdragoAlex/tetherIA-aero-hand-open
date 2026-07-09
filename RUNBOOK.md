@@ -285,12 +285,31 @@ cd "/Users/alextang/Documents/Robot Hand"
   --sample-every 5
 ```
 
-Dry-run range for this command: thumb_abd `0.346-0.884`, thumb_flex
-`0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle
-`0.115-0.640`, ring `0.370-0.772`, pinky `0.405-0.786`. The operator reported
-this as mostly working. Treat it as evidence for the next training command
-window: very low thumb flex/tendon, broad thumb abduction, high index support,
-and unchanged middle support.
+The current labeled version is packaged as a replay preset:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+Add `--run` only when the hand is connected, mounted, and clear:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+This preset expands to PhysicsID rollout 0 with scale
+`thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7`
+and bias
+`thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`.
+Dry-run range for this preset: thumb_abd `0.326-0.864`, thumb_flex
+`0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle
+`0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`. Treat it as the
+current real-hand-fitted open-loop trace, not as a trained closed-loop actor.
 
 For a roughly one-minute replay, repeat the same trace 10 times without resting
 between loops:
@@ -351,3 +370,9 @@ Remote source backup before edit:
 `/home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/`.
 Copied source snapshot:
 `sim/real_tuned_window_remote_source_20260708/`.
+
+Status update 2026-07-09: RealTunedWindow completed and produced plausible sim
+videos/traces, but real replay still showed the same trapping/ejection failure.
+Do not export this live actor or train another reward-only/window variant until
+sim-real identification makes the simulator reproduce the real failure on exact
+traces.

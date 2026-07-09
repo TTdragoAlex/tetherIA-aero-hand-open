@@ -101,3 +101,9 @@
 - Decision: Add and train `AeroCubeRotateZAxisHardware01RealTunedWindow`, which bakes the operator-tuned replay transform into the sim action calibration and adds ring-pocket plus tuned-command-window penalties.
 - Why: The one-minute replay worked about 80% of the time only after a large real command transform. Training inside that command window gives the policy a chance to learn robust timing/contact without permanent replay-time overrides.
 - Rejected: Exporting a live actor from raw `PhysicsID`, because exact replay required substantial real-side transformation to work.
+
+## Decision: Pause sim-success policy variants until the real failure is reproduced in sim
+- Date: 2026-07-09
+- Decision: Stop treating new reward/window variants that only look good in simulation as the next main path. The next work should be sim-real identification: reproduce the real thumb/finger trapping and lateral ejection in sim using exact traces, geometry/contact/compliance changes, and measured hand behavior.
+- Why: `RealTunedWindow` baked in the best operator-tuned replay transform and produced plausible seated cube rotation in sim, but real replay still showed the same bad behavior. This means the translation/model mismatch is now the bottleneck.
+- Rejected: Training another reward-only policy variant from the current simulator assumptions, because the simulator is not yet predicting the real failure mode.

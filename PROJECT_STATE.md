@@ -1,14 +1,14 @@
 # PROJECT_STATE.md
 
 ## Current Goal
-Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works on the real hand, not only in simulation. The immediate goal is to train a real-calibrated anti-trap policy that keeps the smoother motion gains while avoiding thumb-index pinching that wedges the cube between the fingers.
+Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works on the real hand, not only in simulation. The immediate goal is now sim-real identification: make the simulator reproduce the real thumb/finger trapping and lateral ejection failures before doing more policy-training variants.
 
 ## Current Working State
 - Mac project root: `/Users/alextang/Documents/Robot Hand`.
 - Training PC: `hw@192.168.9.63:/home/hw/aero-hand-sim`.
 - Physical hand works: all servos can move, homing/calibration is usable, and GUI sliders operate the hand.
 - Current physical issue: policies can touch/move the cube, but produce little reliable cube rotation. The real hand often cages/pushes instead of rolling the cube as the sim video does.
-- Current hypothesis: the transfer layer is mostly functional now; remaining gap is sim environment/contact/training mismatch, especially thumb/finger posture, contact geometry, and overly fast simulated action strategies.
+- Current hypothesis: the transfer layer can send commands safely, but the simulation-to-real physical model is still wrong enough that sim-successful policies repeatedly fail on the hand. The main mismatch is contact/geometry/compliance around thumb lateral force, index/ring support, palm support, and tendon/joint coupling.
 - Cube size is not the active suspected bottleneck; smaller/larger cubes were tried and the current cube is considered the best available physical choice.
 - Sim endpoints `u=0` and `u=1` are visually acceptable, but midrange `u=0.5` differs: real fingers bend across joints while sim bends mostly at knuckles.
 
@@ -51,6 +51,18 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Video review: rollouts 0, 1, and 2 keep the cube seated and rotating in sim without the obvious thumb lateral ejection seen in the real anti-trap replay.
 - Exact `PhysicsID` traces were exported from checkpoint `000157286400` under `sim/hardware01_real_calibrated_physics_id_trace_20260708/`.
 - PhysicsID rollout 0 was tested on hardware on 2026-07-08. Telemetry was safe, but the cube was still pushed off by the thumb, so this checkpoint is not a live-policy candidate.
+- `RealTunedWindow` training completed cleanly and its videos/traces were copied locally under:
+  - `sim/hardware01_real_tuned_window_20260708/`
+  - `sim/hardware01_real_tuned_window_trace_20260708/`
+  - Final checkpoint: `000157286400`
+  - Final/best logged reward: `6.621`
+  - Sim videos looked seated and mechanically plausible, but real replay was still bad with the same failure modes as before. This is now evidence against more sim-only reward/window tuning until sim reproduces the real failure.
+- Current best real-hand open-loop package is named `physics_id_rollout0_real_hand_fitted` in `scripts/replay_hardware01_u_trace_safe.py`.
+  - Source trace: `sim/hardware01_real_calibrated_physics_id_trace_20260708/hardware01_physics_id_rollout0_u_trace.json`
+  - Scale: `thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7`
+  - Bias: `thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`
+  - Dry-run ranges after fitting: thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle `0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`.
+  - This is not a trained closed-loop actor; it is the best labeled real-hand-fitted exact trace replay so far.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -60,6 +72,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 
 ## Broken Or Uncertain
 - Sim videos show useful rolling torque; real hand with same/similar commands mostly cages or pushes.
+- `RealTunedWindow` also failed on real hardware despite looking plausible in sim. Treat this as a stronger sim-real translation failure, not a policy-quality failure.
 - Middle/index/ring motion in reality has often been weaker than sim, depending on mapping and scale.
 - Thumb involvement remains sensitive: too much thumb curl clamps into the palm; too little thumb abduction misses the cube.
 - The completed `RealCalibrated` rollout videos looked too jittery: cube rotation came with bouncing, trapped-object impacts, and frequent thumb motion. Do not replay this policy on the real hand.
@@ -68,19 +81,24 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - The `PhysicsID` videos look mechanically plausible in sim, but this is not proof of real transfer. Next step is exact `u_real_order` trace export and dry-run before any hardware movement.
 - PhysicsID exact replay failed visually in the same real-world direction: the thumb still pushes the cube off the hand. Do not test rollout 1 or 2 as live candidates; rollout 1 has higher thumb flex and rollout 2 has wider finger motion. Next work should directly reduce/penalize thumb lateral authority or fix thumb/palm contact geometry.
 - Operator tuning found a mostly working real replay transform on PhysicsID rollout 0:
-  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50`
-  - `--channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3`
-  - Resulting command ranges: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle unchanged `0.115-0.640`.
+  - Current named preset: `physics_id_rollout0_real_hand_fitted`
+  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7`
+  - `--channel-bias thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`
+  - Resulting command ranges: thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle `0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`.
   - Interpretation: the sim policy shape has value, but real transfer needs much lower thumb flex/tendon and a much higher index support baseline. The sim still does not reproduce real trapping outcomes.
 - New remote training env implemented on Ubuntu PC: `AeroCubeRotateZAxisHardware01RealTunedWindow`.
 - `RealTunedWindow` inherits `PhysicsID`, bakes the operator-tuned replay transform into `real_command_to_sim_u_scale/bias`, and adds `reward/ring_pocket_trap` plus `reward/tuned_command_window`.
-- RealTunedWindow training started on 2026-07-08:
-  - PID: `112171`
+- RealTunedWindow training and trace replay status:
   - Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
   - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
   - Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830`
+  - Final checkpoint: `000157286400`
+  - Final/best logged reward: `6.621`
   - Remote source backup: `/home/hw/aero-hand-sim/backups/20260708_165414_real_tuned_window/`
   - Copied source snapshot: `sim/real_tuned_window_remote_source_20260708/`
+  - Copied videos: `sim/hardware01_real_tuned_window_20260708/`
+  - Copied traces: `sim/hardware01_real_tuned_window_trace_20260708/`
+  - Real result: failed with the same real-world trapping/ejection problems. Do not export this live actor.
 
 ## Important Files
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.

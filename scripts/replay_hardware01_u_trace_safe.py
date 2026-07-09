@@ -34,6 +34,24 @@ DEFAULT_TRACE = (
     / "hardware01_rollout0_u_trace.json"
 )
 LOG_DIR = REPO_ROOT / "logs"
+PRESETS = {
+    "physics_id_rollout0_real_hand_fitted": {
+        "description": (
+            "Best operator-fitted real-hand open-loop replay as of 2026-07-09; "
+            "PhysicsID rollout 0 with thumb reduced and index/middle/pinky support raised."
+        ),
+        "trace": REPO_ROOT
+        / "sim"
+        / "hardware01_real_calibrated_physics_id_trace_20260708"
+        / "hardware01_physics_id_rollout0_u_trace.json",
+        "playback_scale": 1.0,
+        "channel_scale": "thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7",
+        "channel_bias": "thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04",
+        "max_step_delta": 0.08,
+        "sample_every": 5,
+        "repeat": 5,
+    },
+}
 
 
 def clamp01(value: float) -> float:
@@ -155,7 +173,26 @@ def log_row(writer: csv.DictWriter, step: int, elapsed_s: float, target: list[fl
     writer.writerow(row)
 
 
+def apply_preset(args: argparse.Namespace) -> None:
+    if not args.preset:
+        return
+    preset = PRESETS[args.preset]
+    for key, value in preset.items():
+        if key == "description":
+            continue
+        setattr(args, key, value)
+
+
+def print_presets() -> None:
+    for name, preset in PRESETS.items():
+        print(f"{name}: {preset['description']}")
+
+
 def run(args: argparse.Namespace) -> int:
+    if args.list_presets:
+        print_presets()
+        return 0
+    apply_preset(args)
     rows = load_trace(args.trace)
     rows = rows[args.start_step:]
     if args.steps is not None:
@@ -189,6 +226,8 @@ def run(args: argparse.Namespace) -> int:
                 selected.append({**row, "repeat": repeat_idx})
 
     print(f"trace: {args.trace}")
+    if args.preset:
+        print(f"preset: {args.preset} - {PRESETS[args.preset]['description']}")
     print(f"selected_steps: {len(selected)} start_step={args.start_step}")
     if args.repeat > 1:
         print(f"repeat: {args.repeat} loops; duration ~= {len(selected) / args.rate:.1f}s")
@@ -269,6 +308,8 @@ def run(args: argparse.Namespace) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Replay exact hardware01 sim u trace on the real Aero Hand.")
+    parser.add_argument("--preset", choices=sorted(PRESETS), help="Named trace/scale/bias package.")
+    parser.add_argument("--list-presets", action="store_true")
     parser.add_argument("--trace", type=Path, default=DEFAULT_TRACE)
     parser.add_argument("--run", action="store_true")
     parser.add_argument("--port")

@@ -46,9 +46,10 @@ Completed monitor/copy status:
 - Option B: Skip more hardware diagnostics and train a new thumb-limited / anti-ejection env that explicitly penalizes high thumb abduction/lateral cube drift and strengthens opposing finger/palm support assumptions.
 - Verify: success is not just less ejection; the cube should remain seated while receiving visible rolling torque.
 - Current best operator-tuned replay:
-  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50`
-  - `--channel-bias thumb_abd=-0.02,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.3`
-  - Dry-run ranges: thumb_abd `0.346-0.884`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.641-0.921`, middle unchanged `0.115-0.640`.
+  - Preset: `physics_id_rollout0_real_hand_fitted`
+  - `--channel-scale thumb_abd=0.90,thumb_flex=0.5,thumb_tendon=0.6,index=0.50,middle=0.7`
+  - `--channel-bias thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`
+  - Dry-run ranges: thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle `0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`.
   - Operator result: mostly working, but still not final policy; use this as the command-window target for the next sim/training variant.
 
 Completed monitor/copy/review status:
@@ -61,19 +62,33 @@ Completed monitor/copy/review status:
 - Hardware result: rollout 0 still pushed the cube off by the thumb even though telemetry stayed safe. Sim still does not model the real lateral thumb failure strongly enough.
 - Manual transform result: lowering thumb flex/tendon much more and raising/compressing index support made rollout 0 look mostly working on the real hand. The next training variant should train inside this transformed command window rather than rely on replay-time overrides.
 
-## 4. Monitor RealTunedWindow Training
+## 4. RealTunedWindow Transfer Result
 - Task: Check remote PID/log/checkpoints/videos for `AeroCubeRotateZAxisHardware01RealTunedWindow`.
 - Run id: `aero_hardware01_real_tuned_window_fresh_20260708_165830`
-- PID: `112171`
 - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_hardware01_real_tuned_window_fresh_20260708_165830.log`
 - Run dir: `/home/hw/aero-hand-sim/logs/AeroCubeRotateZAxisHardware01RealTunedWindow-20260708-165832-aero_hardware01_real_tuned_window_fresh_20260708_165830`
-- Verify: process alive or completed cleanly; reward progresses; rollout videos appear.
+- Result: completed cleanly, final/best reward `6.621` at checkpoint `000157286400`.
+- Copied videos: `sim/hardware01_real_tuned_window_20260708/`.
+- Copied traces: `sim/hardware01_real_tuned_window_trace_20260708/`.
+- Real replay result: still bad, with the same trap/ejection transfer failure as before. Do not export or test this live actor.
 
-## 5. Review RealTunedWindow Videos
-- Task: Copy generated rollout videos to `sim/hardware01_real_tuned_window_YYYYMMDD/` and inspect them.
-- Verify: cube stays seated while rotating; no thumb-index trap, ring-pocket jam, or lateral ejection.
+## 5. Sim-Real Identification Plan
+- Task: Make the simulator reproduce the real failure on exact traces before training another policy.
+- Inputs:
+  - RealTunedWindow traces: `sim/hardware01_real_tuned_window_trace_20260708/`.
+  - Best manual replay command window from PhysicsID rollout 0, packaged as `--preset physics_id_rollout0_real_hand_fitted`.
+  - User visual result: RealTunedWindow still fails in the same way, so sim-success is not predictive yet.
+- First target: replay exact traces in sim under modified contact/geometry/compliance assumptions until the sim also traps/ejects the cube like reality.
+- Candidate variables:
+  - thumb lateral contact geometry and collision shape,
+  - palm support/cube seating geometry,
+  - index/ring/middle contact support and compliance,
+  - tendon spring stiffness/damping and midrange joint coupling,
+  - cube/skin friction and contact softness,
+  - servo latency/deadband/backlash.
+- Acceptance: a replay trace that looks good in current sim should fail in the modified sim in the same direction as the real hand, and the manual-tuned replay should score better than the failed exact trace.
 
-## 6. Export New Closed-Loop Actor Only After Tuned Exact Trace
+## 6. Export New Closed-Loop Actor Only After Sim-Real Identification
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_tuned_window_<step>/`.
 - Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
 
@@ -88,9 +103,10 @@ Completed monitor/copy/review status:
 - Do not proceed to live policy solely because telemetry passed; visual cube behavior must show plausible rolling first.
 - Do not proceed with the current anti-trap checkpoint as a live-policy candidate; replay video shows thumb lateral ejection.
 - Do not proceed with the current PhysicsID checkpoint as a live-policy candidate; exact replay still shows thumb lateral ejection on real hardware.
+- Do not proceed with the current RealTunedWindow checkpoint as a live-policy candidate; it still fails in real replay despite plausible sim videos.
 - Do not test PhysicsID rollout 1 or rollout 2 as direct candidates unless deliberately diagnosing range effects; rollout 1 has more thumb flex and rollout 2 has wider finger motion.
 - Do not treat the best manual transform as the final solution; it reveals the sim-to-real command/contact mismatch that should be built into training.
-- Do not export live actor from RealTunedWindow until videos and exact trace replay pass; the point of this env is to train the replay-time transform into the policy first.
+- Do not train more reward-only/window variants until the simulator can reproduce the real trapping/ejection failure from exact traces.
 - Use the corrected seeded physics sweep at `sim/physics_id_antitrap_rollout1_native_seeded_20260708/`; the earlier unseeded native sweep started from the wrong cube placement.
 - Training PC repo is not git-controlled, so remote edits must be backed up manually.
 - Real thumb posture is highly sensitive; too much thumb flex/abd curl clamps into palm, too little misses cube.
