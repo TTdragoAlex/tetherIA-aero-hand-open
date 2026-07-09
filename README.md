@@ -118,6 +118,103 @@ PC, not guessed from public docs:
 This is why current transfer work uses hardware01 real-order `u in [0, 1]` rather
 than the original sim delta action language.
 
+## Fresh Computer Setup
+
+The commands below are for running the current replay/preset tools on the same
+physical hand. They do not install the full remote training stack.
+
+### macOS
+
+```bash
+git clone https://github.com/TTdragoAlex/tetherIA-aero-hand-open.git
+cd tetherIA-aero-hand-open
+
+python3 -m venv .venv
+./.venv/bin/python -m pip install --upgrade pip
+./.venv/bin/python -m pip install -r requirements.txt
+```
+
+List serial ports:
+
+```bash
+./.venv/bin/python scripts/list_ports.py
+```
+
+macOS ports usually look like `/dev/cu.usbmodemXXXX`. Prefer `/dev/cu.*` over
+`/dev/tty.*` for initiating serial connections.
+
+Dry-run the current best fitted replay:
+
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+Run it only when the hand is connected, mounted, and clear:
+
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+If auto-detect does not find exactly one port, add `--port`, for example:
+
+```bash
+--port /dev/cu.usbmodem1101
+```
+
+### Linux / Other Unix
+
+```bash
+git clone https://github.com/TTdragoAlex/tetherIA-aero-hand-open.git
+cd tetherIA-aero-hand-open
+
+python3 -m venv .venv
+./.venv/bin/python -m pip install --upgrade pip
+./.venv/bin/python -m pip install -r requirements.txt
+```
+
+Linux users may need serial permissions:
+
+```bash
+sudo usermod -aG dialout "$USER"
+```
+
+Log out and back in after changing group membership.
+
+List serial ports:
+
+```bash
+./.venv/bin/python scripts/list_ports.py
+```
+
+Linux ports usually look like `/dev/ttyACM0` or `/dev/ttyUSB0`.
+
+Dry-run:
+
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+Run:
+
+```bash
+./.venv/bin/python scripts/replay_hardware01_u_trace_safe.py \
+  --run \
+  --port /dev/ttyACM0 \
+  --preset physics_id_rollout0_real_hand_fitted
+```
+
+### What This Reproduces
+
+`physics_id_rollout0_real_hand_fitted` is the current best open-loop replay
+fitted on the real hand. It is not a general closed-loop policy yet. It should
+be reproducible on the same physical hand, cube, placement, springs, tendon
+tension, calibration, and mounting. A different Aero hand may need recalibration
+and retuning.
+
 ## Local Setup
 
 Python virtual environment:
