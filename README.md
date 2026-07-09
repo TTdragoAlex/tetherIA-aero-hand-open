@@ -10,6 +10,20 @@ Use the official docs for vendor SDK, hardware, and firmware background. This
 repo documents the local safety wrappers, calibration work, replay tools,
 simulation artifacts, and current transfer results.
 
+
+
+
+https://github.com/user-attachments/assets/1117ed57-efa8-4b72-aa60-6e55b14517da
+
+
+
+https://github.com/user-attachments/assets/8321e103-9bb9-4f42-b866-c4b3799f2c9f
+
+
+
+
+
+
 ## Current Status
 
 The physical hand works: the servos move, homing/calibration is usable, GUI
