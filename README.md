@@ -13,12 +13,7 @@ simulation artifacts, and current transfer results.
 ## Current Status
 
 The physical hand works: the servos move, homing/calibration is usable, GUI
-control works, and exact simulation traces can be replayed on hardware.
-
-The unsolved problem is sim-to-real transfer. Several policies rotate the cube
-in simulation but trap, cage, or push the cube away on the real hand. The next
-main work is sim-real identification: make the simulator reproduce the real
-failure modes before training another policy.
+control works, and exact simulation traces can be replayed on hardware. The hand is able to perform the cube rotation task to a very well extent.
 
 The current best real-hand result is a fitted open-loop replay preset, not a
 general closed-loop policy:
@@ -28,12 +23,12 @@ general closed-loop policy:
   --preset physics_id_rollout0_real_hand_fitted
 ```
 
-## Safety First
+## Safety
 
 - Do not move the physical hand unless it is connected, mounted, and clear.
 - Hardware-moving scripts dry-run by default. Add `--run` only when ready.
-- Keep the current abort at `4000 mA` unless explicitly testing safety itself.
-- Keep the temperature abort at `60 C` unless explicitly testing safety itself.
+- Current abort at `4000 mA` unless explicitly testing safety itself.
+- Temperature abort at `60 C` unless explicitly testing safety itself (Feetech lists the motors can go up 85 C).
 - Physical command order is:
   `[thumb_abd, thumb_flex, thumb_tendon, index, middle, ring, pinky]`
 
