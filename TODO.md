@@ -1,17 +1,18 @@
 # TODO.md
 
-## 0. Validate Ball Actor Measured-Observation Bridge
+## 0. Build Coupled-Posture Current Calibration For The Ball Actor
 
-- Task: Run the 45 mm ball actor with no object using physical `GET_POS` and
-  baseline-corrected current observations.
-- Command: `sim/live_actor_export_ball45_real_tuned_window_000157286400/README.md`.
-- Verify: the hand reaches the trained mean posture smoothly, the following
-  actions are varied rather than a static repeat, and current/temperature stay
-  below `4000 mA`/`65 C`.
-- Do not add the ball until this no-object test is reviewed.
-- Limitation: `sim/hand_observation_calibration_20260626.json` is based on a
-  no-object sweep; thumb-flex data above the protected sweep endpoint is held,
-  not measured.
+- Result: failed on 2026-07-10. Two no-object tests hit safety aborts and made
+  a repeated clamp/release motion. The ball actor is blocked from hardware use.
+- Evidence: `logs/live_policy_control_20260710_154431.csv` and
+  `logs/live_policy_control_20260710_154443.csv` show no-object index current
+  of roughly `3.3-3.4 A` near the actor's mean index posture, far above the
+  one-channel baseline for the same index value.
+- Task: collect a safe no-object dataset through coupled seven-servo postures
+  inside the known low-current real-hand-fitted window; fit each current to the
+  full posture, not only its own servo position.
+- Verify: no-object predicted residual current remains near zero across the
+  full calibration trajectory before any live actor is unblocked.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

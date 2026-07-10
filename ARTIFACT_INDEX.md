@@ -66,8 +66,8 @@ current best fitted exact trace:
 | 2026-07-10 | `sim/ball45_real_tuned_window_remote_source_20260710/` | Source snapshot for the new 45 mm ball training env. | Documents the 45 mm ball XML/env registration. |
 | 2026-07-10 | `sim/ball45_real_tuned_window_20260710/` | First 45 mm ball training videos/config/log. | Completed cleanly, but videos are visually misleading because the full ball did not render clearly. |
 | 2026-07-10 | `sim/ball45_real_tuned_window_visualfix_20260710/` | Regenerated 45 mm ball videos/log/XML from checkpoint `000157286400`. | Use this folder for review; it shows the full 45 mm orange ball plus black orientation marker. |
-| 2026-07-10 | `sim/live_actor_export_ball45_real_tuned_window_000157286400/` | Live actor export for the 45 mm ball policy. | Mac-side test artifact; use measured position plus calibrated current, then test no-object before any ball test. |
-| 2026-07-10 | `sim/hand_observation_calibration_20260626.json` | Per-servo no-object current-vs-position baseline generated from the 2026-06-26 spring sweep. | Experimental live observation adapter; subtracts preload before actor inference. |
+| 2026-07-10 | `sim/live_actor_export_ball45_real_tuned_window_000157286400/` | Live actor export for the 45 mm ball policy. | Blocked after two no-object current aborts and repeated clamp/release behavior. |
+| 2026-07-10 | `sim/hand_observation_calibration_20260626.json` | Per-servo no-object current-vs-position baseline generated from the 2026-06-26 spring sweep. | Insufficient for coupled hand postures; do not use it to authorize the ball actor. |
 
 ## How To Interpret A `rollout*.mp4`
 
@@ -92,8 +92,8 @@ variant. The next main work is sim-real identification: replay exact traces in
 sim and tune geometry/contact/compliance until the simulator reproduces the same
 failure modes seen on the real hand.
 
-The ball actor's first live test exposed a separate controller issue: feeding
-the actor its own commands plus a fixed force value produced repeated motion,
-not its simulated behavior. The new observation calibration artifact lets the
-controller use measured position and current residual instead. It is an
-integration improvement, not proof that the ball policy transfers.
+The ball actor's first live test exposed two separate issues. Feeding its own
+commands plus a fixed force value removed feedback, while the follow-up
+single-servo current baseline underestimated spring load when several fingers
+were active together. The actor is now blocked from hardware motion pending a
+coupled-pose current calibration dataset.

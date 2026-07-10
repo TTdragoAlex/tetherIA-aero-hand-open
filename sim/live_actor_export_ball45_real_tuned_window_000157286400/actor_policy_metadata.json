@@ -77,16 +77,13 @@
     "last_u_ring",
     "last_u_pinky"
   ],
+  "hardware_status": {
+    "state": "blocked",
+    "tested_at": "2026-07-10",
+    "reason": "Two no-object live tests aborted. The actor alternated index/ring clamping with thumb-tendon closure, while the single-channel current baseline underestimated coupled spring load."
+  },
   "recommended_live_args": {
-    "action_mode": "hardware01",
-    "obs_mode": "hardware01",
-    "obs_input_space": "raw",
-    "playback_scale_start": 0.05,
-    "current_scale_ma": 4000.0,
-    "use_signed_current": true,
-    "abort_current_ma": 4000.0,
-    "abort_temp_c": 65.0,
-    "important": "Start no-cube at playback scale 0.05. Dry-run preview showed the actor saturates desired u quickly, so ramp upward only if no-cube motion is smooth and low-current."
+    "important": "Do not run this actor on hardware. Collect a safe coupled-pose no-object current dataset and retrain or validate a new observation model before any future diagnostic."
   },
   "export_npz_keys": [
     "obs_mean",

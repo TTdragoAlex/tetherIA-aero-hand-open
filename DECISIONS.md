@@ -124,3 +124,19 @@
   is held beyond its final measured position.
 - Rejected: Feeding raw current directly, because spring preload alone can
   dominate current even without an object.
+
+## Decision: Block the current ball actor after failed no-object validation
+- Date: 2026-07-10
+- Decision: Do not run `live_actor_export_ball45_real_tuned_window_000157286400`
+  on hardware or add the ball. The controller requires an explicit override
+  for any future diagnostic using this export.
+- Why: Two no-object runs hit the current abort and produced repeated
+  clamp/release motion. At the actor's mean posture, index current was about
+  `3.3-3.4 A`, while the independent one-channel baseline at that position was
+  about `1.0 A`. This made ordinary coupled spring load appear to the actor as
+  near-maximum object contact.
+- Next: Gather safe multi-servo posture/current data in the known usable
+  command window and fit a coupled baseline before considering a new live actor.
+- Rejected: Raising abort limits or continuing manual live tests, because the
+  actuator safety response revealed an invalid observation model, not a minor
+  threshold issue.

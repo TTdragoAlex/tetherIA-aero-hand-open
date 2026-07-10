@@ -222,35 +222,13 @@ cd "/Users/alextang/Documents/Robot Hand"
 
 Point `--policy` or equivalent script option to the latest exported actor if the script does not default to it.
 
-For the 45 mm ball live actor, first run a no-object measured-observation test.
-The hand ramps to the posture expected by the actor while current and
-temperature aborts remain active:
+The 45 mm ball actor is currently blocked from hardware motion. Two no-object
+tests on 2026-07-10 hit safety aborts and produced clamp/release motion. Do not
+override the block or add the ball. The single-servo current baseline did not
+represent the coupled spring load of a full-hand posture.
 
-```bash
-cd "/Users/alextang/Documents/Robot Hand"
-./.venv/bin/python scripts/live_policy_control.py \
-  --run \
-  --policy sim/live_actor_export_ball45_real_tuned_window_000157286400/actor_policy.npz \
-  --steps 60 \
-  --rate 10 \
-  --playback-scale 1.0 \
-  --action-mode hardware01 \
-  --obs-mode hardware01 \
-  --obs-input-space raw \
-  --position-obs-source get_pos \
-  --hardware01-initial-u policy_mean \
-  --force-obs-source calibrated_current \
-  --observation-calibration sim/hand_observation_calibration_20260626.json \
-  --max-step-delta all=0.03 \
-  --abort-current 4000 \
-  --abort-temp 65 \
-  --sample-every 5
-```
-
-Do not put the ball in until no-object motion is smooth, current remains below
-the abort threshold, and the result is visually reviewed. The calibration is a
-spring/friction baseline, not a contact-force ground truth. Rebuild it after a
-spring, tendon, or servo change:
+The single-servo calibration can be regenerated after a spring, tendon, or
+servo change, but it is not a live-policy contact model:
 
 ```bash
 ./.venv/bin/python scripts/build_observation_calibration.py \

@@ -532,6 +532,18 @@ def run_controller(args: argparse.Namespace) -> int:
     if metadata_path == DEFAULT_METADATA and args.policy != DEFAULT_POLICY:
         metadata_path = args.policy.with_name("actor_policy_metadata.json")
     metadata = json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
+    hardware_status = metadata.get("hardware_status", {})
+    if (
+        args.run
+        and isinstance(hardware_status, dict)
+        and hardware_status.get("state") == "blocked"
+        and not args.allow_unapproved_policy
+    ):
+        reason = hardware_status.get("reason", "this policy is not approved for hardware motion")
+        raise RuntimeError(
+            "Refusing to move the hand with a blocked policy. "
+            f"Reason: {reason}. Use --allow-unapproved-policy only for a newly approved diagnostic."
+        )
     raw_rest = load_raw_rest(args.calibration)
     max_step_delta = parse_channel_values(args.max_step_delta, args.default_max_step_delta)
     target_bias = parse_channel_values(args.target_bias, 0.0)
@@ -694,6 +706,11 @@ def run_controller(args: argparse.Namespace) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the exported RealObs policy in a live real-hand feedback loop.")
     parser.add_argument("--run", action="store_true", help="Actually connect to and move the hand. Omit for dry-run preview.")
+    parser.add_argument(
+        "--allow-unapproved-policy",
+        action="store_true",
+        help="Allow a policy explicitly marked blocked in its metadata. Use only for a newly approved diagnostic.",
+    )
     parser.add_argument("--policy", type=Path, default=DEFAULT_POLICY)
     parser.add_argument("--metadata", type=Path, default=DEFAULT_METADATA)
     parser.add_argument("--calibration", type=Path, default=DEFAULT_CALIBRATION_PATH)

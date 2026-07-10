@@ -9,42 +9,27 @@ Files:
 - `actor_policy_metadata.json`: command order, observation order, source run,
   and recommended live-test settings.
 
-## First Hardware Test
+## Hardware Status: Blocked
 
-This is a no-object controller-integration test, not a ball test. It starts at
-the actor's trained mean posture, uses physical `GET_POS`, and subtracts the
-recorded no-object spring/friction current before producing the actor's force
-input. The initial ramp and every control step retain the `4000 mA` and `65 C`
-abort checks.
+Two no-object tests on 2026-07-10 hit the `4000 mA` safety abort. The motion
+was a repeated clamp/release, not the simulated rolling behavior. Do not run
+this actor on the physical hand; the controller now refuses `--run` for this
+export unless a future, deliberate diagnostic supplies
+`--allow-unapproved-policy`.
 
-```bash
-cd "/Users/alextang/Documents/Robot Hand"
-./.venv/bin/python scripts/live_policy_control.py \
-  --run \
-  --policy sim/live_actor_export_ball45_real_tuned_window_000157286400/actor_policy.npz \
-  --steps 60 \
-  --rate 10 \
-  --playback-scale 1.0 \
-  --action-mode hardware01 \
-  --obs-mode hardware01 \
-  --obs-input-space raw \
-  --position-obs-source get_pos \
-  --hardware01-initial-u policy_mean \
-  --force-obs-source calibrated_current \
-  --observation-calibration sim/hand_observation_calibration_20260626.json \
-  --max-step-delta all=0.03 \
-  --abort-current 4000 \
-  --abort-temp 65 \
-  --sample-every 5
-```
+The cause is observable in the test logs. At the actor's mean posture, the
+index drew about `3.3-3.4 A` with no object, while the single-servo sweep
+baseline predicted roughly `1.0 A`. The current residual therefore appeared as
+near-maximum object contact to the actor and drove it into an index/ring clamp
+followed by thumb-tendon closure.
 
-Do not add the ball until this is smooth and electrically safe. The baseline
-comes from `logs/channel_friction_sweep_20260626_105220.csv`; it removes
-first-order spring/friction preload but is not a physical contact-force
-calibration. In particular, thumb-flex baseline data above `u≈0.17` is held at
-the protected sweep endpoint, so inspect thumb-flex current closely.
+The next step is a safe, coupled-pose no-object calibration dataset inside a
+known low-current command window. That dataset must model each current as a
+function of the full seven-servo posture, not one channel at a time. Only then
+should we retry a live actor or use the ball.
 
-To regenerate the calibration after a spring, tendon, or servo change:
+The existing single-servo calibration can still be regenerated after a spring,
+tendon, or servo change, but it is not sufficient to authorize this actor:
 
 ```bash
 ./.venv/bin/python scripts/build_observation_calibration.py \

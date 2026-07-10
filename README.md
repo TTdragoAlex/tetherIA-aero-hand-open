@@ -43,10 +43,10 @@ Review the corrected videos in `sim/ball45_real_tuned_window_visualfix_20260710/
 the first copied ball videos made the ball look like a tiny dot because only
 the orientation marker rendered clearly.
 
-The 45 mm ball actor now has an experimental live-observation bridge: it uses
-measured servo positions plus current above a recorded no-object spring/friction
-baseline. It has passed offline checks but still requires a no-object hardware
-test before the ball is introduced. See the actor artifact README and RUNBOOK.
+The 45 mm ball actor's first no-object live test failed: it repeatedly
+clamped/released and hit two current aborts. Do not run that actor on hardware.
+Its single-servo current baseline underestimated coupled spring load; the next
+work is to collect safe multi-servo no-object data before retrying a live actor.
 
 ## Safety
 
@@ -157,7 +157,6 @@ editing it.
 
 ## Next Work
 
-Do not treat another sim-only successful policy as progress by itself. First
-validate the measured-position/current observation bridge with no object; then
-use the result to guide sim-real identification of contact, geometry,
-compliance, friction, and support.
+Do not treat another sim-only successful policy as progress by itself. The next
+step is a safe multi-servo no-object calibration dataset, followed by sim-real
+identification of contact, geometry, compliance, friction, and support.

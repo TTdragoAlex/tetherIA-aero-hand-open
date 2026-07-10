@@ -23,8 +23,10 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   --force-obs-source calibrated_current`.
   - Uses `sim/hand_observation_calibration_20260626.json`, generated from
     `logs/channel_friction_sweep_20260626_105220.csv`.
-  - Subtracts a per-channel no-object current baseline before feeding a current
-    residual to the actor; it is not yet hardware-validated with the ball.
+  - Failed no-object hardware validation on 2026-07-10: the single-channel
+    baseline underestimated coupled spring current, causing repeated
+    clamp/release motion and two current aborts. The ball actor is blocked from
+    hardware use pending a coupled-pose calibration dataset.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`
