@@ -71,11 +71,13 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Remote source backup: `/home/hw/aero-hand-sim/backups/20260710_092528_ball45/`
   - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
   - Copied videos/config/log: `sim/ball45_real_tuned_window_20260710/`
+  - Corrected visual videos/log/XML: `sim/ball45_real_tuned_window_visualfix_20260710/`
   - Final checkpoint: `000157286400`
   - Final logged reward: `39.298`
   - Best logged reward observed: `39.676` at `137625600`
-  - Object: 45 mm sphere with internal `cube` body/sensor names and a non-colliding visual marker dot for spin visibility.
-  - Initial sampled-video review: rollouts 0, 1, and 2 keep the ball seated in sim and show marker-dot motion consistent with rotation.
+  - Object: 45 mm sphere with internal `cube` body/sensor names.
+  - Visual correction: the first copied videos made the ball look tiny because only the small marker rendered clearly. The corrected render adds a non-colliding 45 mm orange visual sphere while keeping the physical collision sphere unchanged.
+  - Initial visual-fix review: rollouts 0, 1, and 2 show the full 45 mm ball seated in sim with a marker dot for rotation visibility.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -127,6 +129,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/real_tuned_window_remote_source_20260708/`: copied source files and patch for the new RealTunedWindow env.
 - `sim/ball45_real_tuned_window_remote_source_20260710/`: copied source/XML snapshot for the 45 mm ball training env.
 - `sim/ball45_real_tuned_window_20260710/`: copied 45 mm ball rollout videos, config, and training log.
+- `sim/ball45_real_tuned_window_visualfix_20260710/`: regenerated 45 mm ball videos from checkpoint `000157286400` with the full orange visual ball visible.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.

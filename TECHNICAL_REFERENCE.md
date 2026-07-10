@@ -155,9 +155,16 @@ AeroBall45mmRotateZAxisHardware01RealTunedWindow
 
 It uses a `0.0225 m` radius sphere, equivalent to a `4.5 cm` diameter ball. The
 MuJoCo body/freejoint/geom/sensor names intentionally remain `cube` internally
-so existing reward, randomization, trace, and export code can be reused. The
-visual ball has a small non-colliding marker dot so rollout videos show true
-spin.
+so existing reward, randomization, trace, and export code can be reused.
+
+The first copied videos were visually misleading: the real physical sphere was
+present, but the visible render mostly showed the tiny black orientation marker.
+The corrected XML keeps the physical sphere unchanged and adds a non-colliding
+orange visual sphere in render group `2`. Use the visual-fix videos for review:
+
+```text
+sim/ball45_real_tuned_window_visualfix_20260710/
+```
 
 Remote source snapshot:
 

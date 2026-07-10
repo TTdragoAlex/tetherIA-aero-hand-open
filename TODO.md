@@ -96,8 +96,9 @@ Completed monitor/copy/review status:
 - Run dir: `/home/hw/aero-hand-sim/logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242`
 - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
 - Copied videos/config/log: `sim/ball45_real_tuned_window_20260710/`
+- Corrected visual videos/log/XML: `sim/ball45_real_tuned_window_visualfix_20260710/`
 - Result: completed cleanly at checkpoint `000157286400`; final reward `39.298`, best observed reward `39.676` at `137625600`.
-- Initial review: rollouts 0, 1, and 2 keep the marked ball seated in sim and show marker-dot motion consistent with rotation.
+- Initial video correction: the first videos made the ball look like a tiny dot because only the marker rendered clearly. The visual-fix videos show the full 45 mm ball.
 - Next verification: review full videos and export exact traces before any real-hand test.
 
 ## 7. Export New Closed-Loop Actor Only After Sim-Real Identification

@@ -64,7 +64,8 @@ current best fitted exact trace:
 | 2026-07-09 | `sim/hardware01_real_tuned_window_20260708/` | RealTunedWindow videos/config/log copied to the Mac. | Looked plausible in sim, but real replay still failed. |
 | 2026-07-09 | `sim/hardware01_real_tuned_window_trace_20260708/` | Exact RealTunedWindow traces. | Dry-run passed; real replay failure confirmed sim-real mismatch. |
 | 2026-07-10 | `sim/ball45_real_tuned_window_remote_source_20260710/` | Source snapshot for the new 45 mm ball training env. | Documents the 45 mm ball XML/env registration. |
-| 2026-07-10 | `sim/ball45_real_tuned_window_20260710/` | First 45 mm ball training videos/config/log. | Completed cleanly; sampled videos show the marked ball staying seated and rotating in sim. |
+| 2026-07-10 | `sim/ball45_real_tuned_window_20260710/` | First 45 mm ball training videos/config/log. | Completed cleanly, but videos are visually misleading because the full ball did not render clearly. |
+| 2026-07-10 | `sim/ball45_real_tuned_window_visualfix_20260710/` | Regenerated 45 mm ball videos/log/XML from checkpoint `000157286400`. | Use this folder for review; it shows the full 45 mm orange ball plus black orientation marker. |
 
 ## How To Interpret A `rollout*.mp4`
 

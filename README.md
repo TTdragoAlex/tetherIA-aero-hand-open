@@ -39,6 +39,9 @@ general closed-loop policy:
 
 A separate 45 mm ball training series started on 2026-07-10 to test whether a
 round, grippy object avoids the cube's trapping/ejection failure modes.
+Review the corrected videos in `sim/ball45_real_tuned_window_visualfix_20260710/`;
+the first copied ball videos made the ball look like a tiny dot because only
+the orientation marker rendered clearly.
 
 ## Safety
 

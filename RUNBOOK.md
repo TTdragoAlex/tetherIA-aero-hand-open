@@ -74,6 +74,13 @@ tail -120 runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.lo
 find logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242 -maxdepth 1 -type f -name 'rollout*.mp4' -print
 ```
 
+The first copied 45 mm ball videos are visually misleading because only the
+small orientation marker rendered clearly. For review, use:
+
+```text
+sim/ball45_real_tuned_window_visualfix_20260710/
+```
+
 ## Start A New Training Run
 Only do this if the current run is finished or intentionally stopped.
 ```bash
