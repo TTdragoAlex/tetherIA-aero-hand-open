@@ -63,7 +63,8 @@ current best fitted exact trace:
 | 2026-07-08/09 | `sim/real_tuned_window_remote_source_20260708/` | Source snapshot and patch for RealTunedWindow. | Documents training the operator-fitted command window into sim. |
 | 2026-07-09 | `sim/hardware01_real_tuned_window_20260708/` | RealTunedWindow videos/config/log copied to the Mac. | Looked plausible in sim, but real replay still failed. |
 | 2026-07-09 | `sim/hardware01_real_tuned_window_trace_20260708/` | Exact RealTunedWindow traces. | Dry-run passed; real replay failure confirmed sim-real mismatch. |
-| 2026-07-10 | `sim/ball45_real_tuned_window_remote_source_20260710/` | Source snapshot for the new 45 mm ball training env. | Training run started as `AeroBall45mmRotateZAxisHardware01RealTunedWindow`; videos pending. |
+| 2026-07-10 | `sim/ball45_real_tuned_window_remote_source_20260710/` | Source snapshot for the new 45 mm ball training env. | Documents the 45 mm ball XML/env registration. |
+| 2026-07-10 | `sim/ball45_real_tuned_window_20260710/` | First 45 mm ball training videos/config/log. | Completed cleanly; sampled videos show the marked ball staying seated and rotating in sim. |
 
 ## How To Interpret A `rollout*.mp4`
 

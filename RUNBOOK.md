@@ -70,8 +70,8 @@ Check current 45 mm ball run:
 ```bash
 cd /home/hw/aero-hand-sim
 cat runs/nohup_logs/latest_ball45_real_tuned_window_run.txt
-ps -p 127699 -o pid,etime,pcpu,pmem,cmd
 tail -120 runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.log
+find logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242 -maxdepth 1 -type f -name 'rollout*.mp4' -print
 ```
 
 ## Start A New Training Run

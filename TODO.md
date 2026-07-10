@@ -89,15 +89,16 @@ Completed monitor/copy/review status:
 - Acceptance: a replay trace that looks good in current sim should fail in the modified sim in the same direction as the real hand, and the manual-tuned replay should score better than the failed exact trace.
 
 ## 6. Ball45 Training Series
-- Task: Train a new series using a 45 mm ball instead of a cube.
+- Task: Train and review a new series using a 45 mm ball instead of a cube.
 - Env: `AeroBall45mmRotateZAxisHardware01RealTunedWindow`
 - Run id: `aero_ball45_real_tuned_window_fresh_20260710_093242`
-- PID: `127699`
 - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.log`
 - Run dir: `/home/hw/aero-hand-sim/logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242`
 - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
-- Verify: rollout videos should show marker-dot spin, not just ball translation.
-- Acceptance: ball stays seated and rotates reliably without being ejected by the thumb; if this works, compare the learned contact strategy against cube failures.
+- Copied videos/config/log: `sim/ball45_real_tuned_window_20260710/`
+- Result: completed cleanly at checkpoint `000157286400`; final reward `39.298`, best observed reward `39.676` at `137625600`.
+- Initial review: rollouts 0, 1, and 2 keep the marked ball seated in sim and show marker-dot motion consistent with rotation.
+- Next verification: review full videos and export exact traces before any real-hand test.
 
 ## 7. Export New Closed-Loop Actor Only After Sim-Real Identification
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_tuned_window_<step>/`.
