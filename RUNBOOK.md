@@ -66,6 +66,14 @@ ps -p 107128 -o pid,etime,pcpu,pmem,cmd
 tail -120 runs/nohup_logs/aero_hardware01_real_calibrated_physics_id_fresh_20260708_104812.log
 ```
 
+Check current 45 mm ball run:
+```bash
+cd /home/hw/aero-hand-sim
+cat runs/nohup_logs/latest_ball45_real_tuned_window_run.txt
+ps -p 127699 -o pid,etime,pcpu,pmem,cmd
+tail -120 runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.log
+```
+
 ## Start A New Training Run
 Only do this if the current run is finished or intentionally stopped.
 ```bash
@@ -128,6 +136,24 @@ LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
 echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_hardware01_real_calibrated_physics_id_run.txt
 nohup env MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
   --env_name=AeroCubeRotateZAxisHardware01RealCalibratedPhysicsID \
+  --domain_randomization \
+  --num_timesteps=150000000 \
+  --num_evals=25 \
+  --reward_scaling=1.0 \
+  --num_videos=3 \
+  --suffix=${RUN_ID} > "$LOG" 2>&1 &
+echo $!
+```
+
+For the 45 mm ball real-tuned-window variant, use:
+
+```bash
+cd /home/hw/aero-hand-sim
+RUN_ID=aero_ball45_real_tuned_window_fresh_$(date +%Y%m%d_%H%M%S)
+LOG=/home/hw/aero-hand-sim/runs/nohup_logs/${RUN_ID}.log
+echo "$RUN_ID" > /home/hw/aero-hand-sim/runs/nohup_logs/latest_ball45_real_tuned_window_run.txt
+nohup env MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false /home/hw/aero-hand-sim/.venv/bin/python mujoco_playground/learning/train_jax_ppo.py \
+  --env_name=AeroBall45mmRotateZAxisHardware01RealTunedWindow \
   --domain_randomization \
   --num_timesteps=150000000 \
   --num_evals=25 \

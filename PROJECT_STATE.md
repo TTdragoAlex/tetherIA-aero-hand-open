@@ -63,6 +63,15 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Bias: `thumb_abd=-0.04,thumb_flex=-0.32,thumb_tendon=-0.14,index=0.34,middle=0.12,pinky=0.04`
   - Dry-run ranges after fitting: thumb_abd `0.326-0.864`, thumb_flex `0.105-0.319`, thumb_tendon `0.241-0.478`, index `0.681-0.961`, middle `0.304-0.718`, ring `0.370-0.772`, pinky `0.445-0.826`.
   - This is not a trained closed-loop actor; it is the best labeled real-hand-fitted exact trace replay so far.
+- A new 45 mm ball training series was started on the Ubuntu PC on 2026-07-10:
+  - Env: `AeroBall45mmRotateZAxisHardware01RealTunedWindow`
+  - Run id: `aero_ball45_real_tuned_window_fresh_20260710_093242`
+  - PID: `127699`
+  - Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.log`
+  - Run dir: `/home/hw/aero-hand-sim/logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242`
+  - Remote source backup: `/home/hw/aero-hand-sim/backups/20260710_092528_ball45/`
+  - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
+  - Object: 45 mm sphere with internal `cube` body/sensor names and a non-colliding visual marker dot for spin visibility.
 
 ## Partially Working
 - Exact sim `u_real_order` traces can be replayed on the real hand.
@@ -112,6 +121,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/hardware01_real_calibrated_physics_id_20260708/`: copied PhysicsID rollout videos, config, and training log.
 - `sim/hardware01_real_calibrated_physics_id_trace_20260708/`: exact PhysicsID `u_real_order` traces exported after env smoothing.
 - `sim/real_tuned_window_remote_source_20260708/`: copied source files and patch for the new RealTunedWindow env.
+- `sim/ball45_real_tuned_window_remote_source_20260710/`: copied source/XML snapshot for the 45 mm ball training env.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.

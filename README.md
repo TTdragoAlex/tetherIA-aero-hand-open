@@ -37,6 +37,9 @@ general closed-loop policy:
   --preset physics_id_rollout0_real_hand_fitted
 ```
 
+A separate 45 mm ball training series started on 2026-07-10 to test whether a
+round, grippy object avoids the cube's trapping/ejection failure modes.
+
 ## Safety
 
 - Do not move the physical hand unless it is connected, mounted, and clear.

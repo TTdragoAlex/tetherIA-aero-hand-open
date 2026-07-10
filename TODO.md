@@ -88,11 +88,22 @@ Completed monitor/copy/review status:
   - servo latency/deadband/backlash.
 - Acceptance: a replay trace that looks good in current sim should fail in the modified sim in the same direction as the real hand, and the manual-tuned replay should score better than the failed exact trace.
 
-## 6. Export New Closed-Loop Actor Only After Sim-Real Identification
+## 6. Ball45 Training Series
+- Task: Train a new series using a 45 mm ball instead of a cube.
+- Env: `AeroBall45mmRotateZAxisHardware01RealTunedWindow`
+- Run id: `aero_ball45_real_tuned_window_fresh_20260710_093242`
+- PID: `127699`
+- Log: `/home/hw/aero-hand-sim/runs/nohup_logs/aero_ball45_real_tuned_window_fresh_20260710_093242.log`
+- Run dir: `/home/hw/aero-hand-sim/logs/AeroBall45mmRotateZAxisHardware01RealTunedWindow-20260710-093244-aero_ball45_real_tuned_window_fresh_20260710_093242`
+- Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
+- Verify: rollout videos should show marker-dot spin, not just ball translation.
+- Acceptance: ball stays seated and rotates reliably without being ejected by the thumb; if this works, compare the learned contact strategy against cube failures.
+
+## 7. Export New Closed-Loop Actor Only After Sim-Real Identification
 - Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_tuned_window_<step>/`.
 - Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
 
-## 7. Live Closed-Loop Test
+## 8. Live Closed-Loop Test
 - Task: Run exported actor through `scripts/live_policy_control.py` only after exact trace looks plausible.
 - Verify: Motion remains dynamic; current logs do not show unexplained startup spikes; cube rotation improves relative to exact trace.
 

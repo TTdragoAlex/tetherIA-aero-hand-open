@@ -144,3 +144,23 @@ hw@192.168.9.63:/home/hw/aero-hand-sim
 That source tree is not git-controlled. Before editing remote simulation source,
 create a timestamped backup and copy important patches/artifacts back into this
 repository under `sim/`.
+
+## 45 mm Ball Training Variant
+
+The first ball-training env is:
+
+```text
+AeroBall45mmRotateZAxisHardware01RealTunedWindow
+```
+
+It uses a `0.0225 m` radius sphere, equivalent to a `4.5 cm` diameter ball. The
+MuJoCo body/freejoint/geom/sensor names intentionally remain `cube` internally
+so existing reward, randomization, trace, and export code can be reused. The
+visual ball has a small non-colliding marker dot so rollout videos show true
+spin.
+
+Remote source snapshot:
+
+```text
+sim/ball45_real_tuned_window_remote_source_20260710/
+```
