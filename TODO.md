@@ -13,6 +13,10 @@
   full posture, not only its own servo position.
 - Verify: no-object predicted residual current remains near zero across the
   full calibration trajectory before any live actor is unblocked.
+- Collector: `scripts/collect_hardware01_coupled_baseline_safe.py` samples
+  sparse postures from the fitted trace, logs every ramp step, skips at
+  `1800 mA`, hard-aborts at `3000 mA`, and returns to rest after every pose.
+  Start with a dry run; the first physical session must use `--max-poses 1`.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

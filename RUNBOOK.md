@@ -235,6 +235,23 @@ servo change, but it is not a live-policy contact model:
   --sweep logs/channel_friction_sweep_YYYYMMDD_HHMMSS.csv
 ```
 
+The next approved diagnostic is no-object coupled-current collection, not the
+ball actor. Preview the sparse fitted-trace poses without moving the hand:
+
+```bash
+./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py
+```
+
+For the first physical probe, use exactly one pose only after the hand is
+connected, mounted, and clear. The collector checks every `0.015` command step,
+skips at `1800 mA`, hard-aborts at `3000 mA`, and returns to rest:
+
+```bash
+./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py \
+  --run \
+  --max-poses 1
+```
+
 ## Debugging Common Issues
 - `Permission denied` over one-shot SSH: use interactive `ssh hw@192.168.9.63` and enter the operator-provided password.
 - Training log empty at start: often normal during JAX/XLA compile; check `ps` and run dir creation.

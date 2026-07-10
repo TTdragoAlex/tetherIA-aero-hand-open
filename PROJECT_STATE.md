@@ -131,6 +131,10 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `scripts/live_policy_control.py`: closed-loop actor runner using real GET_POS/GET_CURR style observations.
 - `scripts/build_observation_calibration.py`: generates a no-object current
   baseline JSON from a channel friction sweep.
+- `scripts/collect_hardware01_coupled_baseline_safe.py`: dry-run-first
+  collector for no-object multi-servo position/current data from sparse fitted
+  trace poses. It uses a `1800 mA` soft skip, `3000 mA` hard abort, and returns
+  to rest between poses.
 - `sim/hand_observation_calibration_20260626.json`: current baseline for the
   experimental 45 mm ball live-observation bridge.
 - `scripts/channel_friction_sweep.py`: per-servo no-cube current/range sweep.
