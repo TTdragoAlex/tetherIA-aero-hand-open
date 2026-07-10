@@ -43,6 +43,11 @@ Review the corrected videos in `sim/ball45_real_tuned_window_visualfix_20260710/
 the first copied ball videos made the ball look like a tiny dot because only
 the orientation marker rendered clearly.
 
+The 45 mm ball actor now has an experimental live-observation bridge: it uses
+measured servo positions plus current above a recorded no-object spring/friction
+baseline. It has passed offline checks but still requires a no-object hardware
+test before the ball is introduced. See the actor artifact README and RUNBOOK.
+
 ## Safety
 
 - Do not move the physical hand unless it is connected, mounted, and clear.
@@ -119,6 +124,8 @@ yet a deployable autonomous cube-rotation policy.
   tools.
 - `sim/`: Copied training videos, exact traces, actor exports, diagnostics, and
   remote source snapshots.
+- `sim/hand_observation_calibration_20260626.json`: no-object servo-current
+  baseline used by the experimental ball live-observation bridge.
 - `logs/`: CSV logs from real-hand tests and replay/live-policy runs.
 - `firmware-platformio/`: ESP32/PlatformIO firmware project.
 - `aero_hand_calibration.json`: current Mac-side raw rest/open calibration.
@@ -150,7 +157,7 @@ editing it.
 
 ## Next Work
 
-Do not treat another sim-only successful policy as progress by itself. The next
-safe step is to build a sim-real identification harness around exact traces and
-tune contact, geometry, compliance, friction, and support until the simulator
-fails in the same way as the real hand.
+Do not treat another sim-only successful policy as progress by itself. First
+validate the measured-position/current observation bridge with no object; then
+use the result to guide sim-real identification of contact, geometry,
+compliance, friction, and support.

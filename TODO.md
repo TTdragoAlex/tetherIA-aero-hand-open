@@ -1,5 +1,18 @@
 # TODO.md
 
+## 0. Validate Ball Actor Measured-Observation Bridge
+
+- Task: Run the 45 mm ball actor with no object using physical `GET_POS` and
+  baseline-corrected current observations.
+- Command: `sim/live_actor_export_ball45_real_tuned_window_000157286400/README.md`.
+- Verify: the hand reaches the trained mean posture smoothly, the following
+  actions are varied rather than a static repeat, and current/temperature stay
+  below `4000 mA`/`65 C`.
+- Do not add the ball until this no-object test is reviewed.
+- Limitation: `sim/hand_observation_calibration_20260626.json` is based on a
+  no-object sweep; thumb-flex data above the protected sweep endpoint is held,
+  not measured.
+
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
 - Verify: Cube rotates at least intermittently without sustained thumb-index trapping or repeated jamming.

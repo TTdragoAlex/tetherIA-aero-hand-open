@@ -107,3 +107,20 @@
 - Decision: Stop treating new reward/window variants that only look good in simulation as the next main path. The next work should be sim-real identification: reproduce the real thumb/finger trapping and lateral ejection in sim using exact traces, geometry/contact/compliance changes, and measured hand behavior.
 - Why: `RealTunedWindow` baked in the best operator-tuned replay transform and produced plausible seated cube rotation in sim, but real replay still showed the same bad behavior. This means the translation/model mismatch is now the bottleneck.
 - Rejected: Training another reward-only policy variant from the current simulator assumptions, because the simulator is not yet predicting the real failure mode.
+
+## Decision: Feed the ball actor measured position and baseline-corrected current
+- Date: 2026-07-10
+- Decision: The 45 mm ball live actor should use physical `GET_POS` plus signed
+  current residual above a per-servo no-object current-vs-position baseline.
+- Why: The first live controller setup fed its own command as position and a
+  fixed policy-mean force value. That removed contact feedback and produced a
+  repeated movement unlike the simulated rollout. The actor's no-object force
+  input now remains at its trained mean, while changed current can perturb it.
+- Evidence: `logs/channel_friction_sweep_20260626_105220.csv` captures the new
+  spring configuration, and offline checks verified that its baseline maps
+  exactly to the exported actor's force mean.
+- Limitation: This is a first-order preload correction, not a calibrated
+  physical contact force. Thumb-flex data was protected from high current and
+  is held beyond its final measured position.
+- Rejected: Feeding raw current directly, because spring preload alone can
+  dominate current even without an object.

@@ -18,6 +18,13 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - `scripts/replay_policy_trace_safe.py`
   - `scripts/replay_hardware01_u_trace_safe.py`
 - Live closed-loop actor runner: `scripts/live_policy_control.py`.
+- Experimental measured-observation bridge for the 45 mm ball actor:
+  `scripts/live_policy_control.py --position-obs-source get_pos
+  --force-obs-source calibrated_current`.
+  - Uses `sim/hand_observation_calibration_20260626.json`, generated from
+    `logs/channel_friction_sweep_20260626_105220.csv`.
+  - Subtracts a per-channel no-object current baseline before feeding a current
+    residual to the actor; it is not yet hardware-validated with the ball.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`
@@ -120,6 +127,10 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `scripts/aero_hand_control.py`: serial protocol wrapper for real hand commands/readbacks.
 - `scripts/replay_hardware01_u_trace_safe.py`: safest current open-loop exact trace replay for hardware01 `u_real_order` JSON traces.
 - `scripts/live_policy_control.py`: closed-loop actor runner using real GET_POS/GET_CURR style observations.
+- `scripts/build_observation_calibration.py`: generates a no-object current
+  baseline JSON from a channel friction sweep.
+- `sim/hand_observation_calibration_20260626.json`: current baseline for the
+  experimental 45 mm ball live-observation bridge.
 - `scripts/channel_friction_sweep.py`: per-servo no-cube current/range sweep.
 - `scripts/audit_sim_to_real_mapping.py`: mapping correctness audit.
 - `sim/hardware01_exact_rollout_trace_20260706/`: exact sim rollout videos and `u_real_order` traces for replay/compare.

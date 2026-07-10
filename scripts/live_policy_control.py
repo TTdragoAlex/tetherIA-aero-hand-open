@@ -33,6 +33,7 @@ from gesture_smoke_test import CHANNEL_NAMES  # noqa: E402
 
 DEFAULT_POLICY = REPO_ROOT / "sim" / "live_actor_export_000200540160" / "actor_policy.npz"
 DEFAULT_METADATA = DEFAULT_POLICY.with_name("actor_policy_metadata.json")
+DEFAULT_OBSERVATION_CALIBRATION = REPO_ROOT / "sim" / "hand_observation_calibration_20260626.json"
 LOG_DIR = REPO_ROOT / "logs"
 
 # Actor action order in the legacy sim policy.
@@ -57,6 +58,17 @@ class PolicyBundle:
     weights: list[tuple[np.ndarray, np.ndarray]]
 
 
+@dataclass
+class ObservationCalibration:
+    """No-object current baseline used to isolate likely contact load."""
+
+    source_path: Path
+    position_points: list[np.ndarray]
+    current_baseline_ma: list[np.ndarray]
+    residual_scale_ma: np.ndarray
+    residual_sign: np.ndarray
+
+
 def silu(x: np.ndarray) -> np.ndarray:
     return np.where(x >= 0.0, x / (1.0 + np.exp(-x)), x * np.exp(x) / (1.0 + np.exp(x)))
 
@@ -71,6 +83,82 @@ def load_policy(path: Path) -> PolicyBundle:
         obs_std=np.maximum(data["obs_std"].astype(np.float32), 1e-6),
         weights=weights,
     )
+
+
+def load_observation_calibration(path: Path) -> ObservationCalibration:
+    """Load a per-channel no-object current curve in physical channel order."""
+    try:
+        data = json.loads(path.read_text())
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            f"Observation calibration not found: {path}. "
+            "Create one with scripts/build_observation_calibration.py."
+        ) from exc
+
+    if data.get("channel_order") != HARDWARE01_ACTION_NAMES:
+        raise ValueError("Observation calibration channel_order must match physical hardware order")
+    channels = data.get("channels")
+    if not isinstance(channels, list) or len(channels) != 7:
+        raise ValueError("Observation calibration must contain seven channel curves")
+
+    position_points: list[np.ndarray] = []
+    current_baseline_ma: list[np.ndarray] = []
+    residual_scale_ma = []
+    residual_sign = []
+    for idx, channel in enumerate(channels):
+        if channel.get("name") != HARDWARE01_ACTION_NAMES[idx]:
+            raise ValueError(f"Observation calibration channel {idx} has an unexpected name")
+        positions = np.asarray(channel.get("position", []), dtype=np.float32)
+        currents = np.asarray(channel.get("current_baseline_ma", []), dtype=np.float32)
+        if len(positions) < 2 or len(positions) != len(currents):
+            raise ValueError(f"Observation calibration channel {idx} needs matching position/current curves")
+        if np.any(np.diff(positions) <= 0.0):
+            raise ValueError(f"Observation calibration channel {idx} positions must be strictly increasing")
+        position_points.append(positions)
+        current_baseline_ma.append(currents)
+        residual_scale_ma.append(float(channel.get("residual_scale_ma", data.get("residual_scale_ma", 400.0))))
+        residual_sign.append(float(channel.get("residual_sign", 1.0)))
+
+    if any(value <= 0.0 for value in residual_scale_ma):
+        raise ValueError("Observation calibration residual scales must be positive")
+    return ObservationCalibration(
+        source_path=path,
+        position_points=position_points,
+        current_baseline_ma=current_baseline_ma,
+        residual_scale_ma=np.asarray(residual_scale_ma, dtype=np.float32),
+        residual_sign=np.asarray(residual_sign, dtype=np.float32),
+    )
+
+
+def baseline_current_ma(pos_norm: list[float], calibration: ObservationCalibration) -> np.ndarray:
+    """Return the signed no-object current expected at each physical servo position."""
+    position = np.asarray(pos_norm, dtype=np.float32)
+    return np.asarray(
+        [
+            np.interp(position[idx], calibration.position_points[idx], calibration.current_baseline_ma[idx])
+            for idx in range(7)
+        ],
+        dtype=np.float32,
+    )
+
+
+def calibrated_force_proxy(
+    pos_norm: list[float],
+    curr_ma: list[float],
+    force_reference: np.ndarray,
+    calibration: ObservationCalibration,
+) -> np.ndarray:
+    """Map current above the no-object spring/friction curve into actor force input.
+
+    The simulated actor saw signed actuator-force proxy values.  Real servo
+    current includes large pose-dependent spring preload, so preserve the
+    actor's trained mean at no contact and add only the calibrated residual.
+    """
+    current = np.asarray(curr_ma, dtype=np.float32)
+    baseline = baseline_current_ma(pos_norm, calibration)
+    residual = (current - baseline) / calibration.residual_scale_ma
+    proxy = force_reference.astype(np.float32) + calibration.residual_sign * np.tanh(residual)
+    return np.clip(proxy, -1.0, 1.0)
 
 
 def infer_action(policy: PolicyBundle, obs_raw: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -210,12 +298,17 @@ def ramp_raw_actuators(
     end: list[float],
     max_step_delta: list[float],
     rate_hz: float,
+    args: argparse.Namespace,
 ) -> list[float]:
+    """Ramp to an initial posture while enforcing the normal hardware aborts."""
     current = list(start)
     while True:
         limited = apply_slew(end, current, max_step_delta)
         hand.send_raw_actuators(limited)
         current = limited
+        curr = hand.get_currents_ma()
+        temp = hand.get_temperatures_c()
+        enforce_safety_with_confirmation(hand, curr, temp, args)
         if all(abs(current[i] - end[i]) < 1e-4 for i in range(7)):
             return current
         time.sleep(1.0 / rate_hz)
@@ -232,6 +325,7 @@ def build_obs(
     use_signed_current: bool,
     force_obs_source: str,
     force_obs_reference: np.ndarray,
+    observation_calibration: ObservationCalibration | None,
     invert_position_obs: bool,
     obs_mode: str,
     hardware_position_scale: float,
@@ -284,6 +378,10 @@ def build_obs(
         obs[7:14] = 0.0
     elif force_obs_source == "policy_mean":
         obs[7:14] = force_obs_reference.astype(np.float32)
+    elif force_obs_source == "calibrated_current":
+        if observation_calibration is None:
+            raise ValueError("--force-obs-source calibrated_current requires --observation-calibration")
+        obs[7:14] = calibrated_force_proxy(pos_norm, curr_ma, force_obs_reference, observation_calibration)
     else:
         raise ValueError(f"Unsupported force_obs_source: {force_obs_source}")
     obs[14:21] = last_action_obs.astype(np.float32)
@@ -408,8 +506,16 @@ def write_log_row(writer: csv.DictWriter, elapsed: float, step: int, target, pos
     writer.writerow(row)
 
 
-def fake_telemetry(raw_rest: list[float]) -> tuple[list[float], list[float], list[float]]:
-    return list(raw_rest), [0.0] * 7, [30.0] * 7
+def fake_telemetry(
+    raw_rest: list[float], observation_calibration: ObservationCalibration | None = None
+) -> tuple[list[float], list[float], list[float]]:
+    position = list(raw_rest)
+    current = (
+        baseline_current_ma(position, observation_calibration).astype(float).tolist()
+        if observation_calibration is not None
+        else [0.0] * 7
+    )
+    return position, current, [30.0] * 7
 
 
 def select_position_obs(real_pos: list[float], previous_target: list[float], source: str) -> list[float]:
@@ -441,6 +547,11 @@ def run_controller(args: argparse.Namespace) -> int:
         obs_mode = "hardware01" if action_mode == "hardware01" else "tendon_guess"
     initial_hardware01_u = hardware01_initial_u(policy, args.hardware01_initial_u, raw_rest)
     force_obs_reference = policy.obs_mean[7:14].astype(np.float32)
+    observation_calibration = (
+        load_observation_calibration(args.observation_calibration)
+        if args.force_obs_source == "calibrated_current"
+        else None
+    )
     last_action_obs = np.asarray(initial_hardware01_u if action_mode == "hardware01" else [0.0] * 7, dtype=np.float32)
     previous_target = list(raw_rest)
     action_log_names = HARDWARE01_ACTION_NAMES if action_mode == "hardware01" else SIM_ACTION_NAMES
@@ -462,6 +573,9 @@ def run_controller(args: argparse.Namespace) -> int:
     print(f"position_obs_sign: {'inverted' if args.invert_position_obs else 'positive'}")
     print(f"current_scale_ma: {args.current_scale_ma:.1f}; current_mode: {'signed' if args.use_signed_current else 'abs'}")
     print(f"force_obs_source: {args.force_obs_source}")
+    if observation_calibration is not None:
+        print(f"observation_calibration: {observation_calibration.source_path}")
+        print(f"current_residual_scale_ma: {fmt(observation_calibration.residual_scale_ma, 1)}")
     print(f"max_step_delta: {max_step_delta}")
     print(f"action_sign: {action_sign}")
     if any(abs(v) > 1e-12 for v in target_bias):
@@ -474,17 +588,19 @@ def run_controller(args: argparse.Namespace) -> int:
 
     if not args.run:
         print("\nDry-run only. No serial connection or movement happened.")
-        pos, curr, temp = fake_telemetry(raw_rest)
+        pos, curr, temp = fake_telemetry(raw_rest, observation_calibration)
         if action_mode == "hardware01":
             pos = initial_hardware01_u.tolist()
+            if observation_calibration is not None:
+                curr = baseline_current_ma(pos, observation_calibration).astype(float).tolist()
             previous_target = pos[:]
         for step in range(min(args.steps, 20)):
             pos_obs = select_position_obs(pos, previous_target, args.position_obs_source)
             obs_z = build_obs(
                 pos_obs, curr, last_action_obs, raw_rest,
                 args.position_gain, args.thumb_abd_gain, args.current_scale_ma,
-                args.use_signed_current, args.force_obs_source, force_obs_reference, args.invert_position_obs,
-                obs_mode, args.hardware_position_scale, action_sign,
+                args.use_signed_current, args.force_obs_source, force_obs_reference, observation_calibration,
+                args.invert_position_obs, obs_mode, args.hardware_position_scale, action_sign,
             )
             obs_raw = observation_for_policy(policy, obs_z, obs_mode, args.obs_input_space)
             raw_action, _ = infer_action(policy, obs_raw)
@@ -500,6 +616,8 @@ def run_controller(args: argparse.Namespace) -> int:
             last_action_obs = action_for_obs
             previous_target = target
             pos = target  # fake closed-loop response for dry-run preview
+            if observation_calibration is not None:
+                curr = baseline_current_ma(pos, observation_calibration).astype(float).tolist()
         print("\nWhen ready, connect/mount the hand and add --run.")
         return 0
 
@@ -517,7 +635,12 @@ def run_controller(args: argparse.Namespace) -> int:
                 if action_mode == "hardware01" and args.hardware01_initial_u != "rest":
                     print(f"[init] ramping to hardware01 initial_u: {fmt(initial_hardware01_u, 3)}")
                     previous_target = ramp_raw_actuators(
-                        hand, previous_target, initial_hardware01_u.tolist(), max_step_delta, args.rate
+                        hand,
+                        previous_target,
+                        initial_hardware01_u.tolist(),
+                        max_step_delta,
+                        args.rate,
+                        args,
                     )
                     time.sleep(args.rest_settle)
                 for step in range(args.steps):
@@ -531,8 +654,8 @@ def run_controller(args: argparse.Namespace) -> int:
                     obs_z = build_obs(
                         pos_obs, curr, last_action_obs, raw_rest,
                         args.position_gain, args.thumb_abd_gain, args.current_scale_ma,
-                        args.use_signed_current, args.force_obs_source, force_obs_reference, args.invert_position_obs,
-                        obs_mode, args.hardware_position_scale, action_sign,
+                        args.use_signed_current, args.force_obs_source, force_obs_reference, observation_calibration,
+                        args.invert_position_obs, obs_mode, args.hardware_position_scale, action_sign,
                     )
                     obs_raw = observation_for_policy(policy, obs_z, obs_mode, args.obs_input_space)
                     raw_action, _ = infer_action(policy, obs_raw)
@@ -620,9 +743,15 @@ def main() -> int:
     parser.add_argument("--use-signed-current", action="store_true", help="Use signed current instead of absolute current for force proxy.")
     parser.add_argument(
         "--force-obs-source",
-        choices=("current", "zero", "policy_mean"),
+        choices=("current", "zero", "policy_mean", "calibrated_current"),
         default="current",
-        help="Force/load observation source. policy_mean is a diagnostic for sim actuator_force vs real current mismatch.",
+        help="Force/load observation source. calibrated_current subtracts a no-object spring/friction baseline.",
+    )
+    parser.add_argument(
+        "--observation-calibration",
+        type=Path,
+        default=DEFAULT_OBSERVATION_CALIBRATION,
+        help="Per-channel no-object current baseline JSON for calibrated_current mode.",
     )
     parser.add_argument("--default-max-step-delta", type=float, default=0.06)
     parser.add_argument("--max-step-delta", default="thumb_abd=0.08,thumb_flex=0.06,thumb_tendon=0.06,index=0.06,middle=0.06,ring=0.05,pinky=0.06")
