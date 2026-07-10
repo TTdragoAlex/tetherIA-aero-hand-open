@@ -68,6 +68,7 @@ current best fitted exact trace:
 | 2026-07-10 | `sim/ball45_real_tuned_window_visualfix_20260710/` | Regenerated 45 mm ball videos/log/XML from checkpoint `000157286400`. | Use this folder for review; it shows the full 45 mm orange ball plus black orientation marker. |
 | 2026-07-10 | `sim/live_actor_export_ball45_real_tuned_window_000157286400/` | Live actor export for the 45 mm ball policy. | Blocked after two no-object current aborts and repeated clamp/release behavior. |
 | 2026-07-10 | `sim/hand_observation_calibration_20260626.json` | Per-servo no-object current-vs-position baseline generated from the 2026-06-26 spring sweep. | Insufficient for coupled hand postures; do not use it to authorize the ball actor. |
+| 2026-07-10 | `logs/coupled_current_baseline_20260710_160835.csv` | First no-object coupled-pose current record from fitted trace pose 0. | Passed below the collector's `1800 mA` soft threshold; use as the first sample for a coupled baseline. |
 
 ## How To Interpret A `rollout*.mp4`
 

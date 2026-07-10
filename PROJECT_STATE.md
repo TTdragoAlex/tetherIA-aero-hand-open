@@ -27,6 +27,14 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
     baseline underestimated coupled spring current, causing repeated
     clamp/release motion and two current aborts. The ball actor is blocked from
     hardware use pending a coupled-pose calibration dataset.
+- First coupled-pose no-object calibration probe completed on 2026-07-10:
+  - Log: `logs/coupled_current_baseline_20260710_160835.csv`.
+  - Source: fitted PhysicsID trace pose `0`, using the real-hand-fitted scale
+    and bias transform.
+  - Peak ramp current: `1124.5 mA`; settled maximum: `1040 mA` on index;
+    maximum temperature: `41 C`.
+  - Result: completed below the collector's `1800 mA` soft skip and returned
+    to rest. This is a valid first coupled-current sample, not actor approval.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

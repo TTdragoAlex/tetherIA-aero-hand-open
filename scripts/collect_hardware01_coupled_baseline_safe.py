@@ -172,7 +172,7 @@ def run(args: argparse.Namespace) -> int:
     rest = load_raw_rest(args.calibration)
     started = time.monotonic()
     with log_path.open("w", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=make_fieldnames())
+        writer = csv.DictWriter(file, fieldnames=make_fieldnames(), lineterminator="\n")
         writer.writeheader()
         with AeroHandController(args.port, args.baud) as hand:
             current_target = hand.apply_rest(args.calibration, settle_s=args.rest_settle)

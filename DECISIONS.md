@@ -140,3 +140,16 @@
 - Rejected: Raising abort limits or continuing manual live tests, because the
   actuator safety response revealed an invalid observation model, not a minor
   threshold issue.
+
+## Decision: Build the new current dataset from sparse fitted-trace poses
+- Date: 2026-07-10
+- Decision: Collect no-object current data one sparse fitted-trace pose at a
+  time, logging every `0.015` command ramp step and returning to rest after
+  each pose.
+- Why: The first fitted pose completed safely despite an index command near
+  `0.8`: peak ramp current was `1124.5 mA`, settled maximum was `1040 mA`, and
+  temperature stayed at or below `41 C`. This confirms that coupled current is
+  posture-dependent rather than determined by index position alone.
+- Evidence: `logs/coupled_current_baseline_20260710_160835.csv`.
+- Next: add only one new sparse pose per trial until a useful safe coverage set
+  exists; soft-skipped ramps remain valuable boundary data.

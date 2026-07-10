@@ -17,6 +17,11 @@
   sparse postures from the fitted trace, logs every ramp step, skips at
   `1800 mA`, hard-aborts at `3000 mA`, and returns to rest after every pose.
   Start with a dry run; the first physical session must use `--max-poses 1`.
+- Stage 1 result: pose `0` completed in
+  `logs/coupled_current_baseline_20260710_160835.csv`; peak ramp current was
+  `1124.5 mA`, settled maximum was `1040 mA`, and maximum temperature was
+  `41 C`. The next safe probe may use `--max-poses 2`, which repeats the known
+  safe pose `0` before collecting one additional pose.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
