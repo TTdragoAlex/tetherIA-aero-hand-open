@@ -66,6 +66,7 @@ current best fitted exact trace:
 | 2026-07-10 | `sim/ball45_real_tuned_window_remote_source_20260710/` | Source snapshot for the new 45 mm ball training env. | Documents the 45 mm ball XML/env registration. |
 | 2026-07-10 | `sim/ball45_real_tuned_window_20260710/` | First 45 mm ball training videos/config/log. | Completed cleanly, but videos are visually misleading because the full ball did not render clearly. |
 | 2026-07-10 | `sim/ball45_real_tuned_window_visualfix_20260710/` | Regenerated 45 mm ball videos/log/XML from checkpoint `000157286400`. | Use this folder for review; it shows the full 45 mm orange ball plus black orientation marker. |
+| 2026-07-10 | `sim/live_actor_export_ball45_real_tuned_window_000157286400/` | Live actor export for the 45 mm ball policy. | Mac-side test artifact; start no-cube at low scale before any ball test. |
 
 ## How To Interpret A `rollout*.mp4`
 

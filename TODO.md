@@ -97,13 +97,14 @@ Completed monitor/copy/review status:
 - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
 - Copied videos/config/log: `sim/ball45_real_tuned_window_20260710/`
 - Corrected visual videos/log/XML: `sim/ball45_real_tuned_window_visualfix_20260710/`
+- Live actor export: `sim/live_actor_export_ball45_real_tuned_window_000157286400/`
 - Result: completed cleanly at checkpoint `000157286400`; final reward `39.298`, best observed reward `39.676` at `137625600`.
 - Initial video correction: the first videos made the ball look like a tiny dot because only the marker rendered clearly. The visual-fix videos show the full 45 mm ball.
-- Next verification: review full videos and export exact traces before any real-hand test.
+- Next verification: no-cube live actor test at `--playback-scale 0.05`; only then test with the 45 mm ball.
 
 ## 7. Export New Closed-Loop Actor Only After Sim-Real Identification
-- Task: Export final/best checkpoint to Mac as `sim/live_actor_export_hardware01_real_tuned_window_<step>/`.
-- Verify: Folder contains `actor_policy.npz`, metadata JSON, and any needed sensor normalization/proprio maps.
+- Status: 45 mm ball actor exported to `sim/live_actor_export_ball45_real_tuned_window_000157286400/`.
+- Verify: Folder contains `actor_policy.npz`, metadata JSON, and README with first no-cube command.
 
 ## 8. Live Closed-Loop Test
 - Task: Run exported actor through `scripts/live_policy_control.py` only after exact trace looks plausible.

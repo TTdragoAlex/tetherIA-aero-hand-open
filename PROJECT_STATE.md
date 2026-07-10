@@ -72,6 +72,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Local source snapshot: `sim/ball45_real_tuned_window_remote_source_20260710/`
   - Copied videos/config/log: `sim/ball45_real_tuned_window_20260710/`
   - Corrected visual videos/log/XML: `sim/ball45_real_tuned_window_visualfix_20260710/`
+  - Live actor export copied to Mac: `sim/live_actor_export_ball45_real_tuned_window_000157286400/`
   - Final checkpoint: `000157286400`
   - Final logged reward: `39.298`
   - Best logged reward observed: `39.676` at `137625600`
@@ -130,6 +131,7 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `sim/ball45_real_tuned_window_remote_source_20260710/`: copied source/XML snapshot for the 45 mm ball training env.
 - `sim/ball45_real_tuned_window_20260710/`: copied 45 mm ball rollout videos, config, and training log.
 - `sim/ball45_real_tuned_window_visualfix_20260710/`: regenerated 45 mm ball videos from checkpoint `000157286400` with the full orange visual ball visible.
+- `sim/live_actor_export_ball45_real_tuned_window_000157286400/`: Mac-side live actor export for the 45 mm ball policy. Start no-cube at `--playback-scale 0.05`.
 - `sim/live_actor_export_hardware01_efficient_000157286400/`: current efficient actor export.
 - Remote `rotate_z.py`: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/aero_hand/rotate_z.py`.
 - Remote registry: `/home/hw/aero-hand-sim/mujoco_playground/mujoco_playground/_src/manipulation/__init__.py`.

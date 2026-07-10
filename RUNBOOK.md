@@ -222,6 +222,33 @@ cd "/Users/alextang/Documents/Robot Hand"
 
 Point `--policy` or equivalent script option to the latest exported actor if the script does not default to it.
 
+For the 45 mm ball live actor, start with a no-cube low-scale test:
+
+```bash
+cd "/Users/alextang/Documents/Robot Hand"
+./.venv/bin/python scripts/live_policy_control.py \
+  --run \
+  --policy sim/live_actor_export_ball45_real_tuned_window_000157286400/actor_policy.npz \
+  --steps 60 \
+  --rate 10 \
+  --playback-scale 0.05 \
+  --action-mode hardware01 \
+  --obs-mode hardware01 \
+  --obs-input-space raw \
+  --position-obs-source command \
+  --hardware01-initial-u rest \
+  --current-scale-ma 4000 \
+  --use-signed-current \
+  --force-obs-source policy_mean \
+  --default-max-step-delta 0.03 \
+  --abort-current 4000 \
+  --abort-temp 65 \
+  --sample-every 5
+```
+
+If no-cube motion is smooth and current is low, repeat with `--playback-scale
+0.10`. Do not put the ball in until no-cube motion is acceptable.
+
 ## Debugging Common Issues
 - `Permission denied` over one-shot SSH: use interactive `ssh hw@192.168.9.63` and enter the operator-provided password.
 - Training log empty at start: often normal during JAX/XLA compile; check `ps` and run dir creation.
