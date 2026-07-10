@@ -35,6 +35,13 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
     maximum temperature: `41 C`.
   - Result: completed below the collector's `1800 mA` soft skip and returned
     to rest. This is a valid first coupled-current sample, not actor approval.
+- Second coupled-pose no-object calibration run completed on 2026-07-10:
+  - Log: `logs/coupled_current_baseline_20260710_162258.csv`.
+  - Repeated pose `0` and added source pose `12`, which substantially changed
+    thumb abduction and redistributed finger load.
+  - Peak ramp current remained `1124.5 mA`; the new pose settled at
+    `1033.5 mA` maximum; temperature reached `43 C` after the longer run.
+  - Result: both poses completed below the soft limit and returned to rest.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

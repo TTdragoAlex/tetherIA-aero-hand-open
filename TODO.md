@@ -22,6 +22,10 @@
   `1124.5 mA`, settled maximum was `1040 mA`, and maximum temperature was
   `41 C`. The next safe probe may use `--max-poses 2`, which repeats the known
   safe pose `0` before collecting one additional pose.
+- Stage 2 result: `logs/coupled_current_baseline_20260710_162258.csv` repeated
+  pose `0` and added pose `12`; both remained below `1124.5 mA` during ramps,
+  the new pose settled at `1033.5 mA`, and the final temperature was `43 C`.
+  The next safe probe may use `--max-poses 3` to add source pose `24`.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
