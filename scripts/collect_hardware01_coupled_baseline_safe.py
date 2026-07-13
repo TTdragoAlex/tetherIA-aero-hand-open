@@ -106,6 +106,11 @@ def selected_trace_poses(args: argparse.Namespace) -> list[dict[str, object]]:
                 "target": scale_target(row["target"], playback_scale, scale_center, channel_scale, channel_bias),
             }
         )
+    if args.start_pose_index < 0:
+        raise ValueError("--start-pose-index must be >= 0")
+    if args.start_pose_index >= len(selected):
+        raise ValueError(f"--start-pose-index must be below {len(selected)}")
+    selected = selected[args.start_pose_index:]
     if args.max_poses is not None:
         if args.max_poses < 1:
             raise ValueError("--max-poses must be >= 1")
@@ -289,7 +294,8 @@ def main() -> int:
     parser.add_argument("--preset", choices=tuple(PRESETS), default=DEFAULT_PRESET)
     parser.add_argument("--trace", type=Path, help="Override the preset trace; transform still defaults to the preset values.")
     parser.add_argument("--stride", type=int, default=12, help="Use every Nth trace point plus the final point.")
-    parser.add_argument("--max-poses", type=int, help="Limit the sparse pose list; use 1 for the first physical probe.")
+    parser.add_argument("--start-pose-index", type=int, default=0, help="Zero-based index in the sparse pose list to begin collecting.")
+    parser.add_argument("--max-poses", type=int, help="Number of sparse poses to collect after --start-pose-index.")
     parser.add_argument("--playback-scale", type=float)
     parser.add_argument("--scale-center", type=float, default=0.5)
     parser.add_argument("--channel-scale", default="")

@@ -59,6 +59,17 @@
   intentionally not wired into `scripts/live_policy_control.py`.
 - Next: design a holdout validation and expand posture coverage before deciding
   whether a guarded current-residual adapter is useful enough to integrate.
+- Holdout result: `scripts/evaluate_coupled_observation_calibration.py` wrote
+  `sim/hand_coupled_observation_validation_20260713.json`. Across 14
+  leave-one-session-out repeated-pose cases, per-channel median absolute
+  residual was `4.1-16.3 mA`; the largest residual was `82.9 mA` on ring.
+  Source pose `60` remains unvalidated because it appears in one session.
+- Next: select and collect additional safely separated posture samples, then
+  repeat the temporal validation. Keep the ball actor blocked until both
+  posture coverage and no-object residual behavior are adequate.
+- Prepared next physical task: dry-run of collector index `6` selects source
+  step `72`, target `[0.620, 0.144, 0.305, 0.730, 0.426, 0.688, 0.724]`.
+  Run it alone with `--start-pose-index 6 --max-poses 1`; keep the hand empty.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

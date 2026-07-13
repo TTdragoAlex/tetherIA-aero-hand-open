@@ -242,11 +242,32 @@ ball actor. Preview the sparse fitted-trace poses without moving the hand:
 ./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py
 ```
 
+To add one new sparse trace pose after prior calibration, use
+`--start-pose-index` with `--max-poses 1`. This avoids replaying earlier poses;
+it still begins and ends at rest and retains the same soft/hard limits:
+
+```bash
+./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py \
+  --run \
+  --start-pose-index 6 \
+  --max-poses 1
+```
+
 After collecting a coupled dataset, build the offline guarded artifact without
 moving the hand. This does not authorize live control:
 
 ```bash
 ./.venv/bin/python scripts/build_coupled_observation_calibration.py \
+  --logs logs/coupled_current_baseline_20260713_095516.csv \
+         logs/coupled_current_baseline_20260713_095924.csv \
+         logs/coupled_current_baseline_20260713_100341.csv
+```
+
+Evaluate repeated-pose temporal stability before considering any future model
+integration. This also does not move the hand:
+
+```bash
+./.venv/bin/python scripts/evaluate_coupled_observation_calibration.py \
   --logs logs/coupled_current_baseline_20260713_095516.csv \
          logs/coupled_current_baseline_20260713_095924.csv \
          logs/coupled_current_baseline_20260713_100341.csv

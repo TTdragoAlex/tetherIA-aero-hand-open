@@ -82,6 +82,19 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - The artifact is explicitly `offline_only`. Its `0.08` nearest-pose support
     radius prevents a future controller from treating unmeasured postures as
     calibrated. The live controller does not consume it yet.
+- Offline temporal validation completed on 2026-07-13:
+  - Evaluator: `scripts/evaluate_coupled_observation_calibration.py`.
+  - Artifact: `sim/hand_coupled_observation_validation_20260713.json`.
+  - Leave-one-session-out validation covered 14 repeated-pose cases. Median
+    absolute residuals were `4.1-16.3 mA` by channel; the worst observed
+    residual was `82.9 mA` on ring.
+  - Source step `60` has only one session and is not temporally validated.
+    This validates short-term repeatability at measured poses only, not
+    interpolation or object-contact detection.
+- The coupled collector supports `--start-pose-index`, allowing later probes
+  to add one new sparse pose without replaying all previously measured poses.
+  Its dry run selected source step `72` for index `6`; this is the next
+  conservative no-object coverage candidate, pending operator approval.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

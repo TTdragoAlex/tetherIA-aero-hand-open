@@ -1,0 +1,421 @@
+{
+  "format": "aero_hand_coupled_observation_validation_v1",
+  "status": "offline_only",
+  "source_logs": [
+    "logs/coupled_current_baseline_20260713_095516.csv",
+    "logs/coupled_current_baseline_20260713_095924.csv",
+    "logs/coupled_current_baseline_20260713_100341.csv"
+  ],
+  "channel_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "method": "leave_one_session_out_same_source_pose_median",
+  "case_count": 14,
+  "unvalidated_source_steps": [
+    60
+  ],
+  "absolute_residual_summary_ma": {
+    "median": [
+      8.938,
+      6.5,
+      4.062,
+      9.75,
+      8.938,
+      16.25,
+      13.0
+    ],
+    "p95": [
+      21.206,
+      26.325,
+      26.569,
+      45.337,
+      17.55,
+      76.538,
+      21.937
+    ],
+    "max": [
+      24.375,
+      39.0,
+      27.625,
+      60.125,
+      26.0,
+      82.875,
+      32.5
+    ]
+  },
+  "cases": [
+    {
+      "source_step": 0,
+      "held_out_log": "coupled_current_baseline_20260713_095516.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095924.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        4.875,
+        19.5,
+        27.625,
+        -4.875,
+        -26.0,
+        4.875,
+        16.25
+      ],
+      "absolute_residual_ma": [
+        4.875,
+        19.5,
+        27.625,
+        4.875,
+        26.0,
+        4.875,
+        16.25
+      ]
+    },
+    {
+      "source_step": 0,
+      "held_out_log": "coupled_current_baseline_20260713_095924.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        -9.75,
+        19.5,
+        -1.625,
+        9.75,
+        13.0,
+        9.75,
+        -32.5
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        19.5,
+        1.625,
+        9.75,
+        13.0,
+        9.75,
+        32.5
+      ]
+    },
+    {
+      "source_step": 0,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_095924.csv"
+      ],
+      "residual_ma": [
+        4.875,
+        -39.0,
+        -26.0,
+        -4.875,
+        13.0,
+        -14.625,
+        16.25
+      ],
+      "absolute_residual_ma": [
+        4.875,
+        39.0,
+        26.0,
+        4.875,
+        13.0,
+        14.625,
+        16.25
+      ]
+    },
+    {
+      "source_step": 12,
+      "held_out_log": "coupled_current_baseline_20260713_095516.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095924.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        -16.25,
+        1.625,
+        -3.25,
+        11.375,
+        6.5,
+        6.5,
+        13.0
+      ],
+      "absolute_residual_ma": [
+        16.25,
+        1.625,
+        3.25,
+        11.375,
+        6.5,
+        6.5,
+        13.0
+      ]
+    },
+    {
+      "source_step": 12,
+      "held_out_log": "coupled_current_baseline_20260713_095924.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        8.125,
+        6.5,
+        1.625,
+        1.625,
+        6.5,
+        11.375,
+        -11.375
+      ],
+      "absolute_residual_ma": [
+        8.125,
+        6.5,
+        1.625,
+        1.625,
+        6.5,
+        11.375,
+        11.375
+      ]
+    },
+    {
+      "source_step": 12,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_095924.csv"
+      ],
+      "residual_ma": [
+        8.125,
+        -8.125,
+        1.625,
+        -13.0,
+        -13.0,
+        -17.875,
+        -1.625
+      ],
+      "absolute_residual_ma": [
+        8.125,
+        8.125,
+        1.625,
+        13.0,
+        13.0,
+        17.875,
+        1.625
+      ]
+    },
+    {
+      "source_step": 24,
+      "held_out_log": "coupled_current_baseline_20260713_095516.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095924.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        3.25,
+        -4.875,
+        9.75,
+        -6.5,
+        -4.875,
+        -82.875,
+        16.25
+      ],
+      "absolute_residual_ma": [
+        3.25,
+        4.875,
+        9.75,
+        6.5,
+        4.875,
+        82.875,
+        16.25
+      ]
+    },
+    {
+      "source_step": 24,
+      "held_out_log": "coupled_current_baseline_20260713_095924.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        -6.5,
+        4.875,
+        -4.875,
+        -1.625,
+        -4.875,
+        9.75,
+        -3.25
+      ],
+      "absolute_residual_ma": [
+        6.5,
+        4.875,
+        4.875,
+        1.625,
+        4.875,
+        9.75,
+        3.25
+      ]
+    },
+    {
+      "source_step": 24,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_095924.csv"
+      ],
+      "residual_ma": [
+        3.25,
+        0.0,
+        -4.875,
+        8.125,
+        9.75,
+        73.125,
+        -13.0
+      ],
+      "absolute_residual_ma": [
+        3.25,
+        0.0,
+        4.875,
+        8.125,
+        9.75,
+        73.125,
+        13.0
+      ]
+    },
+    {
+      "source_step": 36,
+      "held_out_log": "coupled_current_baseline_20260713_095516.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095924.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        -24.375,
+        6.5,
+        0.0,
+        -22.75,
+        -6.5,
+        0.0,
+        0.0
+      ],
+      "absolute_residual_ma": [
+        24.375,
+        6.5,
+        0.0,
+        22.75,
+        6.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "source_step": 36,
+      "held_out_log": "coupled_current_baseline_20260713_095924.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        14.625,
+        -8.125,
+        -4.875,
+        60.125,
+        8.125,
+        -73.125,
+        -14.625
+      ],
+      "absolute_residual_ma": [
+        14.625,
+        8.125,
+        4.875,
+        60.125,
+        8.125,
+        73.125,
+        14.625
+      ]
+    },
+    {
+      "source_step": 36,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095516.csv",
+        "coupled_current_baseline_20260713_095924.csv"
+      ],
+      "residual_ma": [
+        9.75,
+        1.625,
+        4.875,
+        -37.375,
+        -1.625,
+        73.125,
+        14.625
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        1.625,
+        4.875,
+        37.375,
+        1.625,
+        73.125,
+        14.625
+      ]
+    },
+    {
+      "source_step": 48,
+      "held_out_log": "coupled_current_baseline_20260713_095924.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        -19.5,
+        -6.5,
+        0.0,
+        -9.75,
+        -9.75,
+        32.5,
+        0.0
+      ],
+      "absolute_residual_ma": [
+        19.5,
+        6.5,
+        0.0,
+        9.75,
+        9.75,
+        32.5,
+        0.0
+      ]
+    },
+    {
+      "source_step": 48,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_095924.csv"
+      ],
+      "residual_ma": [
+        19.5,
+        6.5,
+        0.0,
+        9.75,
+        9.75,
+        -32.5,
+        0.0
+      ],
+      "absolute_residual_ma": [
+        19.5,
+        6.5,
+        0.0,
+        9.75,
+        9.75,
+        32.5,
+        0.0
+      ]
+    }
+  ],
+  "notes": [
+    "Only tests repeated source poses; it does not validate interpolation between poses or object-contact detection.",
+    "Use the per-channel residual distribution to set a future sustained-contact threshold, never a global raw-current threshold.",
+    "Source steps with one session are retained in the calibration but cannot receive temporal holdout validation."
+  ]
+}
