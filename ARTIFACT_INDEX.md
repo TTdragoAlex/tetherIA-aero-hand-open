@@ -70,6 +70,7 @@ current best fitted exact trace:
 | 2026-07-10 | `sim/hand_observation_calibration_20260626.json` | Per-servo no-object current-vs-position baseline generated from the 2026-06-26 spring sweep. | Insufficient for coupled hand postures; do not use it to authorize the ball actor. |
 | 2026-07-10 | `logs/coupled_current_baseline_20260710_160835.csv` | First no-object coupled-pose current record from fitted trace pose 0. | Passed below the collector's `1800 mA` soft threshold; use as the first sample for a coupled baseline. |
 | 2026-07-10 | `logs/coupled_current_baseline_20260710_162258.csv` | Second no-object coupled-pose run: pose 0 repeated and source pose 12 added. | Both poses passed below the soft threshold; useful coverage of a different thumb/finger load distribution. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_095516.csv` | Four-pose no-object coupled-current run with eight settled readings per pose. | Quantifies normal held-current variation for source poses 0, 12, 24, and 36; use for the baseline's median/spread model. |
 
 ## How To Interpret A `rollout*.mp4`
 

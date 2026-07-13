@@ -48,6 +48,15 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
     `1040 mA` and maximum temperature `35 C`.
   - The collector now records eight held telemetry samples per future pose so
     the coupled baseline includes normal current fluctuation, not one reading.
+- Fourth coupled-pose no-object calibration run completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_095516.csv`.
+  - Repeated/held source poses `0`, `12`, `24`, and added source pose `36`.
+  - Each pose provided eight settled readings. Per-channel settled standard
+    deviation was `6.4-38.0 mA`; the widest observed within-pose span was
+    `97.5 mA`. Maximum temperature was `37 C`.
+  - Result: ordinary settled telemetry variation is far smaller than the
+    earlier multi-ampere actor mismatch. The eventual baseline must still be
+    fitted to full posture and use its measured spread, not a raw threshold.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

@@ -30,6 +30,13 @@
   source pose `24`; all three poses completed below `1040 mA` during ramps and
   `35 C`. Before adding pose `36`, the collector now records eight settled
   telemetry samples per pose to measure normal current fluctuation directly.
+- Stage 4 result: `logs/coupled_current_baseline_20260713_095516.csv` held
+  source poses `0`, `12`, `24`, and `36` for eight settled readings each. All
+  completed safely; per-channel standard deviation was `6.4-38.0 mA`, the
+  widest within-pose span was `97.5 mA`, and maximum temperature was `37 C`.
+  This supports a full-posture baseline using a median and measured spread.
+  The next probe may use `--max-poses 5`, repeating these four poses and adding
+  source pose `48`.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

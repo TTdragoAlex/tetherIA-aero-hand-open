@@ -153,3 +153,17 @@
 - Evidence: `logs/coupled_current_baseline_20260710_160835.csv`.
 - Next: add only one new sparse pose per trial until a useful safe coverage set
   exists; soft-skipped ramps remain valuable boundary data.
+
+## Decision: Treat no-object current as a posture-specific distribution
+- Date: 2026-07-13
+- Decision: Fit each channel's no-object current using full seven-servo
+  posture, retaining a median and observed spread. Interpret a possible object
+  contact as a sustained residual above that pose-specific distribution, never
+  from one raw current sample.
+- Why: Repeated settled samples across four safe coupled poses varied by only
+  `6.4-38.0 mA` standard deviation per channel, with a maximum span of
+  `97.5 mA`. That is material but much smaller than the prior `3.3-3.4 A`
+  index mismatch that destabilized the ball actor.
+- Evidence: `logs/coupled_current_baseline_20260713_095516.csv`.
+- Next: add coverage through source poses `48` and `60`, then evaluate model
+  residuals on separate repeated holds before authorizing any new live actor.
