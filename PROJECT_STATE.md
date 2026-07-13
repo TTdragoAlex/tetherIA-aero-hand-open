@@ -103,6 +103,14 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - The offline calibration now has seven source steps (`0-72` at stride 12).
     Steps `60` and `72` each have one session, so temporal validation remains
     limited to the earlier repeated steps.
+- Second coverage extension completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_102428.csv`.
+  - Source step `84` completed with eight settled samples, a held maximum of
+    `1124.5 mA`, maximum temperature `41 C`, and maximum within-hold standard
+    deviation `31.3 mA`.
+  - The offline calibration now has eight source steps (`0-84` at stride 12).
+    The next selected coverage candidate is source step `96` (collector index
+    `8`), the most separated remaining pose in the fitted trace.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

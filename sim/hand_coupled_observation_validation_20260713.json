@@ -5,7 +5,8 @@
     "logs/coupled_current_baseline_20260713_095516.csv",
     "logs/coupled_current_baseline_20260713_095924.csv",
     "logs/coupled_current_baseline_20260713_100341.csv",
-    "logs/coupled_current_baseline_20260713_101750.csv"
+    "logs/coupled_current_baseline_20260713_101750.csv",
+    "logs/coupled_current_baseline_20260713_102428.csv"
   ],
   "channel_order": [
     "thumb_abd",
@@ -20,7 +21,8 @@
   "case_count": 14,
   "unvalidated_source_steps": [
     60,
-    72
+    72,
+    84
   ],
   "absolute_residual_summary_ma": {
     "median": [

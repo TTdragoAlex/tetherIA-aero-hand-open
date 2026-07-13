@@ -76,6 +76,7 @@ current best fitted exact trace:
 | 2026-07-13 | `sim/hand_coupled_observation_calibration_20260713.json` | Guarded current median/spread distributions from the initial coupled-pose dataset. | Explicitly offline-only; a future controller must reject postures outside its `0.08` nearest-pose support radius. |
 | 2026-07-13 | `sim/hand_coupled_observation_validation_20260713.json` | Leave-one-session-out current residual report for repeated coupled poses. | Validates temporal repeatability at measured poses only; do not interpret as interpolation or contact-detection validation. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_101750.csv` | Single new no-object coupled-pose probe at source step 72. | Completed safely and adds coverage; it requires a future repeat before temporal validation. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_102428.csv` | Single new no-object coupled-pose probe at source step 84. | Completed safely and adds coverage; it requires a future repeat before temporal validation. |
 
 ## How To Interpret A `rollout*.mp4`
 

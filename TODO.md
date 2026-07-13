@@ -76,6 +76,10 @@
   calibration now contains steps `0-72`; repeat source `72` in a later session
   before treating it as temporally validated. Next safe coverage candidate is
   source step `84` at collector index `7`.
+- Result: source step `84` completed in
+  `logs/coupled_current_baseline_20260713_102428.csv` with eight settled
+  readings, `1124.5 mA` held maximum, and `41 C` maximum temperature. The next
+  no-object coverage candidate is source step `96` at collector index `8`.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
