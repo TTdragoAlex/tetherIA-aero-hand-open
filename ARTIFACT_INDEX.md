@@ -82,6 +82,11 @@ current best fitted exact trace:
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_102911.csv` | Single new no-object coupled-pose probe at source step 120. | Completed safely; temporally validated by the later repeat session. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_102952.csv` | Second no-object session across source steps 60-120. | Provides repeat coverage for the second half of the fitted trace; all poses returned to rest. |
 | 2026-07-13 | `sim/coupled_current_coverage_plan_20260713.json` | Planning-only ranking of unmeasured trace commands by baseline coverage gap. | Uses transformed targets as an estimate; each candidate still needs a guarded collector dry run and hardware safety limits. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_103533.csv` | Planned no-object coverage probe at source step 45. | Completed safely with a full settled/return record. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_103625.csv` | Planned no-object coverage probe at source step 94. | Completed safely despite one recovered SDK current-read timeout; full CSV record and post-run rest telemetry are valid. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_103735.csv` | Planned no-object coverage probe at source step 32. | Completed safely with a full settled/return record. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_103805.csv` | Planned no-object coverage probe at source step 69. | Completed safely with a full settled/return record. |
+| 2026-07-13 | `sim/hand_coupled_current_model_benchmark_20260713.json` | Source-pose holdout comparison of nearest-pose and ridge no-object current models. | Offline-only rejection of current global models; retain guarded local support. |
 
 ## How To Interpret A `rollout*.mp4`
 

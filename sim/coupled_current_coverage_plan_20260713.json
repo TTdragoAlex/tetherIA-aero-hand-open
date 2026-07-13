@@ -10,58 +10,6 @@
   ],
   "candidates": [
     {
-      "source_step": 45,
-      "estimated_target": [
-        0.70412,
-        0.257842,
-        0.466267,
-        0.914672,
-        0.474741,
-        0.532145,
-        0.541062
-      ],
-      "distance_before_selection": 0.259689
-    },
-    {
-      "source_step": 94,
-      "estimated_target": [
-        0.439023,
-        0.20255,
-        0.367158,
-        0.774669,
-        0.544408,
-        0.725538,
-        0.726932
-      ],
-      "distance_before_selection": 0.238873
-    },
-    {
-      "source_step": 32,
-      "estimated_target": [
-        0.382686,
-        0.1908,
-        0.304832,
-        0.891286,
-        0.536815,
-        0.492009,
-        0.721395
-      ],
-      "distance_before_selection": 0.178814
-    },
-    {
-      "source_step": 69,
-      "estimated_target": [
-        0.431232,
-        0.249202,
-        0.431352,
-        0.822294,
-        0.545383,
-        0.618323,
-        0.826153
-      ],
-      "distance_before_selection": 0.173111
-    },
-    {
       "source_step": 117,
       "estimated_target": [
         0.688927,
@@ -72,7 +20,7 @@
         0.682326,
         0.495213
       ],
-      "distance_before_selection": 0.171045
+      "distance_before_selection": 0.171464
     },
     {
       "source_step": 122,
@@ -101,17 +49,69 @@
       "distance_before_selection": 0.169416
     },
     {
-      "source_step": 16,
+      "source_step": 65,
       "estimated_target": [
-        0.61232,
-        0.252675,
-        0.43613,
-        0.961286,
-        0.509242,
-        0.46986,
-        0.651147
+        0.605771,
+        0.26292,
+        0.431832,
+        0.943379,
+        0.447383,
+        0.478323,
+        0.635355
       ],
-      "distance_before_selection": 0.157753
+      "distance_before_selection": 0.158715
+    },
+    {
+      "source_step": 106,
+      "estimated_target": [
+        0.439023,
+        0.278906,
+        0.390848,
+        0.873101,
+        0.607286,
+        0.510845,
+        0.690774
+      ],
+      "distance_before_selection": 0.155071
+    },
+    {
+      "source_step": 1,
+      "estimated_target": [
+        0.390968,
+        0.14,
+        0.336,
+        0.84,
+        0.718,
+        0.5,
+        0.68
+      ],
+      "distance_before_selection": 0.152718
+    },
+    {
+      "source_step": 119,
+      "estimated_target": [
+        0.562926,
+        0.316364,
+        0.41078,
+        0.879134,
+        0.427597,
+        0.682326,
+        0.635213
+      ],
+      "distance_before_selection": 0.148354
+    },
+    {
+      "source_step": 114,
+      "estimated_target": [
+        0.711398,
+        0.164994,
+        0.305569,
+        0.803101,
+        0.41536,
+        0.603518,
+        0.565213
+      ],
+      "distance_before_selection": 0.143672
     }
   ]
 }

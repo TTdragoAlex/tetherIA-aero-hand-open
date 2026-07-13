@@ -265,6 +265,14 @@ planning-only; preview it before adding `--run`:
   --max-poses 1
 ```
 
+Assess whether broader full-posture models are accurate enough before any
+controller integration. This benchmark is offline-only and does not move the
+hand:
+
+```bash
+./.venv/bin/python scripts/evaluate_coupled_current_models.py
+```
+
 After collecting a coupled dataset, build the offline guarded artifact without
 moving the hand. This does not authorize live control:
 

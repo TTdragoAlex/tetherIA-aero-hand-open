@@ -10,7 +10,11 @@
     "logs/coupled_current_baseline_20260713_102644.csv",
     "logs/coupled_current_baseline_20260713_102822.csv",
     "logs/coupled_current_baseline_20260713_102911.csv",
-    "logs/coupled_current_baseline_20260713_102952.csv"
+    "logs/coupled_current_baseline_20260713_102952.csv",
+    "logs/coupled_current_baseline_20260713_103533.csv",
+    "logs/coupled_current_baseline_20260713_103625.csv",
+    "logs/coupled_current_baseline_20260713_103735.csv",
+    "logs/coupled_current_baseline_20260713_103805.csv"
   ],
   "channel_order": [
     "thumb_abd",
@@ -23,7 +27,12 @@
   ],
   "method": "leave_one_session_out_same_source_pose_median",
   "case_count": 26,
-  "unvalidated_source_steps": [],
+  "unvalidated_source_steps": [
+    32,
+    45,
+    69,
+    94
+  ],
   "absolute_residual_summary_ma": {
     "median": [
       9.75,

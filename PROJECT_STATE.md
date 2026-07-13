@@ -135,6 +135,24 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
     coverage estimate and does not authorize hardware motion.
   - `scripts/collect_hardware01_coupled_baseline_safe.py --source-steps` now
     accepts exact trace steps for those planned one-at-a-time probes.
+- First planned gap probes completed on 2026-07-13:
+  - Logs: `logs/coupled_current_baseline_20260713_103533.csv` (step `45`),
+    `logs/coupled_current_baseline_20260713_103625.csv` (step `94`),
+    `logs/coupled_current_baseline_20260713_103735.csv` (step `32`), and
+    `logs/coupled_current_baseline_20260713_103805.csv` (step `69`).
+  - All four provided eight settled samples and returned to rest; held peaks
+    were `962-1092 mA`, with temperatures at or below `44 C`. One transient
+    SDK current-read timeout occurred in the step-94 run, but its CSV has all
+    settled/return records and a subsequent read-only telemetry check confirmed
+    saved rest, currents below `176 mA`, and temperatures `40-43 C`.
+  - The guarded artifact now contains 15 source postures. The four new steps
+    need a later repeat before they have temporal validation.
+- Full-posture model benchmark completed on 2026-07-13:
+  - Tool: `scripts/evaluate_coupled_current_models.py`.
+  - Artifact: `sim/hand_coupled_current_model_benchmark_20260713.json`.
+  - Leave-one-source-pose-out ridge models still reached roughly `100-230 mA`
+    maximum error on one or more channels. They are not reliable enough to
+    replace the guarded local lookup or authorize a live current adapter.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

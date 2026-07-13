@@ -100,6 +100,17 @@
 - Next physical dataset: collect planned candidates one at a time with
   `--source-steps <step>`, starting at step `45`, and rebuild the guarded
   calibration after each safe result. Keep the ball actor blocked.
+- Result: planned gap probes at steps `45`, `94`, `32`, and `69` completed
+  safely in `logs/coupled_current_baseline_20260713_103533.csv`,
+  `logs/coupled_current_baseline_20260713_103625.csv`,
+  `logs/coupled_current_baseline_20260713_103735.csv`, and
+  `logs/coupled_current_baseline_20260713_103805.csv`. All had eight settled
+  samples, returned to rest, and stayed at or below `44 C`.
+- Model result: source-pose holdout benchmark
+  `sim/hand_coupled_current_model_benchmark_20260713.json` rejects global ridge
+  deployment; held-out maximum errors remain roughly `100-230 mA` by channel.
+  Continue guarded local coverage only. The refreshed planner selects step
+  `117` as the next distinct candidate.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
