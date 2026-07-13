@@ -95,6 +95,14 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   to add one new sparse pose without replaying all previously measured poses.
   Its dry run selected source step `72` for index `6`; this is the next
   conservative no-object coverage candidate, pending operator approval.
+- Coverage extension completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_101750.csv`.
+  - Source step `72` completed with eight settled samples, a held maximum of
+    `1056.2 mA`, maximum temperature `40 C`, and maximum within-hold standard
+    deviation `24.3 mA`.
+  - The offline calibration now has seven source steps (`0-72` at stride 12).
+    Steps `60` and `72` each have one session, so temporal validation remains
+    limited to the earlier repeated steps.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

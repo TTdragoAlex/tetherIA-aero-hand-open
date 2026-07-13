@@ -5,7 +5,8 @@
   "source_logs": [
     "logs/coupled_current_baseline_20260713_095516.csv",
     "logs/coupled_current_baseline_20260713_095924.csv",
-    "logs/coupled_current_baseline_20260713_100341.csv"
+    "logs/coupled_current_baseline_20260713_100341.csv",
+    "logs/coupled_current_baseline_20260713_101750.csv"
   ],
   "channel_order": [
     "thumb_abd",
@@ -258,6 +259,46 @@
         26.886,
         8.246
       ]
+    },
+    {
+      "source_step": 72,
+      "sample_count": 8,
+      "position_median": [
+        0.617746,
+        0.140307,
+        0.302678,
+        0.721462,
+        0.420066,
+        0.681804,
+        0.717205
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        84.5,
+        130.0,
+        -247.0,
+        1056.25,
+        832.0,
+        919.75,
+        893.75
+      ],
+      "current_std_ma": [
+        20.231,
+        12.898,
+        22.266,
+        10.5,
+        24.307,
+        23.883,
+        15.502
+      ]
     }
   ],
   "coverage": {
@@ -267,7 +308,8 @@
       24,
       36,
       48,
-      60
+      60,
+      72
     ],
     "nearest_sample_distance_min": 0.062681,
     "nearest_sample_distance_median": 0.234951,

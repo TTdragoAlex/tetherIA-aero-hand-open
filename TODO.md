@@ -70,6 +70,12 @@
 - Prepared next physical task: dry-run of collector index `6` selects source
   step `72`, target `[0.620, 0.144, 0.305, 0.730, 0.426, 0.688, 0.724]`.
   Run it alone with `--start-pose-index 6 --max-poses 1`; keep the hand empty.
+- Result: source step `72` completed in
+  `logs/coupled_current_baseline_20260713_101750.csv` with eight settled
+  readings, `1056.2 mA` held maximum, and `40 C` maximum temperature. The
+  calibration now contains steps `0-72`; repeat source `72` in a later session
+  before treating it as temporally validated. Next safe coverage candidate is
+  source step `84` at collector index `7`.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
