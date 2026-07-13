@@ -73,6 +73,15 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Result: collection is complete for the initial safe window. It validates
     repeatability but is not broad enough to authorize arbitrary live-actor
     postures; next work is an offline, range-guarded coupled-baseline design.
+- Offline coupled-current artifact built on 2026-07-13:
+  - Builder: `scripts/build_coupled_observation_calibration.py`.
+  - Artifact: `sim/hand_coupled_observation_calibration_20260713.json`.
+  - It combines the held samples from the four-, five-, and six-pose runs into
+    six full-posture current distributions at source steps `0, 12, 24, 36, 48,
+    60`.
+  - The artifact is explicitly `offline_only`. Its `0.08` nearest-pose support
+    radius prevents a future controller from treating unmeasured postures as
+    calibrated. The live controller does not consume it yet.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`
@@ -177,12 +186,16 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
 - `scripts/live_policy_control.py`: closed-loop actor runner using real GET_POS/GET_CURR style observations.
 - `scripts/build_observation_calibration.py`: generates a no-object current
   baseline JSON from a channel friction sweep.
+- `scripts/build_coupled_observation_calibration.py`: builds the guarded,
+  offline-only current distributions from coupled-pose collector logs.
 - `scripts/collect_hardware01_coupled_baseline_safe.py`: dry-run-first
   collector for no-object multi-servo position/current data from sparse fitted
   trace poses. It uses a `1800 mA` soft skip, `3000 mA` hard abort, and returns
   to rest between poses.
 - `sim/hand_observation_calibration_20260626.json`: current baseline for the
   experimental 45 mm ball live-observation bridge.
+- `sim/hand_coupled_observation_calibration_20260713.json`: initial guarded
+  coupled-current baseline; not approved for live control.
 - `scripts/channel_friction_sweep.py`: per-servo no-cube current/range sweep.
 - `scripts/audit_sim_to_real_mapping.py`: mapping correctness audit.
 - `sim/hardware01_exact_rollout_trace_20260706/`: exact sim rollout videos and `u_real_order` traces for replay/compare.

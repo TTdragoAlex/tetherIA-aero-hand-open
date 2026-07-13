@@ -51,6 +51,14 @@
   per-channel uncertainty, and rejects positions outside the measured window.
   Do not unblock or rerun the ball actor yet: six safe postures establish the
   method but do not cover arbitrary actor movement.
+- Offline artifact result: `scripts/build_coupled_observation_calibration.py`
+  generated `sim/hand_coupled_observation_calibration_20260713.json` from the
+  settled samples across the four-, five-, and six-pose runs. It contains six
+  posture/current distributions and enforces a future `0.08` nearest-pose
+  support radius. Validation passed, but the artifact is `offline_only` and is
+  intentionally not wired into `scripts/live_policy_control.py`.
+- Next: design a holdout validation and expand posture coverage before deciding
+  whether a guarded current-residual adapter is useful enough to integrate.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

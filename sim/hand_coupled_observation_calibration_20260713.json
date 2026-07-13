@@ -1,0 +1,282 @@
+{
+  "format": "aero_hand_coupled_observation_calibration_v1",
+  "method": "guarded_nearest_pose_v1",
+  "status": "offline_only",
+  "source_logs": [
+    "logs/coupled_current_baseline_20260713_095516.csv",
+    "logs/coupled_current_baseline_20260713_095924.csv",
+    "logs/coupled_current_baseline_20260713_100341.csv"
+  ],
+  "channel_order": [
+    "thumb_abd",
+    "thumb_flex",
+    "thumb_tendon",
+    "index",
+    "middle",
+    "ring",
+    "pinky"
+  ],
+  "position_feature": "measured_get_pos_normalized",
+  "max_nearest_distance": 0.08,
+  "samples": [
+    {
+      "source_step": 0,
+      "sample_count": 24,
+      "position_median": [
+        0.324239,
+        0.098054,
+        0.289921,
+        0.797131,
+        0.661677,
+        0.563745,
+        0.603098
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        130.0,
+        224.25,
+        -403.0,
+        981.5,
+        919.75,
+        858.0,
+        887.25
+      ],
+      "current_std_ma": [
+        20.164,
+        20.338,
+        25.91,
+        20.803,
+        27.873,
+        23.17,
+        21.633
+      ]
+    },
+    {
+      "source_step": 12,
+      "sample_count": 24,
+      "position_median": [
+        0.862913,
+        0.180041,
+        0.370459,
+        0.813596,
+        0.407248,
+        0.637888,
+        0.508843
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        58.5,
+        97.5,
+        -240.5,
+        981.5,
+        838.5,
+        916.5,
+        702.0
+      ],
+      "current_std_ma": [
+        18.762,
+        10.046,
+        12.989,
+        18.638,
+        20.383,
+        17.493,
+        17.55
+      ]
+    },
+    {
+      "source_step": 24,
+      "sample_count": 24,
+      "position_median": [
+        0.703853,
+        0.139467,
+        0.303349,
+        0.74374,
+        0.432578,
+        0.6748,
+        0.670222
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        55.25,
+        149.5,
+        -201.5,
+        929.5,
+        776.75,
+        1014.0,
+        897.0
+      ],
+      "current_std_ma": [
+        20.837,
+        10.416,
+        15.067,
+        18.902,
+        27.703,
+        48.375,
+        13.66
+      ]
+    },
+    {
+      "source_step": 36,
+      "sample_count": 24,
+      "position_median": [
+        0.386633,
+        0.251041,
+        0.385901,
+        0.74374,
+        0.536294,
+        0.486564,
+        0.670222
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        81.25,
+        344.5,
+        -503.75,
+        926.25,
+        916.5,
+        737.75,
+        897.0
+      ],
+      "current_std_ma": [
+        26.167,
+        21.719,
+        15.845,
+        33.653,
+        21.556,
+        43.924,
+        17.965
+      ]
+    },
+    {
+      "source_step": 48,
+      "sample_count": 16,
+      "position_median": [
+        0.512291,
+        0.214694,
+        0.33724,
+        0.917937,
+        0.505791,
+        0.434104,
+        0.629038
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        107.25,
+        230.75,
+        -269.75,
+        988.0,
+        832.0,
+        877.5,
+        900.25
+      ],
+      "current_std_ma": [
+        19.664,
+        11.49,
+        11.368,
+        25.639,
+        20.1,
+        26.92,
+        19.664
+      ]
+    },
+    {
+      "source_step": 60,
+      "sample_count": 8,
+      "position_median": [
+        0.725826,
+        0.118334,
+        0.303349,
+        0.775463,
+        0.392004,
+        0.681498,
+        0.687602
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        78.0,
+        61.75,
+        -227.5,
+        1014.0,
+        763.75,
+        945.75,
+        845.0
+      ],
+      "current_std_ma": [
+        20.018,
+        11.69,
+        16.492,
+        16.552,
+        20.794,
+        26.886,
+        8.246
+      ]
+    }
+  ],
+  "coverage": {
+    "unique_source_steps": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "nearest_sample_distance_min": 0.062681,
+    "nearest_sample_distance_median": 0.234951,
+    "nearest_sample_distance_max": 0.256016
+  },
+  "notes": [
+    "Built only from no-object settled telemetry in coupled seven-servo postures.",
+    "Each sample stores a per-channel median and standard deviation, not a physical force calibration.",
+    "A future controller must reject positions farther than max_nearest_distance from every sample.",
+    "This artifact is offline_only until independent holdout validation and explicit hardware approval."
+  ]
+}

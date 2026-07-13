@@ -242,6 +242,16 @@ ball actor. Preview the sparse fitted-trace poses without moving the hand:
 ./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py
 ```
 
+After collecting a coupled dataset, build the offline guarded artifact without
+moving the hand. This does not authorize live control:
+
+```bash
+./.venv/bin/python scripts/build_coupled_observation_calibration.py \
+  --logs logs/coupled_current_baseline_20260713_095516.csv \
+         logs/coupled_current_baseline_20260713_095924.csv \
+         logs/coupled_current_baseline_20260713_100341.csv
+```
+
 For the first physical probe, use exactly one pose only after the hand is
 connected, mounted, and clear. The collector checks every `0.015` command step,
 skips at `1800 mA`, hard-aborts at `3000 mA`, records eight settled current

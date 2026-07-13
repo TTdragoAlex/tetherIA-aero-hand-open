@@ -73,6 +73,7 @@ current best fitted exact trace:
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_095516.csv` | Four-pose no-object coupled-current run with eight settled readings per pose. | Quantifies normal held-current variation for source poses 0, 12, 24, and 36; use for the baseline's median/spread model. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_095924.csv` | Five-pose no-object coupled-current run with eight settled readings per pose. | Adds source pose 48; all held readings remained near 1 A and support the safe coupled baseline. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_100341.csv` | Six-pose no-object coupled-current run with eight settled readings per pose. | Adds source pose 60 and completes the first safe coupled-posture coverage set; use for offline baseline design only. |
+| 2026-07-13 | `sim/hand_coupled_observation_calibration_20260713.json` | Guarded current median/spread distributions from the initial coupled-pose dataset. | Explicitly offline-only; a future controller must reject postures outside its `0.08` nearest-pose support radius. |
 
 ## How To Interpret A `rollout*.mp4`
 
