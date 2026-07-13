@@ -64,6 +64,15 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
     `1033.5 mA` held current; maximum temperature was `40 C`.
   - Result: the added high-index pose remained safe and the repeated poses
     were consistent with the measured normal variation.
+- Sixth coupled-pose no-object calibration run completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_100341.csv`.
+  - Repeated source poses `0-48` and added source pose `60`, completing the
+    initial six-pose coverage set.
+  - All six poses delivered eight settled readings. The largest held current
+    was `1092 mA`; maximum temperature was `42 C`.
+  - Result: collection is complete for the initial safe window. It validates
+    repeatability but is not broad enough to authorize arbitrary live-actor
+    postures; next work is an offline, range-guarded coupled-baseline design.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

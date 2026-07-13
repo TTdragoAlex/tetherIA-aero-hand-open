@@ -42,6 +42,15 @@
   eight settled readings each; the held peak was `1033.5 mA` and maximum
   temperature was `40 C`. The next probe may use `--max-poses 6` to add source
   pose `60`, completing the initial six-pose coverage set.
+- Stage 6 result: `logs/coupled_current_baseline_20260713_100341.csv` repeated
+  source poses `0-48` and added source pose `60`. All six poses completed with
+  eight settled readings each; the largest held current was `1092 mA` and
+  maximum temperature was `42 C`. Initial collection is complete.
+- Next: build and evaluate an offline coupled-current baseline that predicts
+  all seven no-object currents from the seven-command posture, retains
+  per-channel uncertainty, and rejects positions outside the measured window.
+  Do not unblock or rerun the ball actor yet: six safe postures establish the
+  method but do not cover arbitrary actor movement.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

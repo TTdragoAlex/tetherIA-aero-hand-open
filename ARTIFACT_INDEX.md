@@ -72,6 +72,7 @@ current best fitted exact trace:
 | 2026-07-10 | `logs/coupled_current_baseline_20260710_162258.csv` | Second no-object coupled-pose run: pose 0 repeated and source pose 12 added. | Both poses passed below the soft threshold; useful coverage of a different thumb/finger load distribution. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_095516.csv` | Four-pose no-object coupled-current run with eight settled readings per pose. | Quantifies normal held-current variation for source poses 0, 12, 24, and 36; use for the baseline's median/spread model. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_095924.csv` | Five-pose no-object coupled-current run with eight settled readings per pose. | Adds source pose 48; all held readings remained near 1 A and support the safe coupled baseline. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_100341.csv` | Six-pose no-object coupled-current run with eight settled readings per pose. | Adds source pose 60 and completes the first safe coupled-posture coverage set; use for offline baseline design only. |
 
 ## How To Interpret A `rollout*.mp4`
 
