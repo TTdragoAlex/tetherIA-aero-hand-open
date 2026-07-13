@@ -244,7 +244,8 @@ ball actor. Preview the sparse fitted-trace poses without moving the hand:
 
 For the first physical probe, use exactly one pose only after the hand is
 connected, mounted, and clear. The collector checks every `0.015` command step,
-skips at `1800 mA`, hard-aborts at `3000 mA`, and returns to rest:
+skips at `1800 mA`, hard-aborts at `3000 mA`, records eight settled current
+samples, and returns to rest:
 
 ```bash
 ./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py \

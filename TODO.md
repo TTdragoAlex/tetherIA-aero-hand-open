@@ -26,6 +26,10 @@
   pose `0` and added pose `12`; both remained below `1124.5 mA` during ramps,
   the new pose settled at `1033.5 mA`, and the final temperature was `43 C`.
   The next safe probe may use `--max-poses 3` to add source pose `24`.
+- Stage 3 result: `logs/coupled_current_baseline_20260713_095103.csv` added
+  source pose `24`; all three poses completed below `1040 mA` during ramps and
+  `35 C`. Before adding pose `36`, the collector now records eight settled
+  telemetry samples per pose to measure normal current fluctuation directly.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

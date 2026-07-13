@@ -42,6 +42,12 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Peak ramp current remained `1124.5 mA`; the new pose settled at
     `1033.5 mA` maximum; temperature reached `43 C` after the longer run.
   - Result: both poses completed below the soft limit and returned to rest.
+- Third coupled-pose no-object calibration run completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_095103.csv`.
+  - Added source pose `24`; all three poses completed with peak ramp current
+    `1040 mA` and maximum temperature `35 C`.
+  - The collector now records eight held telemetry samples per future pose so
+    the coupled baseline includes normal current fluctuation, not one reading.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

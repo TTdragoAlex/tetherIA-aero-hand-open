@@ -207,16 +207,37 @@ def run(args: argparse.Namespace) -> int:
                     )
                     if note is None:
                         time.sleep(args.settle)
-                        pos, curr, temp = read_telemetry(hand)
-                        note = current_or_temp_limit(curr, temp, args.abort_current, args.abort_temp)
-                        if note:
-                            note = f"hard_abort: {note}"
-                        else:
+                        for hold_index in range(args.hold_samples):
+                            if hold_index:
+                                time.sleep(args.hold_interval)
+                            pos, curr, temp = read_telemetry(hand)
+                            hard = current_or_temp_limit(curr, temp, args.abort_current, args.abort_temp)
                             soft = current_or_temp_limit(curr, temp, args.soft_current, args.soft_temp)
-                            note = f"soft_skip: {soft}" if soft else ""
+                            if hard:
+                                note = f"hard_abort: {hard}"
+                            elif soft:
+                                note = f"soft_skip: {soft}"
+                            else:
+                                note = None
+                            event = "sample" if hold_index == args.hold_samples - 1 and note is None else "hold_sample"
+                            if note:
+                                event = note.split(":", 1)[0]
+                            write_row(
+                                writer,
+                                started,
+                                pose_index,
+                                source_step,
+                                event,
+                                note or f"hold={hold_index + 1}/{args.hold_samples}",
+                                current_target,
+                                pos,
+                                curr,
+                                temp,
+                            )
+                            file.flush()
+                            if note:
+                                break
                     event = "sample" if not note else note.split(":", 1)[0]
-                    write_row(writer, started, pose_index, source_step, event, note or "", current_target, pos, curr, temp)
-                    file.flush()
                     print(f"[{pose_index:02d}] {event:10s} target={fmt(current_target)} max_current={max(abs(v) for v in curr):.1f}mA")
 
                     # Return to rest after every pose. A soft limit does not block
@@ -276,6 +297,8 @@ def main() -> int:
     parser.add_argument("--max-step-delta", type=float, default=0.015)
     parser.add_argument("--rate", type=float, default=10.0)
     parser.add_argument("--settle", type=float, default=0.6)
+    parser.add_argument("--hold-samples", type=int, default=8, help="Settled telemetry samples per completed pose.")
+    parser.add_argument("--hold-interval", type=float, default=0.10, help="Seconds between settled telemetry samples.")
     parser.add_argument("--rest-settle", type=float, default=0.6)
     parser.add_argument("--soft-current", type=float, default=1800.0)
     parser.add_argument("--abort-current", type=float, default=3000.0)
@@ -285,7 +308,12 @@ def main() -> int:
     parser.add_argument("--port")
     parser.add_argument("--baud", type=int, default=921600)
     parser.add_argument("--log", type=Path)
-    return run(parser.parse_args())
+    args = parser.parse_args()
+    if args.hold_samples < 1:
+        raise ValueError("--hold-samples must be >= 1")
+    if args.hold_interval < 0.0:
+        raise ValueError("--hold-interval must be >= 0")
+    return run(args)
 
 
 if __name__ == "__main__":
