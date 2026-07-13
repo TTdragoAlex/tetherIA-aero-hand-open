@@ -57,6 +57,13 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Result: ordinary settled telemetry variation is far smaller than the
     earlier multi-ampere actor mismatch. The eventual baseline must still be
     fitted to full posture and use its measured spread, not a raw threshold.
+- Fifth coupled-pose no-object calibration run completed on 2026-07-13:
+  - Log: `logs/coupled_current_baseline_20260713_095924.csv`.
+  - Repeated source poses `0`, `12`, `24`, `36`, and added source pose `48`.
+  - All five poses delivered eight settled readings and stayed below
+    `1033.5 mA` held current; maximum temperature was `40 C`.
+  - Result: the added high-index pose remained safe and the repeated poses
+    were consistent with the measured normal variation.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

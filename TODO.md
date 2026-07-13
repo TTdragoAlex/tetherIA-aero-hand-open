@@ -37,6 +37,11 @@
   This supports a full-posture baseline using a median and measured spread.
   The next probe may use `--max-poses 5`, repeating these four poses and adding
   source pose `48`.
+- Stage 5 result: `logs/coupled_current_baseline_20260713_095924.csv` repeated
+  source poses `0-36` and added source pose `48`. All five poses completed with
+  eight settled readings each; the held peak was `1033.5 mA` and maximum
+  temperature was `40 C`. The next probe may use `--max-poses 6` to add source
+  pose `60`, completing the initial six-pose coverage set.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
