@@ -111,6 +111,30 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - The offline calibration now has eight source steps (`0-84` at stride 12).
     The next selected coverage candidate is source step `96` (collector index
     `8`), the most separated remaining pose in the fitted trace.
+- Full fitted-trace baseline coverage completed on 2026-07-13:
+  - Logs: `logs/coupled_current_baseline_20260713_102644.csv` (step `96`),
+    `logs/coupled_current_baseline_20260713_102822.csv` (step `108`), and
+    `logs/coupled_current_baseline_20260713_102911.csv` (step `120`). All
+    completed as single-pose no-object probes with held maxima at or below
+    `1056.2 mA` and temperatures at or below `42 C`.
+  - Repeat log: `logs/coupled_current_baseline_20260713_102952.csv` repeated
+    steps `60-120`; all six poses completed and returned to rest.
+  - The calibration contains all stride-12 fitted-trace steps `0-120`. Its
+    temporal report now covers 26 leave-one-session-out cases with no
+    unvalidated source steps. Median absolute residuals are `3.2-29.3 mA` by
+    channel; the maximum is `82.9 mA` on ring.
+  - The hand was explicitly returned to saved rest after collection and read
+    back near rest with currents below `169 mA` and temperatures `40-42 C`.
+- Coverage-gap analysis completed on 2026-07-13:
+  - Only `16/125` transformed trace commands fall within the current artifact's
+    strict `0.08` support radius. Sparse checkpoint validation is therefore not
+    sufficient to deploy a current-residual adapter over the full trace.
+  - `scripts/plan_coupled_current_coverage.py` writes
+    `sim/coupled_current_coverage_plan_20260713.json`, a planning-only greedy
+    ranking of unmeasured trace commands. It uses transformed targets only as a
+    coverage estimate and does not authorize hardware motion.
+  - `scripts/collect_hardware01_coupled_baseline_safe.py --source-steps` now
+    accepts exact trace steps for those planned one-at-a-time probes.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

@@ -77,6 +77,11 @@ current best fitted exact trace:
 | 2026-07-13 | `sim/hand_coupled_observation_validation_20260713.json` | Leave-one-session-out current residual report for repeated coupled poses. | Validates temporal repeatability at measured poses only; do not interpret as interpolation or contact-detection validation. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_101750.csv` | Single new no-object coupled-pose probe at source step 72. | Completed safely and adds coverage; it requires a future repeat before temporal validation. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_102428.csv` | Single new no-object coupled-pose probe at source step 84. | Completed safely and adds coverage; it requires a future repeat before temporal validation. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_102644.csv` | Single new no-object coupled-pose probe at source step 96. | Completed safely; temporally validated by the later repeat session. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_102822.csv` | Single new no-object coupled-pose probe at source step 108. | Completed safely; temporally validated by the later repeat session. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_102911.csv` | Single new no-object coupled-pose probe at source step 120. | Completed safely; temporally validated by the later repeat session. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_102952.csv` | Second no-object session across source steps 60-120. | Provides repeat coverage for the second half of the fitted trace; all poses returned to rest. |
+| 2026-07-13 | `sim/coupled_current_coverage_plan_20260713.json` | Planning-only ranking of unmeasured trace commands by baseline coverage gap. | Uses transformed targets as an estimate; each candidate still needs a guarded collector dry run and hardware safety limits. |
 
 ## How To Interpret A `rollout*.mp4`
 

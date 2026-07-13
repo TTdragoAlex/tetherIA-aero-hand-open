@@ -93,19 +93,31 @@ def selected_trace_poses(args: argparse.Namespace) -> list[dict[str, object]]:
     channel_scale = parse_channel_values(args.channel_scale or str(preset["channel_scale"]), default=1.0)
     channel_bias = parse_channel_values(args.channel_bias or str(preset["channel_bias"]), default=0.0)
     rows = load_trace(trace_path)
-    selected = []
-    for row_idx in range(0, len(rows), args.stride):
-        row = rows[row_idx]
-        target = scale_target(row["target"], playback_scale, scale_center, channel_scale, channel_bias)
-        selected.append({"source_step": int(row["step"]), "target": target})
-    if selected[-1]["source_step"] != int(rows[-1]["step"]):
-        row = rows[-1]
-        selected.append(
-            {
-                "source_step": int(row["step"]),
-                "target": scale_target(row["target"], playback_scale, scale_center, channel_scale, channel_bias),
-            }
-        )
+    if args.source_steps:
+        requested = [int(value.strip()) for value in args.source_steps.split(",") if value.strip()]
+        if not requested:
+            raise ValueError("--source-steps must contain at least one step")
+        if len(set(requested)) != len(requested):
+            raise ValueError("--source-steps must not contain duplicates")
+        by_step = {int(row["step"]): row for row in rows}
+        missing = [step for step in requested if step not in by_step]
+        if missing:
+            raise ValueError(f"--source-steps are not present in trace: {missing}")
+        selected_rows = [by_step[step] for step in requested]
+    else:
+        selected_rows = [rows[row_idx] for row_idx in range(0, len(rows), args.stride)]
+        if int(selected_rows[-1]["step"]) != int(rows[-1]["step"]):
+            selected_rows.append(rows[-1])
+
+    selected = [
+        {
+            "source_step": int(row["step"]),
+            "target": scale_target(row["target"], playback_scale, scale_center, channel_scale, channel_bias),
+        }
+        for row in selected_rows
+    ]
+    if args.source_steps and args.start_pose_index:
+        raise ValueError("--start-pose-index cannot be combined with --source-steps")
     if args.start_pose_index < 0:
         raise ValueError("--start-pose-index must be >= 0")
     if args.start_pose_index >= len(selected):
@@ -294,6 +306,7 @@ def main() -> int:
     parser.add_argument("--preset", choices=tuple(PRESETS), default=DEFAULT_PRESET)
     parser.add_argument("--trace", type=Path, help="Override the preset trace; transform still defaults to the preset values.")
     parser.add_argument("--stride", type=int, default=12, help="Use every Nth trace point plus the final point.")
+    parser.add_argument("--source-steps", default="", help="Exact comma-separated trace steps to collect; cannot be combined with --start-pose-index.")
     parser.add_argument("--start-pose-index", type=int, default=0, help="Zero-based index in the sparse pose list to begin collecting.")
     parser.add_argument("--max-poses", type=int, help="Number of sparse poses to collect after --start-pose-index.")
     parser.add_argument("--playback-scale", type=float)

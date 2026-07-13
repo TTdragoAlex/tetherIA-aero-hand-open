@@ -80,6 +80,26 @@
   `logs/coupled_current_baseline_20260713_102428.csv` with eight settled
   readings, `1124.5 mA` held maximum, and `41 C` maximum temperature. The next
   no-object coverage candidate is source step `96` at collector index `8`.
+- Result: source steps `96`, `108`, and `120` completed safely in
+  `logs/coupled_current_baseline_20260713_102644.csv`,
+  `logs/coupled_current_baseline_20260713_102822.csv`, and
+  `logs/coupled_current_baseline_20260713_102911.csv`. A second session,
+  `logs/coupled_current_baseline_20260713_102952.csv`, repeated steps `60-120`.
+  The guarded artifact now covers every stride-12 fitted-trace posture and all
+  11 postures have temporal validation: 26 holdout cases, `3.2-29.3 mA` median
+  absolute residual by channel, `82.9 mA` worst case on ring.
+- Next: analyze nearest-pose coverage between the measured trace samples. If
+  the `0.08` guard leaves gaps, collect selected intermediate poses; otherwise
+  design an offline residual/contact validation before any controller change.
+- Coverage result: only `16/125` transformed trace commands are within the
+  strict `0.08` support radius. The sparse trace points cannot support live
+  current residuals by themselves. `scripts/plan_coupled_current_coverage.py`
+  generated `sim/coupled_current_coverage_plan_20260713.json`; it ranks source
+  steps `45, 94, 32, 69, 117, 122, 39, 16` as the first diverse candidates.
+  This is planning-only, not policy approval.
+- Next physical dataset: collect planned candidates one at a time with
+  `--source-steps <step>`, starting at step `45`, and rebuild the guarded
+  calibration after each safe result. Keep the ball actor blocked.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.

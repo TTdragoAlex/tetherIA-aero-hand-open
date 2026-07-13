@@ -1,0 +1,117 @@
+{
+  "format": "aero_hand_coupled_current_coverage_plan_v1",
+  "status": "planning_only",
+  "calibration": "sim/hand_coupled_observation_calibration_20260713.json",
+  "support_radius": 0.08,
+  "method": "greedy_farthest_point_on_transformed_trace_targets",
+  "limitations": [
+    "Trace targets approximate, but do not replace, measured GET_POS.",
+    "Candidates require normal collector dry-run and safety limits before hardware use."
+  ],
+  "candidates": [
+    {
+      "source_step": 45,
+      "estimated_target": [
+        0.70412,
+        0.257842,
+        0.466267,
+        0.914672,
+        0.474741,
+        0.532145,
+        0.541062
+      ],
+      "distance_before_selection": 0.259689
+    },
+    {
+      "source_step": 94,
+      "estimated_target": [
+        0.439023,
+        0.20255,
+        0.367158,
+        0.774669,
+        0.544408,
+        0.725538,
+        0.726932
+      ],
+      "distance_before_selection": 0.238873
+    },
+    {
+      "source_step": 32,
+      "estimated_target": [
+        0.382686,
+        0.1908,
+        0.304832,
+        0.891286,
+        0.536815,
+        0.492009,
+        0.721395
+      ],
+      "distance_before_selection": 0.178814
+    },
+    {
+      "source_step": 69,
+      "estimated_target": [
+        0.431232,
+        0.249202,
+        0.431352,
+        0.822294,
+        0.545383,
+        0.618323,
+        0.826153
+      ],
+      "distance_before_selection": 0.173111
+    },
+    {
+      "source_step": 117,
+      "estimated_target": [
+        0.688927,
+        0.259827,
+        0.431569,
+        0.884039,
+        0.427597,
+        0.682326,
+        0.495213
+      ],
+      "distance_before_selection": 0.171045
+    },
+    {
+      "source_step": 122,
+      "estimated_target": [
+        0.499926,
+        0.211364,
+        0.301004,
+        0.774134,
+        0.323169,
+        0.472326,
+        0.633564
+      ],
+      "distance_before_selection": 0.170876
+    },
+    {
+      "source_step": 39,
+      "estimated_target": [
+        0.57812,
+        0.167837,
+        0.345347,
+        0.716286,
+        0.432479,
+        0.702009,
+        0.541062
+      ],
+      "distance_before_selection": 0.169416
+    },
+    {
+      "source_step": 16,
+      "estimated_target": [
+        0.61232,
+        0.252675,
+        0.43613,
+        0.961286,
+        0.509242,
+        0.46986,
+        0.651147
+      ],
+      "distance_before_selection": 0.157753
+    }
+  ]
+}

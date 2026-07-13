@@ -253,6 +253,18 @@ it still begins and ends at rest and retains the same soft/hard limits:
   --max-poses 1
 ```
 
+For a deliberately chosen non-stride trace pose, generate the coverage plan
+offline and pass its exact source step to the collector. This selector is
+planning-only; preview it before adding `--run`:
+
+```bash
+./.venv/bin/python scripts/plan_coupled_current_coverage.py
+
+./.venv/bin/python scripts/collect_hardware01_coupled_baseline_safe.py \
+  --source-steps 45 \
+  --max-poses 1
+```
+
 After collecting a coupled dataset, build the offline guarded artifact without
 moving the hand. This does not authorize live control:
 

@@ -6,7 +6,11 @@
     "logs/coupled_current_baseline_20260713_095924.csv",
     "logs/coupled_current_baseline_20260713_100341.csv",
     "logs/coupled_current_baseline_20260713_101750.csv",
-    "logs/coupled_current_baseline_20260713_102428.csv"
+    "logs/coupled_current_baseline_20260713_102428.csv",
+    "logs/coupled_current_baseline_20260713_102644.csv",
+    "logs/coupled_current_baseline_20260713_102822.csv",
+    "logs/coupled_current_baseline_20260713_102911.csv",
+    "logs/coupled_current_baseline_20260713_102952.csv"
   ],
   "channel_order": [
     "thumb_abd",
@@ -18,39 +22,35 @@
     "pinky"
   ],
   "method": "leave_one_session_out_same_source_pose_median",
-  "case_count": 14,
-  "unvalidated_source_steps": [
-    60,
-    72,
-    84
-  ],
+  "case_count": 26,
+  "unvalidated_source_steps": [],
   "absolute_residual_summary_ma": {
     "median": [
-      8.938,
-      6.5,
-      4.062,
       9.75,
-      8.938,
-      16.25,
+      7.312,
+      3.25,
+      9.75,
+      9.75,
+      29.25,
       13.0
     ],
     "p95": [
-      21.206,
-      26.325,
-      26.569,
-      45.337,
-      17.55,
-      76.538,
-      21.937
+      32.906,
+      35.75,
+      21.938,
+      52.0,
+      56.875,
+      73.125,
+      64.188
     ],
     "max": [
-      24.375,
+      35.75,
       39.0,
       27.625,
       60.125,
-      26.0,
+      65.0,
       82.875,
-      32.5
+      74.75
     ]
   },
   "cases": [
@@ -414,6 +414,306 @@
         9.75,
         32.5,
         0.0
+      ]
+    },
+    {
+      "source_step": 60,
+      "held_out_log": "coupled_current_baseline_20260713_100341.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        -9.75,
+        22.75,
+        6.5,
+        -52.0,
+        65.0,
+        45.5,
+        74.75
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        22.75,
+        6.5,
+        52.0,
+        65.0,
+        45.5,
+        74.75
+      ]
+    },
+    {
+      "source_step": 60,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_100341.csv"
+      ],
+      "residual_ma": [
+        9.75,
+        -22.75,
+        -6.5,
+        52.0,
+        -65.0,
+        -45.5,
+        -74.75
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        22.75,
+        6.5,
+        52.0,
+        65.0,
+        45.5,
+        74.75
+      ]
+    },
+    {
+      "source_step": 72,
+      "held_out_log": "coupled_current_baseline_20260713_101750.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        9.75,
+        -19.5,
+        0.0,
+        3.25,
+        -3.25,
+        -29.25,
+        6.5
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        19.5,
+        0.0,
+        3.25,
+        3.25,
+        29.25,
+        6.5
+      ]
+    },
+    {
+      "source_step": 72,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_101750.csv"
+      ],
+      "residual_ma": [
+        -9.75,
+        19.5,
+        0.0,
+        -3.25,
+        3.25,
+        29.25,
+        -6.5
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        19.5,
+        0.0,
+        3.25,
+        3.25,
+        29.25,
+        6.5
+      ]
+    },
+    {
+      "source_step": 84,
+      "held_out_log": "coupled_current_baseline_20260713_102428.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        3.25,
+        -6.5,
+        -3.25,
+        -3.25,
+        32.5,
+        32.5,
+        0.0
+      ],
+      "absolute_residual_ma": [
+        3.25,
+        6.5,
+        3.25,
+        3.25,
+        32.5,
+        32.5,
+        0.0
+      ]
+    },
+    {
+      "source_step": 84,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102428.csv"
+      ],
+      "residual_ma": [
+        -3.25,
+        6.5,
+        3.25,
+        3.25,
+        -32.5,
+        -32.5,
+        0.0
+      ],
+      "absolute_residual_ma": [
+        3.25,
+        6.5,
+        3.25,
+        3.25,
+        32.5,
+        32.5,
+        0.0
+      ]
+    },
+    {
+      "source_step": 96,
+      "held_out_log": "coupled_current_baseline_20260713_102644.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        -9.75,
+        0.0,
+        0.0,
+        -6.5,
+        -29.25,
+        13.0,
+        -3.25
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        0.0,
+        0.0,
+        6.5,
+        29.25,
+        13.0,
+        3.25
+      ]
+    },
+    {
+      "source_step": 96,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102644.csv"
+      ],
+      "residual_ma": [
+        9.75,
+        0.0,
+        0.0,
+        6.5,
+        29.25,
+        -13.0,
+        3.25
+      ],
+      "absolute_residual_ma": [
+        9.75,
+        0.0,
+        0.0,
+        6.5,
+        29.25,
+        13.0,
+        3.25
+      ]
+    },
+    {
+      "source_step": 108,
+      "held_out_log": "coupled_current_baseline_20260713_102822.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        35.75,
+        35.75,
+        -3.25,
+        -29.25,
+        -3.25,
+        -48.75,
+        -22.75
+      ],
+      "absolute_residual_ma": [
+        35.75,
+        35.75,
+        3.25,
+        29.25,
+        3.25,
+        48.75,
+        22.75
+      ]
+    },
+    {
+      "source_step": 108,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102822.csv"
+      ],
+      "residual_ma": [
+        -35.75,
+        -35.75,
+        3.25,
+        29.25,
+        3.25,
+        48.75,
+        22.75
+      ],
+      "absolute_residual_ma": [
+        35.75,
+        35.75,
+        3.25,
+        29.25,
+        3.25,
+        48.75,
+        22.75
+      ]
+    },
+    {
+      "source_step": 120,
+      "held_out_log": "coupled_current_baseline_20260713_102911.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102952.csv"
+      ],
+      "residual_ma": [
+        13.0,
+        35.75,
+        0.0,
+        -26.0,
+        26.0,
+        13.0,
+        16.25
+      ],
+      "absolute_residual_ma": [
+        13.0,
+        35.75,
+        0.0,
+        26.0,
+        26.0,
+        13.0,
+        16.25
+      ]
+    },
+    {
+      "source_step": 120,
+      "held_out_log": "coupled_current_baseline_20260713_102952.csv",
+      "training_logs": [
+        "coupled_current_baseline_20260713_102911.csv"
+      ],
+      "residual_ma": [
+        -13.0,
+        -35.75,
+        0.0,
+        26.0,
+        -26.0,
+        -13.0,
+        -16.25
+      ],
+      "absolute_residual_ma": [
+        13.0,
+        35.75,
+        0.0,
+        26.0,
+        26.0,
+        13.0,
+        16.25
       ]
     }
   ],
