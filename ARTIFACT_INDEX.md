@@ -87,6 +87,8 @@ current best fitted exact trace:
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_103735.csv` | Planned no-object coverage probe at source step 32. | Completed safely with a full settled/return record. |
 | 2026-07-13 | `logs/coupled_current_baseline_20260713_103805.csv` | Planned no-object coverage probe at source step 69. | Completed safely with a full settled/return record. |
 | 2026-07-13 | `sim/hand_coupled_current_model_benchmark_20260713.json` | Source-pose holdout comparison of nearest-pose and ridge no-object current models. | Offline-only rejection of current global models; retain guarded local support. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_104230.csv` | Planned no-object coverage probe at source step 117. | Completed safely with a full settled/return record. |
+| 2026-07-13 | `logs/coupled_current_baseline_20260713_104304.csv` | Planned no-object coverage probe at source step 122. | Completed safely with a full settled/return record. |
 
 ## How To Interpret A `rollout*.mp4`
 

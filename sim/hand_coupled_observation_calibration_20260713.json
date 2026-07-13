@@ -15,7 +15,9 @@
     "logs/coupled_current_baseline_20260713_103533.csv",
     "logs/coupled_current_baseline_20260713_103625.csv",
     "logs/coupled_current_baseline_20260713_103735.csv",
-    "logs/coupled_current_baseline_20260713_103805.csv"
+    "logs/coupled_current_baseline_20260713_103805.csv",
+    "logs/coupled_current_baseline_20260713_104230.csv",
+    "logs/coupled_current_baseline_20260713_104304.csv"
   ],
   "channel_order": [
     "thumb_abd",
@@ -590,6 +592,46 @@
       ]
     },
     {
+      "source_step": 117,
+      "sample_count": 8,
+      "position_median": [
+        0.689799,
+        0.25359,
+        0.428855,
+        0.875837,
+        0.421286,
+        0.67541,
+        0.489311
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        -9.75,
+        214.5,
+        -273.0,
+        1001.0,
+        770.25,
+        929.5,
+        734.5
+      ],
+      "current_std_ma": [
+        17.197,
+        17.426,
+        17.502,
+        19.432,
+        35.667,
+        17.633,
+        15.734
+      ]
+    },
+    {
       "source_step": 120,
       "sample_count": 16,
       "position_median": [
@@ -628,6 +670,46 @@
         24.828,
         28.379
       ]
+    },
+    {
+      "source_step": 122,
+      "sample_count": 8,
+      "position_median": [
+        0.495598,
+        0.204562,
+        0.297978,
+        0.766003,
+        0.31635,
+        0.466133,
+        0.626291
+      ],
+      "position_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "current_baseline_ma": [
+        136.5,
+        227.5,
+        -269.75,
+        1014.0,
+        871.0,
+        851.5,
+        952.25
+      ],
+      "current_std_ma": [
+        20.231,
+        15.048,
+        15.586,
+        16.25,
+        23.309,
+        19.483,
+        20.296
+      ]
     }
   ],
   "coverage": {
@@ -646,11 +728,13 @@
       94,
       96,
       108,
-      120
+      117,
+      120,
+      122
     ],
     "nearest_sample_distance_min": 0.062422,
-    "nearest_sample_distance_median": 0.171401,
-    "nearest_sample_distance_max": 0.253836
+    "nearest_sample_distance_median": 0.169942,
+    "nearest_sample_distance_max": 0.230984
   },
   "notes": [
     "Built only from no-object settled telemetry in coupled seven-servo postures.",

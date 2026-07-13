@@ -153,6 +153,16 @@ Train and transfer an Aero/TetherIA robot hand cube-rotation policy that works o
   - Leave-one-source-pose-out ridge models still reached roughly `100-230 mA`
     maximum error on one or more channels. They are not reliable enough to
     replace the guarded local lookup or authorize a live current adapter.
+- Second planned gap pass completed on 2026-07-13:
+  - Logs: `logs/coupled_current_baseline_20260713_104230.csv` (step `117`) and
+    `logs/coupled_current_baseline_20260713_104304.csv` (step `122`). Both
+    completed with eight settled samples, returned to rest, and had reported
+    maxima of `1020.5 mA`.
+  - The calibration now has 17 source postures. Re-benchmarking still produced
+    `~150-238 mA` worst held-out error for several channels across ridge
+    variants. Current-only global models remain unsuitable for live contact
+    inference; pause further broad current collection pending a different
+    sensing/training strategy.
 - Mapping/audit tools:
   - `scripts/audit_sim_to_real_mapping.py`
   - `scripts/run_mapping_tournament.py`

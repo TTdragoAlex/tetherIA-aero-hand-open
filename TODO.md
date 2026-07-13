@@ -111,6 +111,16 @@
   deployment; held-out maximum errors remain roughly `100-230 mA` by channel.
   Continue guarded local coverage only. The refreshed planner selects step
   `117` as the next distinct candidate.
+- Result: steps `117` and `122` completed safely in
+  `logs/coupled_current_baseline_20260713_104230.csv` and
+  `logs/coupled_current_baseline_20260713_104304.csv`; the guarded calibration
+  now has 17 postures. A new benchmark still reaches `~150-238 mA` worst
+  held-out error on multiple channels. Pause broad current-only collection:
+  it can improve a local lookup but is not converging to a reliable general
+  contact signal for the live actor.
+- Next: decide between a new policy trained to tolerate no force/contact input
+  and a camera-based real-world observation path. Do not wire the current model
+  into the blocked ball actor.
 
 ## 1. Review 2026-07-08 Anti-Trap Cube Replay
 - Task: Use the operator's visual observation of the cube replay to decide whether the trace produced real rolling torque or only caging/pushing.
